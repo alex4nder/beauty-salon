@@ -1,4 +1,6 @@
 using BeautySalonApp.Data;
+using BeautySalonApp.Services;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -13,30 +15,40 @@ namespace BeautySalonApp
         [STAThread]
         static void Main()
         {
-            // To customize application configuration such as set high DPI settings or default font,
-            // see https://aka.ms/applicationconfiguration.
             ApplicationConfiguration.Initialize();
 
             var host = Host.CreateDefaultBuilder()
+            .ConfigureAppConfiguration((context, config) =>
+            {
+                config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
+             })
             .ConfigureServices((context, services) =>
             {
                 services.AddDbContext<LocalDbContext>(options =>
-                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal1")));
+                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal1"),
+                        ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonLocal1"))));
+
                 services.AddDbContext<LocalDbContext>(options =>
-                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal2")));
+                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal2"),
+                        ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonLocal2"))));
+
                 services.AddDbContext<LocalDbContext>(options =>
-                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal3")));
+                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonLocal3"),
+                        ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonLocal3"))));
+
                 services.AddDbContext<GlobalDbContext>(options =>
-                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonGlobal")));
+                    options.UseMySql(context.Configuration.GetConnectionString("BeautySalonGlobal"),
+                        ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonGlobal"))));
+                services.AddSingleton<DatabaseService>();
+                services.AddTransient<MainForm>();
 
                 // Зарегистрируйте репозитории и сервисы
                 //services.AddScoped<ClientRepository>();
                 //services.AddScoped<SalonRepository>();
-                // Добавьте другие регистрации по мере необходимости
             })
             .Build();
 
-            Application.Run(new MainForm());
+            Application.Run(host.Services.GetRequiredService<MainForm>());
         }
     }
 }

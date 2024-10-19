@@ -2,13 +2,10 @@
 using Microsoft.EntityFrameworkCore;
 using DbContext = Microsoft.EntityFrameworkCore.DbContext;
 
-
 namespace BeautySalonApp.Data
 {
     public class GlobalDbContext : DbContext
     {
-        //public GlobalDbContext(string connectionString) : base(connectionString) { }
-
         public GlobalDbContext(DbContextOptions<GlobalDbContext> options) : base(options) { }
 
         public DbSet<Salon> Salons { get; set; }
@@ -17,5 +14,11 @@ namespace BeautySalonApp.Data
         public DbSet<RevenueReport> RevenueReports { get; set; }
         public DbSet<ClientFeedback> ClientFeedbacks { get; set; }
         public DbSet<Manager> Managers { get; set; }
+
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            base.OnModelCreating(modelBuilder);
+            // Дополнительная настройка сущностей, если нужно
+        }
     }
 }

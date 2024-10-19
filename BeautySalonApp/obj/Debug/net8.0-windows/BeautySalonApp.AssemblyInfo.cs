@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("BeautySalonApp")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+c452112ae678e3068406c4a92c0f8fe3cb9413a8")]
 [assembly: System.Reflection.AssemblyProductAttribute("BeautySalonApp")]
 [assembly: System.Reflection.AssemblyTitleAttribute("BeautySalonApp")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]
