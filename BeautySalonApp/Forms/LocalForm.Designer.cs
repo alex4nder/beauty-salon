@@ -33,9 +33,12 @@
             tabPage2 = new TabPage();
             managersTab = new TabPage();
             reportsTab = new TabPage();
+            dataGridViewRevenueReports = new DataGridView();
             clientsTab = new TabPage();
             reviewsTab = new TabPage();
             employeesTab.SuspendLayout();
+            reportsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
             SuspendLayout();
             // 
             // employeesTab
@@ -52,6 +55,7 @@
             employeesTab.SelectedIndex = 0;
             employeesTab.Size = new Size(800, 450);
             employeesTab.TabIndex = 0;
+            employeesTab.SelectedIndexChanged += employeesTab_SelectedIndexChanged;
             // 
             // servicesTab
             // 
@@ -85,6 +89,7 @@
             // 
             // reportsTab
             // 
+            reportsTab.Controls.Add(dataGridViewRevenueReports);
             reportsTab.Location = new Point(4, 24);
             reportsTab.Name = "reportsTab";
             reportsTab.Padding = new Padding(3);
@@ -92,6 +97,16 @@
             reportsTab.TabIndex = 3;
             reportsTab.Text = "Отчеты о доходах";
             reportsTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewRevenueReports
+            // 
+            dataGridViewRevenueReports.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewRevenueReports.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewRevenueReports.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewRevenueReports.Location = new Point(8, 36);
+            dataGridViewRevenueReports.Name = "dataGridViewRevenueReports";
+            dataGridViewRevenueReports.Size = new Size(776, 378);
+            dataGridViewRevenueReports.TabIndex = 0;
             // 
             // clientsTab
             // 
@@ -122,6 +137,8 @@
             Name = "SalonForm";
             Text = "Салон";
             employeesTab.ResumeLayout(false);
+            reportsTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
             ResumeLayout(false);
         }
 
@@ -134,5 +151,6 @@
         private TabPage reportsTab;
         private TabPage clientsTab;
         private TabPage reviewsTab;
+        private DataGridView dataGridViewRevenueReports;
     }
 }

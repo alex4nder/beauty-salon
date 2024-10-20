@@ -21,7 +21,7 @@ namespace BeautySalonApp
             .ConfigureAppConfiguration((context, config) =>
             {
                 config.AddJsonFile("appsettings.json", optional: false, reloadOnChange: true);
-             })
+            })
             .ConfigureServices((context, services) =>
             {
                 services.AddDbContext<LocalDbContext>(options =>
@@ -39,13 +39,13 @@ namespace BeautySalonApp
                 services.AddDbContext<GlobalDbContext>(options =>
                     options.UseMySql(context.Configuration.GetConnectionString("BeautySalonGlobal"),
                         ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonGlobal"))));
-                services.AddSingleton<DatabaseService>();
-                services.AddScoped<SalonService>();
-                services.AddTransient<MainForm>();
 
-                // Зарегистрируйте репозитории и сервисы
-                //services.AddScoped<ClientRepository>();
-                //services.AddScoped<SalonRepository>();
+                services.AddSingleton<DatabaseService>();
+
+                services.AddScoped<SalonService>();
+                services.AddScoped<RevenueReportService>();
+
+                services.AddTransient<MainForm>();
             })
             .Build();
 
