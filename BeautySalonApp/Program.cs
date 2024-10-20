@@ -40,6 +40,7 @@ namespace BeautySalonApp
                     options.UseMySql(context.Configuration.GetConnectionString("BeautySalonGlobal"),
                         ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonGlobal"))));
                 services.AddSingleton<DatabaseService>();
+                services.AddScoped<SalonService>();
                 services.AddTransient<MainForm>();
 
                 // Зарегистрируйте репозитории и сервисы

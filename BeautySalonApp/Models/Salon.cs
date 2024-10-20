@@ -19,6 +19,9 @@ namespace BeautySalonApp.Models
         [Column("address_id")]
         public int AddressId { get; set; }
 
+        [ForeignKey("AddressId")]
+        public Address Address { get; set; }
+
         [Required]
         [Column("phone")]
         [MaxLength(20)]

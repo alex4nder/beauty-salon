@@ -16,7 +16,7 @@ namespace BeautySalonApp.Models
         public required string AddressLine { get; set; }
 
         [Required]
-        [Column("porstal_code")]
+        [Column("postal_code")]
         [MaxLength(10)]
         public required string PostalCode { get; set; }
 

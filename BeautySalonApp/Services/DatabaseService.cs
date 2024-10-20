@@ -44,7 +44,7 @@ namespace BeautySalonApp.Services
             return new LocalDbContext(optionsBuilder.Options);
         }
 
-        private GlobalDbContext GetGlobalDbContext()
+        public GlobalDbContext GetGlobalDbContext()
         {
             var optionsBuilder = new DbContextOptionsBuilder<GlobalDbContext>();
             optionsBuilder.UseMySql(_globalDb, ServerVersion.AutoDetect(_globalDb));
