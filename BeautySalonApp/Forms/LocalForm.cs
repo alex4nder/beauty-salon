@@ -33,7 +33,9 @@ namespace BeautySalonApp
 
             var revenueReportData = revenueReports.Select(rr => new
             {
-                Date = rr.ReportDate,
+                ReportDate = rr.ReportDate,
+                ReportPeriodStartDate = rr.ReportPeriodStartDate,
+                ReportPeriodEndDate = rr.ReportPeriodEndDate,
                 TotalRevenue = rr.TotalRevenue,
                 NumberOfClients = rr.TotalCustomers,
                 MostPopularService = $"{rr.MostPopularService}"
@@ -41,10 +43,22 @@ namespace BeautySalonApp
 
             dataGridViewRevenueReports.DataSource = revenueReportData;
 
-            dataGridViewRevenueReports.Columns["Date"].HeaderText = "Дата/время отчета";
+            dataGridViewRevenueReports.Columns["ReportDate"].HeaderText = "Дата/время отчета";
+            dataGridViewRevenueReports.Columns["ReportPeriodStartDate"].HeaderText = "От";
+            dataGridViewRevenueReports.Columns["ReportPeriodEndDate"].HeaderText = "До";
             dataGridViewRevenueReports.Columns["TotalRevenue"].HeaderText = "Общая выручка";
             dataGridViewRevenueReports.Columns["NumberOfClients"].HeaderText = "Количество клиентов";
-            dataGridViewRevenueReports.Columns["MostPopularService"].HeaderText = "Самый популярный сервис";
+            dataGridViewRevenueReports.Columns["MostPopularService"].HeaderText = "Самая популярная услуга";
+        }
+
+        private void generateRevenueReportBtn_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = revenueReportDateFrom.Value;
+            DateTime endDate = revenueReportDateTo.Value;
+
+            _revenueReportService.GenerateAndSaveRevenueReport(startDate, endDate, _salonId);
+
+            LoadRevenueReportsData();
         }
     }
 }

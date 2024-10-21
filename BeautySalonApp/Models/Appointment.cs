@@ -27,13 +27,15 @@ namespace BeautySalonApp.Models
         public DateTime AppointmentDate { get; set; }
 
         [Column("start_time")]
-        public TimeSpan StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         [Column("end_time")]
-        public TimeSpan EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         [Required]
         [Column("status")]
         public required string Status { get; set; }
+
+        public required Service Service { get; set; }
     }
 }

@@ -66,7 +66,7 @@ namespace BeautySalonApp
 
                 SalonForm salonForm = new SalonForm(_salonService, _revenueReportService);
                 salonForm.SetSalonId(e.RowIndex + 1);
-
+                salonForm.Text = $"Салон - {selectedRow.Cells["name"].Value.ToString()}";
                 salonForm.ShowDialog();
             }
         }

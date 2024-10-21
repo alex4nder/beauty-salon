@@ -19,6 +19,14 @@ namespace BeautySalonApp.Models
         public DateTime ReportDate { get; set; }
 
         [Required]
+        [Column("report_period_start_date")]
+        public DateTime ReportPeriodStartDate { get; set; }
+
+        [Required]
+        [Column("report_period_end_date")]
+        public DateTime ReportPeriodEndDate { get; set; }
+
+        [Required]
         [Column("total_revenue")]
         public decimal TotalRevenue { get; set; }
 
