@@ -7,12 +7,10 @@ namespace BeautySalonApp.Services
     {
         private readonly LocalDbContext _context;
 
-
         public ClientService(LocalDbContext context)
         {
             _context = context;
         }
-
 
         public void ClientAdd(Client client)
         {

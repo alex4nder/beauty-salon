@@ -9,9 +9,8 @@ namespace BeautySalonApp
 {
     internal static class Program
     {
-        /// <summary>
-        ///  The main entry point for the application.
-        /// </summary>
+        public static IServiceProvider ServiceProvider { get; private set; }
+
         [STAThread]
         static void Main()
         {
@@ -44,10 +43,15 @@ namespace BeautySalonApp
 
                 services.AddScoped<SalonService>();
                 services.AddScoped<RevenueReportService>();
+                services.AddScoped<ClientFeedbackService>();
+                services.AddScoped<ClientService>();
 
                 services.AddTransient<MainForm>();
+                services.AddTransient<SalonForm>();
             })
             .Build();
+
+            ServiceProvider = host.Services;
 
             Application.Run(host.Services.GetRequiredService<MainForm>());
         }

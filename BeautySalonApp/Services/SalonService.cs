@@ -13,7 +13,6 @@ namespace BeautySalonApp.Services
             _globalContext = globalContext;
         }
 
-        // Метод для получения списка салонов с их адресами
         public List<Salon> GetSalons()
         {
             return _globalContext.Salons.Include(s => s.Address).ToList();

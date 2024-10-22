@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BeautySalonApp.Models
 {
-    [Table("client_feedbacks")]
+    [Table("client_feedback")]
     public class ClientFeedback
     {
         [Key]
@@ -28,7 +28,7 @@ namespace BeautySalonApp.Models
 
         [Required]
         [Column("rating")]
-        public decimal Rating { get; set; }
+        public int Rating { get; set; }
 
         [Column("comments")]
         public string? Comments { get; set; }

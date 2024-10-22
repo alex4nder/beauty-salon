@@ -1,16 +1,16 @@
 using BeautySalonApp.Services;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp
 {
     public partial class MainForm : Form
     {
         private readonly SalonService _salonService;
-        private readonly RevenueReportService _revenueReportService;
 
-        public MainForm(SalonService salonService, RevenueReportService revenueReportService)
+        public MainForm()
         {
-            _salonService = salonService;
-            _revenueReportService = revenueReportService;
+            _salonService = Program.ServiceProvider.GetRequiredService<SalonService>();
+
             InitializeComponent();
         }
 
@@ -42,7 +42,7 @@ namespace BeautySalonApp
             {
                 HeaderText = "ƒействи€",
                 Text = "ѕерейти",
-                UseColumnTextForButtonValue = true, // ”казывает, что текст кнопки будет одинаковым дл€ всех €чеек
+                UseColumnTextForButtonValue = true,
                 Width = 100,
                 Name = "actionButtonColumn"
             };
@@ -64,7 +64,7 @@ namespace BeautySalonApp
             {
                 var selectedRow = dataGridViewSalons.Rows[e.RowIndex];
 
-                SalonForm salonForm = new SalonForm(_salonService, _revenueReportService);
+                SalonForm salonForm = new SalonForm();
                 salonForm.SetSalonId(e.RowIndex + 1);
                 salonForm.Text = $"—алон - {selectedRow.Cells["name"].Value.ToString()}";
                 salonForm.ShowDialog();

@@ -40,10 +40,13 @@
             generateRevenueReportBtn = new Button();
             dataGridViewRevenueReports = new DataGridView();
             clientsTab = new TabPage();
-            reviewsTab = new TabPage();
+            clientFeedbackTab = new TabPage();
+            dataGridViewClientFeedback = new DataGridView();
             employeesTab.SuspendLayout();
             reportsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
+            clientFeedbackTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).BeginInit();
             SuspendLayout();
             // 
             // employeesTab
@@ -53,7 +56,7 @@
             employeesTab.Controls.Add(managersTab);
             employeesTab.Controls.Add(reportsTab);
             employeesTab.Controls.Add(clientsTab);
-            employeesTab.Controls.Add(reviewsTab);
+            employeesTab.Controls.Add(clientFeedbackTab);
             employeesTab.Dock = DockStyle.Fill;
             employeesTab.Location = new Point(0, 0);
             employeesTab.Name = "employeesTab";
@@ -173,15 +176,26 @@
             clientsTab.Text = "Клиенты";
             clientsTab.UseVisualStyleBackColor = true;
             // 
-            // reviewsTab
+            // clientFeedbackTab
             // 
-            reviewsTab.Location = new Point(4, 24);
-            reviewsTab.Name = "reviewsTab";
-            reviewsTab.Padding = new Padding(3);
-            reviewsTab.Size = new Size(968, 473);
-            reviewsTab.TabIndex = 5;
-            reviewsTab.Text = "Отзывы";
-            reviewsTab.UseVisualStyleBackColor = true;
+            clientFeedbackTab.Controls.Add(dataGridViewClientFeedback);
+            clientFeedbackTab.Location = new Point(4, 24);
+            clientFeedbackTab.Name = "clientFeedbackTab";
+            clientFeedbackTab.Padding = new Padding(3);
+            clientFeedbackTab.Size = new Size(968, 473);
+            clientFeedbackTab.TabIndex = 5;
+            clientFeedbackTab.Text = "Отзывы";
+            clientFeedbackTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewClientFeedback
+            // 
+            dataGridViewClientFeedback.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewClientFeedback.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewClientFeedback.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewClientFeedback.Location = new Point(5, 6);
+            dataGridViewClientFeedback.Name = "dataGridViewClientFeedback";
+            dataGridViewClientFeedback.Size = new Size(957, 460);
+            dataGridViewClientFeedback.TabIndex = 0;
             // 
             // SalonForm
             // 
@@ -195,6 +209,8 @@
             reportsTab.ResumeLayout(false);
             reportsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
+            clientFeedbackTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).EndInit();
             ResumeLayout(false);
         }
 
@@ -206,12 +222,13 @@
         private TabPage managersTab;
         private TabPage reportsTab;
         private TabPage clientsTab;
-        private TabPage reviewsTab;
+        private TabPage clientFeedbackTab;
         private DataGridView dataGridViewRevenueReports;
         private Button generateRevenueReportBtn;
         private DateTimePicker revenueReportDateTo;
         private Label label2;
         private Label label1;
         private DateTimePicker revenueReportDateFrom;
+        private DataGridView dataGridViewClientFeedback;
     }
 }
