@@ -31,7 +31,8 @@ namespace BeautySalonApp
             var tabLoadActions = new Dictionary<TabPage, Action>
             {
                 { reportsTab, LoadRevenueReportsData },
-                { clientFeedbackTab, LoadClientFeedbacksData }
+                { clientFeedbackTab, LoadClientFeedbacksData },
+                { clientsTab, LoadClientsData }
             };
 
             if (tabLoadActions.TryGetValue(employeesTab.SelectedTab, out var loadAction))
@@ -46,10 +47,10 @@ namespace BeautySalonApp
 
             var revenueReportData = revenueReports.Select(rr => new
             {
-                ReportDate = rr.ReportDate,
-                ReportPeriodStartDate = rr.ReportPeriodStartDate,
-                ReportPeriodEndDate = rr.ReportPeriodEndDate,
-                TotalRevenue = rr.TotalRevenue,
+                rr.ReportDate,
+                rr.ReportPeriodStartDate,
+                rr.ReportPeriodEndDate,
+                rr.TotalRevenue,
                 NumberOfClients = rr.TotalCustomers,
                 MostPopularService = $"{rr.MostPopularService}"
             }).ToList();
@@ -89,10 +90,10 @@ namespace BeautySalonApp
 
             var feedbackData = feedbacks.Select(feedback => new
             {
-                FeedbackDate = feedback.FeedbackDate,
+                feedback.FeedbackDate,
                 ClientName = $"{feedback.ClientFirstName} {feedback.ClientLastName}",
-                ClientEmail = feedback.ClientEmail,
-                Service = feedback.Service,
+                feedback.ClientEmail,
+                feedback.Service,
                 Rating = $"{feedback.Rating} {emojiRatings[feedback.Rating]}",
                 Comment = feedback.Comments,
             }).ToList();
@@ -165,6 +166,131 @@ namespace BeautySalonApp
                         case 5:
                             e.CellStyle.ForeColor = Color.Green;
                             break;
+                    }
+                }
+            }
+        }
+
+        private void LoadClientsData()
+        {
+            var revenueReports = _clientService.GetClients();
+
+            var revenueReportData = revenueReports.Select(client => new
+            {
+                client.Id,
+                client.FirstName,
+                client.LastName,
+                client.Email,
+                client.Phone,
+                client.DateOfBirth,
+                client.Notes
+            }).ToList();
+
+            dataGridViewClients.DataSource = revenueReportData;
+
+            dataGridViewClients.Columns["FirstName"].HeaderText = "Имя";
+            dataGridViewClients.Columns["LastName"].HeaderText = "Фамилия";
+            dataGridViewClients.Columns["Email"].HeaderText = "Эл. почта";
+            dataGridViewClients.Columns["Phone"].HeaderText = "Номер телефона";
+            dataGridViewClients.Columns["DateOfBirth"].HeaderText = "Дата рождения";
+            dataGridViewClients.Columns["Notes"].HeaderText = "Примечания";
+
+            dataGridViewClients.Columns["Id"].Visible = false;
+
+            DataGridViewLinkColumn emailColumn = new DataGridViewLinkColumn();
+            emailColumn.HeaderText = "Эл. почта";
+            emailColumn.DataPropertyName = "Email";
+            emailColumn.Name = "Email";
+            dataGridViewClients.Columns.Remove("Email");
+            dataGridViewClients.Columns.Insert(3, emailColumn);
+
+            dataGridViewClients.CellContentClick += DataGridViewClient_CellContentClick;
+            dataGridViewClients.CellFormatting += DataGridViewClient_CellFormatting;
+
+            if (!dataGridViewClients.Columns.Contains("Edit"))
+            {
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Edit",
+                    HeaderText = "Редактировать",
+                    Text = "Редактировать",
+                    UseColumnTextForButtonValue = true
+                };
+
+                dataGridViewClients.Columns.Add(editButtonColumn);
+            }
+
+            if (!dataGridViewClients.Columns.Contains("Delete"))
+            {
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Delete",
+                    HeaderText = "Удалить",
+                    Text = "Удалить",
+                    UseColumnTextForButtonValue = true
+                };
+
+                dataGridViewClients.Columns.Add(deleteButtonColumn);
+            }
+
+            dataGridViewClients.CellClick += DataGridViewClient_CellClick;
+        }
+
+        private void DataGridViewClient_CellClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewClients.Rows[e.RowIndex];
+
+                if (e.ColumnIndex == dataGridViewClients.Columns["Edit"].Index)
+                {
+
+                    int clientId = Convert.ToInt32(row.Cells["Id"].Value);
+                    _clientService.ClientEdit(clientId);
+                }
+                else if (e.ColumnIndex == dataGridViewClients.Columns["Delete"].Index)
+                {
+                    int clientId = Convert.ToInt32(row.Cells["Id"].Value);
+                    _clientService.ClientRemove(clientId);
+                }
+
+                LoadClientsData();
+            }
+        }
+
+        private void DataGridViewClient_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.ColumnIndex == dataGridViewClients.Columns["Email"].Index && e.RowIndex >= 0)
+            {
+                string email = dataGridViewClients.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+
+                try
+                {
+                    System.Diagnostics.Process.Start(new ProcessStartInfo
+                    {
+                        FileName = $"mailto:{email}",
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при открытии почтового клиента: {ex.Message}");
+                }
+            }
+        }
+
+        private void DataGridViewClient_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewClients.Columns[e.ColumnIndex].Name == "Phone")
+            {
+                if (e.Value != null)
+                {
+                    string rawPhoneNumber = e.Value.ToString();
+
+                    if (rawPhoneNumber.Length == 11 && rawPhoneNumber.StartsWith("8"))
+                    {
+                        string formattedPhoneNumber = $"+7 ({rawPhoneNumber.Substring(1, 3)}) {rawPhoneNumber.Substring(4, 3)}-{rawPhoneNumber.Substring(7, 2)}-{rawPhoneNumber.Substring(9, 2)}";
+                        e.Value = formattedPhoneNumber;
                     }
                 }
             }

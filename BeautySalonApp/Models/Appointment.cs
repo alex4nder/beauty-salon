@@ -36,6 +36,8 @@ namespace BeautySalonApp.Models
         [Column("status")]
         public required string Status { get; set; }
 
-        public required Service Service { get; set; }
+        public virtual required Client Client { get; set; }
+        public virtual required Employee Employee { get; set; }
+        public virtual required Service Service { get; set; }
     }
 }

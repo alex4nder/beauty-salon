@@ -26,5 +26,7 @@ namespace BeautySalonApp.Models
         [Required]
         [Column("duration")]
         public int Duration { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

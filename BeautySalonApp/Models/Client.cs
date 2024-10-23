@@ -37,5 +37,7 @@ namespace BeautySalonApp.Models
 
         [Column("notes")]
         public string? Notes { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

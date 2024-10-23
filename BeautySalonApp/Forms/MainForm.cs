@@ -50,7 +50,6 @@ namespace BeautySalonApp
             dataGridViewSalons.Columns.Add(buttonColumn);
 
             Controls.Add(dataGridViewSalons);
-
         }
 
         private void button1_Click(object sender, EventArgs e)

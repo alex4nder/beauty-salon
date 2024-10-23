@@ -51,6 +51,38 @@ CREATE TABLE Appointments (
     FOREIGN KEY (service_id) REFERENCES services(id)
 );
 
+ALTER TABLE appointments
+DROP FOREIGN KEY appointments_ibfk_1;
+
+ALTER TABLE appointments
+DROP FOREIGN KEY appointments_ibfk_2;
+
+ALTER TABLE appointments
+DROP FOREIGN KEY appointments_ibfk_3;
+
+ALTER TABLE appointments
+ADD CONSTRAINT appointments_ibfk_1 FOREIGN KEY (client_id) 
+REFERENCES clients(id) 
+ON DELETE CASCADE;
+
+ALTER TABLE appointments
+ADD CONSTRAINT fk_appointments_employee_id FOREIGN KEY (employee_id) 
+REFERENCES employees(id) 
+ON DELETE CASCADE;
+
+ALTER TABLE appointments
+ADD CONSTRAINT fk_appointments_service_id FOREIGN KEY (service_id) 
+REFERENCES services(id) 
+ON DELETE CASCADE;
+
+ALTER TABLE work_hours
+DROP FOREIGN KEY work_hours_ibfk_1;
+
+ALTER TABLE work_hours
+ADD CONSTRAINT work_hours_ibfk_1 FOREIGN KEY (employee_id) 
+REFERENCES employees(id) 
+ON DELETE CASCADE;
+
 CREATE INDEX idx_clients_last_name ON clients(last_name);
 CREATE INDEX idx_employees_last_name ON employees(last_name);
 CREATE INDEX idx_services_service_name ON services(service_name);

@@ -41,5 +41,7 @@ namespace BeautySalonApp.Models
         [Column("work_book_number")]
         [MaxLength(50)]
         public required string WorkBookNumber { get; set; }
+
+        public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

@@ -19,7 +19,7 @@ namespace BeautySalonApp.Services
             _context.SaveChanges();
         }
 
-        public List<Client> ClientList()
+        public List<Client> GetClients()
         {
             return _context.Clients.ToList();
         }
@@ -32,6 +32,10 @@ namespace BeautySalonApp.Services
                 _context.Clients.Remove(client);
                 _context.SaveChanges();
             }
+        }
+
+        public void ClientEdit(int clientId)
+        {
         }
     }
 }

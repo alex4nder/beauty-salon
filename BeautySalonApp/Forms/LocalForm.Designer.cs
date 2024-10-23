@@ -40,11 +40,15 @@
             generateRevenueReportBtn = new Button();
             dataGridViewRevenueReports = new DataGridView();
             clientsTab = new TabPage();
+            addClientBtn = new Button();
+            dataGridViewClients = new DataGridView();
             clientFeedbackTab = new TabPage();
             dataGridViewClientFeedback = new DataGridView();
             employeesTab.SuspendLayout();
             reportsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
+            clientsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
             clientFeedbackTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).BeginInit();
             SuspendLayout();
@@ -168,6 +172,8 @@
             // 
             // clientsTab
             // 
+            clientsTab.Controls.Add(addClientBtn);
+            clientsTab.Controls.Add(dataGridViewClients);
             clientsTab.Location = new Point(4, 24);
             clientsTab.Name = "clientsTab";
             clientsTab.Padding = new Padding(3);
@@ -175,6 +181,25 @@
             clientsTab.TabIndex = 4;
             clientsTab.Text = "Клиенты";
             clientsTab.UseVisualStyleBackColor = true;
+            // 
+            // addClientBtn
+            // 
+            addClientBtn.Location = new Point(780, 7);
+            addClientBtn.Name = "addClientBtn";
+            addClientBtn.Size = new Size(180, 23);
+            addClientBtn.TabIndex = 1;
+            addClientBtn.Text = "Добавить нового клиента";
+            addClientBtn.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewClients
+            // 
+            dataGridViewClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewClients.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewClients.Location = new Point(8, 36);
+            dataGridViewClients.Name = "dataGridViewClients";
+            dataGridViewClients.Size = new Size(952, 429);
+            dataGridViewClients.TabIndex = 0;
             // 
             // clientFeedbackTab
             // 
@@ -209,6 +234,8 @@
             reportsTab.ResumeLayout(false);
             reportsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
+            clientsTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewClients).EndInit();
             clientFeedbackTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).EndInit();
             ResumeLayout(false);
@@ -230,5 +257,7 @@
         private Label label1;
         private DateTimePicker revenueReportDateFrom;
         private DataGridView dataGridViewClientFeedback;
+        private DataGridView dataGridViewClients;
+        private Button addClientBtn;
     }
 }
