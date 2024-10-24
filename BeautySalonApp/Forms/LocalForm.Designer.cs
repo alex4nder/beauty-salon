@@ -190,6 +190,7 @@
             addClientBtn.TabIndex = 1;
             addClientBtn.Text = "Добавить нового клиента";
             addClientBtn.UseVisualStyleBackColor = true;
+            addClientBtn.Click += addClientBtn_Click;
             // 
             // dataGridViewClients
             // 
@@ -229,6 +230,7 @@
             ClientSize = new Size(976, 501);
             Controls.Add(employeesTab);
             Name = "SalonForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Салон";
             employeesTab.ResumeLayout(false);
             reportsTab.ResumeLayout(false);

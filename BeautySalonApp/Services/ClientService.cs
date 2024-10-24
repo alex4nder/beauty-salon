@@ -24,6 +24,11 @@ namespace BeautySalonApp.Services
             return _context.Clients.ToList();
         }
 
+        public Client GetClientById(int clientId)
+        {
+            return _context.Clients.Find(clientId);
+        }
+
         public void ClientRemove(int clientId)
         {
             var client = _context.Clients.Find(clientId);
@@ -34,8 +39,20 @@ namespace BeautySalonApp.Services
             }
         }
 
-        public void ClientEdit(int clientId)
+        public void ClientEdit(Client client)
         {
+            var existingClient = _context.Clients.Find(client.Id);
+            if (existingClient != null)
+            {
+                existingClient.FirstName = client.FirstName;
+                existingClient.LastName = client.LastName;
+                existingClient.Phone = client.Phone;
+                existingClient.Email = client.Email;
+                existingClient.DateOfBirth = client.DateOfBirth;
+                existingClient.Notes = client.Notes;
+
+                _context.SaveChanges();
+            }
         }
     }
 }

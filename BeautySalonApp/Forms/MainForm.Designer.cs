@@ -77,6 +77,7 @@
             ForeColor = SystemColors.ControlText;
             Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "MainForm";
+            StartPosition = FormStartPosition.CenterScreen;
             Text = "Салон красоты - Главная";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSalons).EndInit();

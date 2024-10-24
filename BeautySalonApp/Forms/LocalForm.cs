@@ -1,4 +1,5 @@
-﻿using BeautySalonApp.Services;
+﻿using BeautySalonApp.Forms;
+using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
 
@@ -204,8 +205,12 @@ namespace BeautySalonApp
             dataGridViewClients.Columns.Remove("Email");
             dataGridViewClients.Columns.Insert(3, emailColumn);
 
-            dataGridViewClients.CellContentClick += DataGridViewClient_CellContentClick;
             dataGridViewClients.CellFormatting += DataGridViewClient_CellFormatting;
+
+            if (!dataGridViewClients.Columns.Contains("Edit") && !dataGridViewClients.Columns.Contains("Delete"))
+            {
+                dataGridViewClients.CellContentClick += DataGridViewClient_CellContentClick;
+            }
 
             if (!dataGridViewClients.Columns.Contains("Edit"))
             {
@@ -232,39 +237,48 @@ namespace BeautySalonApp
 
                 dataGridViewClients.Columns.Add(deleteButtonColumn);
             }
-
-            dataGridViewClients.CellClick += DataGridViewClient_CellClick;
         }
 
-        private void DataGridViewClient_CellClick(object sender, DataGridViewCellEventArgs e)
+        private void EditClient(int clientId)
         {
-            if (e.RowIndex >= 0)
+            var client = _clientService.GetClientById(clientId);
+            if (client != null)
             {
-                DataGridViewRow row = dataGridViewClients.Rows[e.RowIndex];
-
-                if (e.ColumnIndex == dataGridViewClients.Columns["Edit"].Index)
+                using (ClientForm clientForm = new ClientForm(client))
                 {
-
-                    int clientId = Convert.ToInt32(row.Cells["Id"].Value);
-                    _clientService.ClientEdit(clientId);
+                    if (clientForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadClientsData();
+                    }
                 }
-                else if (e.ColumnIndex == dataGridViewClients.Columns["Delete"].Index)
-                {
-                    int clientId = Convert.ToInt32(row.Cells["Id"].Value);
-                    _clientService.ClientRemove(clientId);
-                }
-
-                LoadClientsData();
+            }
+            else
+            {
+                MessageBox.Show("Клиент не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
         }
 
-        private void DataGridViewClient_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DeleteClient(int clientId)
         {
-            if (e.ColumnIndex == dataGridViewClients.Columns["Email"].Index && e.RowIndex >= 0)
+            if (MessageBox.Show("Вы действительно хотите удалить клиента?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {
-                string email = dataGridViewClients.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-
                 try
+                {
+                    _clientService.ClientRemove(clientId);
+                    LoadClientsData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void OpenEmailClient(string email)
+        {
+            try
+            {
+                if (!string.IsNullOrWhiteSpace(email))
                 {
                     System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
@@ -272,9 +286,35 @@ namespace BeautySalonApp
                         UseShellExecute = true
                     });
                 }
-                catch (Exception ex)
+                else
                 {
-                    MessageBox.Show($"Ошибка при открытии почтового клиента: {ex.Message}");
+                    MessageBox.Show("У клиента отсутствует адрес электронной почты.", "Информация", MessageBoxButtons.OK, MessageBoxIcon.Information);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при открытии почтового клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DataGridViewClient_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewClients.Rows[e.RowIndex];
+                int clientId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                if (e.ColumnIndex == dataGridViewClients.Columns["Edit"].Index)
+                {
+                    EditClient(clientId);
+                }
+                else if (e.ColumnIndex == dataGridViewClients.Columns["Delete"].Index)
+                {
+                    DeleteClient(clientId);
+                }
+                else if (e.ColumnIndex == dataGridViewClients.Columns["Email"].Index)
+                {
+                    OpenEmailClient(row.Cells[e.ColumnIndex].Value.ToString());
                 }
             }
         }
@@ -293,6 +333,15 @@ namespace BeautySalonApp
                         e.Value = formattedPhoneNumber;
                     }
                 }
+            }
+        }
+
+        private void addClientBtn_Click(object sender, EventArgs e)
+        {
+            ClientForm clientForm = new ClientForm();
+            if (clientForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadClientsData();
             }
         }
     }

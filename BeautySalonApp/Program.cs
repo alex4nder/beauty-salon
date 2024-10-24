@@ -1,4 +1,5 @@
 using BeautySalonApp.Data;
+using BeautySalonApp.Forms;
 using BeautySalonApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -48,6 +49,7 @@ namespace BeautySalonApp
 
                 services.AddTransient<MainForm>();
                 services.AddTransient<SalonForm>();
+                services.AddTransient<ClientForm>();
             })
             .Build();
 
