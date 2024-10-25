@@ -10,6 +10,7 @@ namespace BeautySalonApp
         private readonly RevenueReportService _revenueReportService;
         private readonly ClientFeedbackService _clientFeedbackService;
         private readonly ClientService _clientService;
+        private readonly EmployeeService _employeeService;
 
         private int _salonId;
 
@@ -18,6 +19,7 @@ namespace BeautySalonApp
             _revenueReportService = Program.ServiceProvider.GetRequiredService<RevenueReportService>();
             _clientFeedbackService = Program.ServiceProvider.GetRequiredService<ClientFeedbackService>();
             _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
+            _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
 
             InitializeComponent();
         }
@@ -33,7 +35,8 @@ namespace BeautySalonApp
             {
                 { reportsTab, LoadRevenueReportsData },
                 { clientFeedbackTab, LoadClientFeedbacksData },
-                { clientsTab, LoadClientsData }
+                { clientsTab, LoadClientsData },
+                { employeeTab, LoadEmployeesData }
             };
 
             if (tabLoadActions.TryGetValue(employeesTab.SelectedTab, out var loadAction))
@@ -64,16 +67,6 @@ namespace BeautySalonApp
             dataGridViewRevenueReports.Columns["TotalRevenue"].HeaderText = "Общая выручка";
             dataGridViewRevenueReports.Columns["NumberOfClients"].HeaderText = "Количество клиентов";
             dataGridViewRevenueReports.Columns["MostPopularService"].HeaderText = "Самая популярная услуга";
-        }
-
-        private void generateRevenueReportBtn_Click(object sender, EventArgs e)
-        {
-            DateTime startDate = revenueReportDateFrom.Value;
-            DateTime endDate = revenueReportDateTo.Value;
-
-            _revenueReportService.GenerateAndSaveRevenueReport(startDate, endDate, _salonId);
-
-            LoadRevenueReportsData();
         }
 
         private void LoadClientFeedbacksData()
@@ -120,58 +113,6 @@ namespace BeautySalonApp
             dataGridViewClientFeedback.CellContentClick += DataGridViewClientFeedback_CellContentClick;
         }
 
-        private void DataGridViewClientFeedback_CellContentClick(object sender, DataGridViewCellEventArgs e)
-        {
-            if (e.ColumnIndex == dataGridViewClientFeedback.Columns["ClientEmail"].Index && e.RowIndex >= 0)
-            {
-                string email = dataGridViewClientFeedback.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
-
-                try
-                {
-                    System.Diagnostics.Process.Start(new ProcessStartInfo
-                    {
-                        FileName = $"mailto:{email}",
-                        UseShellExecute = true
-                    });
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при открытии почтового клиента: {ex.Message}");
-                }
-            }
-        }
-
-        private void DataGridViewClientFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
-        {
-            if (dataGridViewClientFeedback.Columns[e.ColumnIndex].Name == "Rating" && e.Value != null)
-            {
-                string ratingText = e.Value.ToString();
-                int ratingValue;
-
-                if (int.TryParse(ratingText.Split(' ')[0], out ratingValue))
-                {
-                    switch (ratingValue)
-                    {
-                        case 1:
-                            e.CellStyle.ForeColor = Color.Red;
-                            break;
-                        case 2:
-                            e.CellStyle.ForeColor = Color.DarkOrange;
-                            break;
-                        case 3:
-                            e.CellStyle.ForeColor = Color.DarkGoldenrod;
-                            break;
-                        case 4:
-                            e.CellStyle.ForeColor = Color.DarkGreen;
-                            break;
-                        case 5:
-                            e.CellStyle.ForeColor = Color.Green;
-                            break;
-                    }
-                }
-            }
-        }
-
         private void LoadClientsData()
         {
             var revenueReports = _clientService.GetClients();
@@ -207,36 +148,7 @@ namespace BeautySalonApp
 
             dataGridViewClients.CellFormatting += DataGridViewClient_CellFormatting;
 
-            if (!dataGridViewClients.Columns.Contains("Edit") && !dataGridViewClients.Columns.Contains("Delete"))
-            {
-                dataGridViewClients.CellContentClick += DataGridViewClient_CellContentClick;
-            }
-
-            if (!dataGridViewClients.Columns.Contains("Edit"))
-            {
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn
-                {
-                    Name = "Edit",
-                    HeaderText = "Редактировать",
-                    Text = "Редактировать",
-                    UseColumnTextForButtonValue = true
-                };
-
-                dataGridViewClients.Columns.Add(editButtonColumn);
-            }
-
-            if (!dataGridViewClients.Columns.Contains("Delete"))
-            {
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn
-                {
-                    Name = "Delete",
-                    HeaderText = "Удалить",
-                    Text = "Удалить",
-                    UseColumnTextForButtonValue = true
-                };
-
-                dataGridViewClients.Columns.Add(deleteButtonColumn);
-            }
+            addActionColumns(dataGridViewClients, (sender, e) => DataGridViewClient_CellContentClick(sender, e));
         }
 
         private void EditClient(int clientId)
@@ -271,6 +183,127 @@ namespace BeautySalonApp
                 {
                     MessageBox.Show($"Ошибка при удалении клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
+            }
+        }
+
+        private void LoadEmployeesData()
+        {
+            var employees = _employeeService.GetEmployees();
+
+            var employeesData = employees.Select(employee => new
+            {
+                employee.Id,
+                employee.FirstName,
+                employee.LastName,
+                employee.Position,
+                employee.Phone,
+                employee.WorkBookNumber,
+            }).ToList();
+
+            dataGridViewEmployees.DataSource = employeesData;
+
+            dataGridViewEmployees.Columns["FirstName"].HeaderText = "Имя";
+            dataGridViewEmployees.Columns["LastName"].HeaderText = "Фамилия";
+            dataGridViewEmployees.Columns["Position"].HeaderText = "Должность";
+            dataGridViewEmployees.Columns["Phone"].HeaderText = "Номер телефона";
+            dataGridViewEmployees.Columns["WorkBookNumber"].HeaderText = "Номер трудовой книжки";
+
+            dataGridViewEmployees.Columns["Id"].Visible = false;
+
+            dataGridViewEmployees.CellFormatting += DataGridViewEmployee_CellFormatting;
+
+            addActionColumns(dataGridViewEmployees, (sender, e) => DataGridViewEmployee_CellContentClick(sender, e));
+        }
+
+        private void EditEmployee(int employeeId)
+        {
+            var employee = _employeeService.GetEmployeeById(employeeId);
+            if (employee != null)
+            {
+                using (EmployeeForm employeeForm = new EmployeeForm(employee))
+                {
+                    if (employeeForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadEmployeesData();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Сотрудник не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeleteEmployee(int employeeId)
+        {
+            if (MessageBox.Show("Вы действительно хотите удалить сотрудника?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                try
+                {
+                    _employeeService.EmployeeRemove(employeeId);
+                    LoadEmployeesData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении сотрудника: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
+        private void generateRevenueReportBtn_Click(object sender, EventArgs e)
+        {
+            DateTime startDate = revenueReportDateFrom.Value;
+            DateTime endDate = revenueReportDateTo.Value;
+
+            _revenueReportService.GenerateAndSaveRevenueReport(startDate, endDate, _salonId);
+
+            LoadRevenueReportsData();
+        }
+
+        private void DataGridViewClientFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewClientFeedback.Columns[e.ColumnIndex].Name == "Rating" && e.Value != null)
+            {
+                string ratingText = e.Value.ToString();
+                int ratingValue;
+
+                if (int.TryParse(ratingText.Split(' ')[0], out ratingValue))
+                {
+                    switch (ratingValue)
+                    {
+                        case 1:
+                            e.CellStyle.ForeColor = Color.Red;
+                            break;
+                        case 2:
+                            e.CellStyle.ForeColor = Color.DarkOrange;
+                            break;
+                        case 3:
+                            e.CellStyle.ForeColor = Color.DarkGoldenrod;
+                            break;
+                        case 4:
+                            e.CellStyle.ForeColor = Color.DarkGreen;
+                            break;
+                        case 5:
+                            e.CellStyle.ForeColor = Color.Green;
+                            break;
+                    }
+                }
+            }
+        }
+
+        private void DataGridViewClient_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewClients.Columns[e.ColumnIndex].Name == "Phone")
+            {
+                formatPhoneNumber(e);
+            }
+        }
+
+        private void DataGridViewEmployee_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        {
+            if (dataGridViewEmployees.Columns[e.ColumnIndex].Name == "Phone")
+            {
+                formatPhoneNumber(e);
             }
         }
 
@@ -319,19 +352,41 @@ namespace BeautySalonApp
             }
         }
 
-        private void DataGridViewClient_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DataGridViewClientFeedback_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (dataGridViewClients.Columns[e.ColumnIndex].Name == "Phone")
+            if (e.ColumnIndex == dataGridViewClientFeedback.Columns["ClientEmail"].Index && e.RowIndex >= 0)
             {
-                if (e.Value != null)
-                {
-                    string rawPhoneNumber = e.Value.ToString();
+                string email = dataGridViewClientFeedback.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
 
-                    if (rawPhoneNumber.Length == 11 && rawPhoneNumber.StartsWith("8"))
+                try
+                {
+                    System.Diagnostics.Process.Start(new ProcessStartInfo
                     {
-                        string formattedPhoneNumber = $"+7 ({rawPhoneNumber.Substring(1, 3)}) {rawPhoneNumber.Substring(4, 3)}-{rawPhoneNumber.Substring(7, 2)}-{rawPhoneNumber.Substring(9, 2)}";
-                        e.Value = formattedPhoneNumber;
-                    }
+                        FileName = $"mailto:{email}",
+                        UseShellExecute = true
+                    });
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при открытии почтового клиента: {ex.Message}");
+                }
+            }
+        }
+
+        private void DataGridViewEmployee_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
+                int employeeId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                if (e.ColumnIndex == dataGridViewEmployees.Columns["Edit"].Index)
+                {
+                    EditEmployee(employeeId);
+                }
+                else if (e.ColumnIndex == dataGridViewEmployees.Columns["Delete"].Index)
+                {
+                    DeleteEmployee(employeeId);
                 }
             }
         }
@@ -342,6 +397,67 @@ namespace BeautySalonApp
             if (clientForm.ShowDialog() == DialogResult.OK)
             {
                 LoadClientsData();
+            }
+        }
+
+        private void formatPhoneNumber(DataGridViewCellFormattingEventArgs e)
+        {
+            if (e.Value != null)
+            {
+                string rawPhoneNumber = e.Value.ToString();
+
+                if (rawPhoneNumber.Length == 11 && rawPhoneNumber.StartsWith("8"))
+                {
+                    string formattedPhoneNumber = $"+7 ({rawPhoneNumber.Substring(1, 3)}) {rawPhoneNumber.Substring(4, 3)}-{rawPhoneNumber.Substring(7, 2)}-{rawPhoneNumber.Substring(9, 2)}";
+                    e.Value = formattedPhoneNumber;
+                }
+            }
+        }
+
+        private void addActionColumns(DataGridView dataGridView, Action<object, DataGridViewCellEventArgs> cellClickHandler)
+        {
+            if (!dataGridView.Columns.Contains("Edit") && !dataGridView.Columns.Contains("Delete"))
+            {
+                dataGridView.CellContentClick -= DataGridView_CellContentClickWrapper;
+                dataGridView.CellContentClick += DataGridView_CellContentClickWrapper;
+            }
+
+            if (!dataGridView.Columns.Contains("Edit"))
+            {
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Edit",
+                    HeaderText = "",
+                    Text = "Редактировать",
+                    UseColumnTextForButtonValue = true
+                };
+                dataGridView.Columns.Add(editButtonColumn);
+            }
+
+            if (!dataGridView.Columns.Contains("Delete"))
+            {
+                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Delete",
+                    HeaderText = "",
+                    Text = "Удалить",
+                    UseColumnTextForButtonValue = true
+                };
+                dataGridView.Columns.Add(deleteButtonColumn);
+            }
+
+            void DataGridView_CellContentClickWrapper(object sender, DataGridViewCellEventArgs e)
+            {
+                cellClickHandler?.Invoke(sender, e);
+            }
+        }
+
+        private void addEmployeeBtn_Click(object sender, EventArgs e)
+        {
+            EmployeeForm employeeForm = new EmployeeForm();
+            if (employeeForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadEmployeesData();
             }
         }
     }

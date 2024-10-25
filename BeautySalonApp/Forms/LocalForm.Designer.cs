@@ -30,7 +30,9 @@
         {
             employeesTab = new TabControl();
             servicesTab = new TabPage();
-            tabPage2 = new TabPage();
+            employeeTab = new TabPage();
+            addEmployeeBtn = new Button();
+            dataGridViewEmployees = new DataGridView();
             managersTab = new TabPage();
             reportsTab = new TabPage();
             label2 = new Label();
@@ -45,6 +47,8 @@
             clientFeedbackTab = new TabPage();
             dataGridViewClientFeedback = new DataGridView();
             employeesTab.SuspendLayout();
+            employeeTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).BeginInit();
             reportsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
             clientsTab.SuspendLayout();
@@ -56,7 +60,7 @@
             // employeesTab
             // 
             employeesTab.Controls.Add(servicesTab);
-            employeesTab.Controls.Add(tabPage2);
+            employeesTab.Controls.Add(employeeTab);
             employeesTab.Controls.Add(managersTab);
             employeesTab.Controls.Add(reportsTab);
             employeesTab.Controls.Add(clientsTab);
@@ -79,15 +83,37 @@
             servicesTab.Text = "Предоставляемые услуги";
             servicesTab.UseVisualStyleBackColor = true;
             // 
-            // tabPage2
+            // employeeTab
             // 
-            tabPage2.Location = new Point(4, 24);
-            tabPage2.Name = "tabPage2";
-            tabPage2.Padding = new Padding(3);
-            tabPage2.Size = new Size(968, 473);
-            tabPage2.TabIndex = 1;
-            tabPage2.Text = "Сотрудники";
-            tabPage2.UseVisualStyleBackColor = true;
+            employeeTab.Controls.Add(addEmployeeBtn);
+            employeeTab.Controls.Add(dataGridViewEmployees);
+            employeeTab.Location = new Point(4, 24);
+            employeeTab.Name = "employeeTab";
+            employeeTab.Padding = new Padding(3);
+            employeeTab.Size = new Size(968, 473);
+            employeeTab.TabIndex = 1;
+            employeeTab.Text = "Сотрудники";
+            employeeTab.UseVisualStyleBackColor = true;
+            // 
+            // addEmployeeBtn
+            // 
+            addEmployeeBtn.Location = new Point(765, 9);
+            addEmployeeBtn.Name = "addEmployeeBtn";
+            addEmployeeBtn.Size = new Size(195, 23);
+            addEmployeeBtn.TabIndex = 1;
+            addEmployeeBtn.Text = "Добавить нового сотрудника";
+            addEmployeeBtn.UseVisualStyleBackColor = true;
+            addEmployeeBtn.Click += addEmployeeBtn_Click;
+            // 
+            // dataGridViewEmployees
+            // 
+            dataGridViewEmployees.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewEmployees.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewEmployees.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewEmployees.Location = new Point(6, 39);
+            dataGridViewEmployees.Name = "dataGridViewEmployees";
+            dataGridViewEmployees.Size = new Size(954, 426);
+            dataGridViewEmployees.TabIndex = 0;
             // 
             // managersTab
             // 
@@ -233,6 +259,8 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Салон";
             employeesTab.ResumeLayout(false);
+            employeeTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).EndInit();
             reportsTab.ResumeLayout(false);
             reportsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
@@ -247,7 +275,7 @@
 
         private TabControl employeesTab;
         private TabPage servicesTab;
-        private TabPage tabPage2;
+        private TabPage employeeTab;
         private TabPage managersTab;
         private TabPage reportsTab;
         private TabPage clientsTab;
@@ -261,5 +289,7 @@
         private DataGridView dataGridViewClientFeedback;
         private DataGridView dataGridViewClients;
         private Button addClientBtn;
+        private Button addEmployeeBtn;
+        private DataGridView dataGridViewEmployees;
     }
 }

@@ -11,12 +11,6 @@ namespace BeautySalonApp.Models
         public int Id { get; set; }
 
         [Required]
-        [Column("login")]
-        [MaxLength(50)]
-        [Index(IsUnique = true)]
-        public required string Login { get; set; }
-
-        [Required]
         [Column("first_name")]
         [MaxLength(50)]
         public required string FirstName { get; set; }
