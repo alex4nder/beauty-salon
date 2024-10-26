@@ -31,7 +31,11 @@
             EmployeeDetailsTabControl = new TabControl();
             appointmentsTab = new TabPage();
             performanceTab = new TabPage();
+            appointmentsDataGridView = new DataGridView();
+            addAppointmentBtn = new Button();
             EmployeeDetailsTabControl.SuspendLayout();
+            appointmentsTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
             SuspendLayout();
             // 
             // EmployeeDetailsTabControl
@@ -46,6 +50,8 @@
             // 
             // appointmentsTab
             // 
+            appointmentsTab.Controls.Add(addAppointmentBtn);
+            appointmentsTab.Controls.Add(appointmentsDataGridView);
             appointmentsTab.Location = new Point(4, 24);
             appointmentsTab.Name = "appointmentsTab";
             appointmentsTab.Padding = new Padding(3);
@@ -64,6 +70,25 @@
             performanceTab.Text = "Производительность сотрудника";
             performanceTab.UseVisualStyleBackColor = true;
             // 
+            // appointmentsDataGridView
+            // 
+            appointmentsDataGridView.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            appointmentsDataGridView.BackgroundColor = SystemColors.ButtonHighlight;
+            appointmentsDataGridView.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            appointmentsDataGridView.Location = new Point(3, 36);
+            appointmentsDataGridView.Name = "appointmentsDataGridView";
+            appointmentsDataGridView.Size = new Size(961, 431);
+            appointmentsDataGridView.TabIndex = 0;
+            // 
+            // addAppointmentBtn
+            // 
+            addAppointmentBtn.Location = new Point(789, 7);
+            addAppointmentBtn.Name = "addAppointmentBtn";
+            addAppointmentBtn.Size = new Size(172, 23);
+            addAppointmentBtn.TabIndex = 1;
+            addAppointmentBtn.Text = "Новая запись";
+            addAppointmentBtn.UseVisualStyleBackColor = true;
+            // 
             // EmployeeDetailsForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -74,6 +99,8 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Сотрудник";
             EmployeeDetailsTabControl.ResumeLayout(false);
+            appointmentsTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).EndInit();
             ResumeLayout(false);
         }
 
@@ -82,5 +109,7 @@
         private TabControl EmployeeDetailsTabControl;
         private TabPage appointmentsTab;
         private TabPage performanceTab;
+        private DataGridView appointmentsDataGridView;
+        private Button addAppointmentBtn;
     }
 }
