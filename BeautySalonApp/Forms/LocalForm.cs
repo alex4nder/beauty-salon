@@ -12,6 +12,7 @@ namespace BeautySalonApp
         private readonly ClientService _clientService;
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
+        private readonly OfferingsService _offeringsService;
 
         private int _salonId;
 
@@ -22,8 +23,12 @@ namespace BeautySalonApp
             _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
             _managerService = Program.ServiceProvider.GetRequiredService<ManagerService>();
+            _offeringsService = Program.ServiceProvider.GetRequiredService<OfferingsService>();
 
             InitializeComponent();
+
+            // To force the loading of data for the first tab on form load
+            employeesTab_SelectedIndexChanged(employeesTab, EventArgs.Empty);
         }
 
         public void SetSalonId(int salonId)
@@ -39,13 +44,45 @@ namespace BeautySalonApp
                 { clientFeedbackTab, LoadClientFeedbacksData },
                 { clientsTab, LoadClientsData },
                 { employeeTab, LoadEmployeesData },
-                { managersTab, LoadManagersData }
+                { managersTab, LoadManagersData },
+                { servicesTab, LoadServicesData }
             };
 
             if (tabLoadActions.TryGetValue(employeesTab.SelectedTab, out var loadAction))
             {
                 loadAction();
             }
+        }
+
+        private void LoadServicesData()
+        {
+            var services = _offeringsService.GetServices();
+
+            var serviceData = services.Select(service => new
+            {
+                service.ServiceName,
+                service.Description,
+                service.Price,
+                service.Duration,
+                IsPopular = service.IsPopular ? "Горячий спрос" : "Не пользуется спросом"
+            }).ToList();
+
+            dataGridViewServices.DataSource = serviceData;
+
+            dataGridViewServices.Columns["ServiceName"].HeaderText = "Название услуги";
+            dataGridViewServices.Columns["Description"].HeaderText = "Описание";
+            dataGridViewServices.Columns["Price"].HeaderText = "Цена";
+            dataGridViewServices.Columns["Duration"].HeaderText = "Продолжительность (мин)";
+            dataGridViewServices.Columns["IsPopular"].HeaderText = "Популярность";
+
+            dataGridViewServices.CellFormatting += (s, e) =>
+            {
+                if (e.ColumnIndex == dataGridViewServices.Columns["Price"].Index && e.Value is decimal price)
+                {
+                    e.Value = $"{price:C}"; // Отображает цену в формате валюты
+                    e.FormattingApplied = true;
+                }
+            };
         }
 
         private void LoadRevenueReportsData()

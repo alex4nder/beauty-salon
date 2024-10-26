@@ -48,6 +48,7 @@ namespace BeautySalonApp
                 services.AddScoped<ClientService>();
                 services.AddScoped<EmployeeService>();
                 services.AddScoped<ManagerService>();
+                services.AddScoped<OfferingsService>();
 
                 services.AddTransient<MainForm>();
                 services.AddTransient<SalonForm>();

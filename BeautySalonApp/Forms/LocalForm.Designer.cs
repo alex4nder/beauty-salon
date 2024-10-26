@@ -48,7 +48,9 @@
             dataGridViewClients = new DataGridView();
             clientFeedbackTab = new TabPage();
             dataGridViewClientFeedback = new DataGridView();
+            dataGridViewServices = new DataGridView();
             employeesTab.SuspendLayout();
+            servicesTab.SuspendLayout();
             employeeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).BeginInit();
             managersTab.SuspendLayout();
@@ -59,6 +61,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
             clientFeedbackTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).BeginInit();
             SuspendLayout();
             // 
             // employeesTab
@@ -79,6 +82,7 @@
             // 
             // servicesTab
             // 
+            servicesTab.Controls.Add(dataGridViewServices);
             servicesTab.Location = new Point(4, 24);
             servicesTab.Name = "servicesTab";
             servicesTab.Padding = new Padding(3);
@@ -276,6 +280,16 @@
             dataGridViewClientFeedback.Size = new Size(957, 460);
             dataGridViewClientFeedback.TabIndex = 0;
             // 
+            // dataGridViewServices
+            // 
+            dataGridViewServices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewServices.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewServices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewServices.Location = new Point(8, 21);
+            dataGridViewServices.Name = "dataGridViewServices";
+            dataGridViewServices.Size = new Size(954, 426);
+            dataGridViewServices.TabIndex = 1;
+            // 
             // SalonForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -286,6 +300,7 @@
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Салон";
             employeesTab.ResumeLayout(false);
+            servicesTab.ResumeLayout(false);
             employeeTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).EndInit();
             managersTab.ResumeLayout(false);
@@ -297,6 +312,7 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).EndInit();
             clientFeedbackTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).EndInit();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).EndInit();
             ResumeLayout(false);
         }
 
@@ -322,5 +338,6 @@
         private DataGridView dataGridViewEmployees;
         private Button addManagerBtn;
         private DataGridView dataGridViewManagers;
+        private DataGridView dataGridViewServices;
     }
 }
