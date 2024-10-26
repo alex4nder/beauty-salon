@@ -1,4 +1,5 @@
 ﻿using BeautySalonApp.Data;
+using BeautySalonApp.Models;
 using BeautySalonApp.Services.dtos;
 
 namespace BeautySalonApp.Services
@@ -11,6 +12,12 @@ namespace BeautySalonApp.Services
         public OfferingsService(LocalDbContext context)
         {
             _context = context;
+        }
+
+        public void ServiceAdd(Service service)
+        {
+            _context.Services.Add(service);
+            _context.SaveChanges();
         }
 
         public List<OfferingsServiceDto> GetServices()
@@ -30,6 +37,35 @@ namespace BeautySalonApp.Services
                 .ToList();
 
             return services;
+        }
+
+        public Service GetServiceById(int serviceId)
+        {
+            return _context.Services.Find(serviceId);
+        }
+
+        public void RemoveService(int serviceId)
+        {
+            var service = _context.Services.Find(serviceId);
+            if (service != null)
+            {
+                _context.Services.Remove(service);
+                _context.SaveChanges();
+            }
+        }
+
+        public void ServiceEdit(Service service)
+        {
+            var existingService = _context.Services.Find(service.Id);
+            if (existingService != null)
+            {
+                existingService.ServiceName = service.ServiceName;
+                existingService.Description = service.Description;
+                existingService.Price = service.Price;
+                existingService.Duration = service.Duration;
+
+                _context.SaveChanges();
+            }
         }
     }
 }

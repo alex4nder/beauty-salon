@@ -30,6 +30,7 @@
         {
             employeesTab = new TabControl();
             servicesTab = new TabPage();
+            dataGridViewServices = new DataGridView();
             employeeTab = new TabPage();
             addEmployeeBtn = new Button();
             dataGridViewEmployees = new DataGridView();
@@ -48,9 +49,10 @@
             dataGridViewClients = new DataGridView();
             clientFeedbackTab = new TabPage();
             dataGridViewClientFeedback = new DataGridView();
-            dataGridViewServices = new DataGridView();
+            addServiceBtn = new Button();
             employeesTab.SuspendLayout();
             servicesTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).BeginInit();
             employeeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).BeginInit();
             managersTab.SuspendLayout();
@@ -61,7 +63,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
             clientFeedbackTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).BeginInit();
             SuspendLayout();
             // 
             // employeesTab
@@ -82,6 +83,7 @@
             // 
             // servicesTab
             // 
+            servicesTab.Controls.Add(addServiceBtn);
             servicesTab.Controls.Add(dataGridViewServices);
             servicesTab.Location = new Point(4, 24);
             servicesTab.Name = "servicesTab";
@@ -90,6 +92,16 @@
             servicesTab.TabIndex = 0;
             servicesTab.Text = "Предоставляемые услуги";
             servicesTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewServices
+            // 
+            dataGridViewServices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewServices.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewServices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewServices.Location = new Point(8, 40);
+            dataGridViewServices.Name = "dataGridViewServices";
+            dataGridViewServices.Size = new Size(954, 407);
+            dataGridViewServices.TabIndex = 1;
             // 
             // employeeTab
             // 
@@ -280,15 +292,15 @@
             dataGridViewClientFeedback.Size = new Size(957, 460);
             dataGridViewClientFeedback.TabIndex = 0;
             // 
-            // dataGridViewServices
+            // addServiceBtn
             // 
-            dataGridViewServices.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewServices.BackgroundColor = SystemColors.ButtonHighlight;
-            dataGridViewServices.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewServices.Location = new Point(8, 21);
-            dataGridViewServices.Name = "dataGridViewServices";
-            dataGridViewServices.Size = new Size(954, 426);
-            dataGridViewServices.TabIndex = 1;
+            addServiceBtn.Location = new Point(751, 11);
+            addServiceBtn.Name = "addServiceBtn";
+            addServiceBtn.Size = new Size(195, 23);
+            addServiceBtn.TabIndex = 2;
+            addServiceBtn.Text = "Добавить новую услугу";
+            addServiceBtn.UseVisualStyleBackColor = true;
+            addServiceBtn.Click += addServiceBtn_Click;
             // 
             // SalonForm
             // 
@@ -301,6 +313,7 @@
             Text = "Салон";
             employeesTab.ResumeLayout(false);
             servicesTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).EndInit();
             employeeTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).EndInit();
             managersTab.ResumeLayout(false);
@@ -312,7 +325,6 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewClients).EndInit();
             clientFeedbackTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).EndInit();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewServices).EndInit();
             ResumeLayout(false);
         }
 
@@ -339,5 +351,6 @@
         private Button addManagerBtn;
         private DataGridView dataGridViewManagers;
         private DataGridView dataGridViewServices;
+        private Button addServiceBtn;
     }
 }

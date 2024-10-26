@@ -2,6 +2,7 @@
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace BeautySalonApp
 {
@@ -79,7 +80,8 @@ namespace BeautySalonApp
             {
                 if (e.ColumnIndex == dataGridViewServices.Columns["Price"].Index && e.Value is decimal price)
                 {
-                    e.Value = $"{price:C}"; // Отображает цену в формате валюты
+                    var rubleCulture = new CultureInfo("ru-RU");
+                    e.Value = string.Format(rubleCulture, "{0:C}", price);
                     e.FormattingApplied = true;
                 }
             };
@@ -599,6 +601,15 @@ namespace BeautySalonApp
         {
             EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
             employeeDetailsForm.ShowDialog();
+        }
+
+        private void addServiceBtn_Click(object sender, EventArgs e)
+        {
+            ServiceForm serviceForm = new ServiceForm();
+            if (serviceForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadServicesData();
+            }
         }
     }
 }
