@@ -1,7 +1,10 @@
 ﻿using BeautySalonApp.Forms;
+using BeautySalonApp.Forms.EntityActions;
+using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
+using System.Globalization;
 
 namespace BeautySalonApp
 {
@@ -12,7 +15,7 @@ namespace BeautySalonApp
         private readonly ClientService _clientService;
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
-
+        private readonly OfferingsService _offeringsService;
         private int _salonId;
 
         public SalonForm()
@@ -22,8 +25,11 @@ namespace BeautySalonApp
             _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
             _managerService = Program.ServiceProvider.GetRequiredService<ManagerService>();
-
+            _offeringsService = Program.ServiceProvider.GetRequiredService<OfferingsService>();
             InitializeComponent();
+
+            // To force the loading of data for the first tab on form load
+            employeesTab_SelectedIndexChanged(employeesTab, EventArgs.Empty);
         }
 
         public void SetSalonId(int salonId)
@@ -39,13 +45,68 @@ namespace BeautySalonApp
                 { clientFeedbackTab, LoadClientFeedbacksData },
                 { clientsTab, LoadClientsData },
                 { employeeTab, LoadEmployeesData },
-                { managersTab, LoadManagersData }
+                { managersTab, LoadManagersData },
+                { servicesTab, LoadServicesData }
             };
 
             if (tabLoadActions.TryGetValue(employeesTab.SelectedTab, out var loadAction))
             {
                 loadAction();
             }
+        }
+
+        private void LoadServicesData()
+        {
+            var services = _offeringsService.GetServices();
+
+            var serviceData = services.Select(service => new
+            {
+                service.Id,
+                service.ServiceName,
+                service.Description,
+                service.Price,
+                service.Duration,
+                IsPopular = service.IsPopular ? "Горячий спрос" : "Не пользуется спросом"
+            }).ToList();
+
+            dataGridViewServices.DataSource = serviceData;
+
+            dataGridViewServices.Columns["ServiceName"].HeaderText = "Название услуги";
+            dataGridViewServices.Columns["Description"].HeaderText = "Описание";
+            dataGridViewServices.Columns["Price"].HeaderText = "Цена";
+            dataGridViewServices.Columns["Duration"].HeaderText = "Продолжительность (мин)";
+            dataGridViewServices.Columns["IsPopular"].HeaderText = "Популярность";
+
+            dataGridViewServices.Columns["Id"].Visible = false;
+
+            dataGridViewServices.CellFormatting += (s, e) =>
+            {
+                if (e.ColumnIndex == dataGridViewServices.Columns["Price"].Index && e.Value is decimal price)
+                {
+                    var rubleCulture = new CultureInfo("ru-RU");
+                    e.Value = string.Format(rubleCulture, "{0:C}", price);
+                    e.FormattingApplied = true;
+                }
+            };
+
+            addActionColumns(dataGridViewServices, (sender, e) => DataGridViewServices_CellContentClick(sender, e));
+        }
+
+        private void EditService(int serviceId)
+        {
+            new EntityOperationBuilder<Service>()
+                .WithFormCreator(s => new ServiceForm(s))
+                .WithUpdateAction(s => _offeringsService.ServiceEdit(s))
+                .WithLoadData(LoadServicesData)
+                .ExecuteEdit(_offeringsService.GetServiceById(serviceId));
+        }
+
+        private void DeleteService(int serviceId)
+        {
+            new EntityOperationBuilder<Service>()
+                   .WithRemoveAction(_offeringsService.ServiceRemove)
+                   .WithLoadData(LoadServicesData)
+                   .ExecuteDelete(serviceId);
         }
 
         private void LoadRevenueReportsData()
@@ -156,37 +217,19 @@ namespace BeautySalonApp
 
         private void EditClient(int clientId)
         {
-            var client = _clientService.GetClientById(clientId);
-            if (client != null)
-            {
-                using (ClientForm clientForm = new ClientForm(client))
-                {
-                    if (clientForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadClientsData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Клиент не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Models.Client>()
+                   .WithFormCreator(c => new ClientForm(c))
+                   .WithUpdateAction(c => _clientService.ClientEdit(c))
+                   .WithLoadData(LoadClientsData)
+                   .ExecuteEdit(_clientService.GetClientById(clientId));
         }
 
         private void DeleteClient(int clientId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить клиента?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _clientService.ClientRemove(clientId);
-                    LoadClientsData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Models.Client>()
+                    .WithRemoveAction(_clientService.ClientRemove)
+                    .WithLoadData(LoadClientsData)
+                    .ExecuteDelete(clientId);
         }
 
         private void LoadEmployeesData()
@@ -220,37 +263,19 @@ namespace BeautySalonApp
 
         private void EditEmployee(int employeeId)
         {
-            var employee = _employeeService.GetEmployeeById(employeeId);
-            if (employee != null)
-            {
-                using (EmployeeForm employeeForm = new EmployeeForm(employee))
-                {
-                    if (employeeForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadEmployeesData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Сотрудник не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Employee>()
+                .WithFormCreator(e => new EmployeeForm(e))
+                .WithUpdateAction(e => _employeeService.EmployeeEdit(e))
+                .WithLoadData(LoadEmployeesData)
+                .ExecuteEdit(_employeeService.GetEmployeeById(employeeId));
         }
 
         private void DeleteEmployee(int employeeId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить сотрудника?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _employeeService.EmployeeRemove(employeeId);
-                    LoadEmployeesData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении сотрудника: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Employee>()
+                  .WithRemoveAction(_employeeService.EmployeeRemove)
+                  .WithLoadData(LoadEmployeesData)
+                  .ExecuteDelete(employeeId);
         }
 
         private void LoadManagersData()
@@ -288,36 +313,19 @@ namespace BeautySalonApp
         private void EditManager(int managerId)
         {
             var manager = _managerService.GetManagerById(managerId);
-            if (manager != null)
-            {
-                using (ManagerForm managerForm = new ManagerForm(_salonId, manager))
-                {
-                    if (managerForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadManagersData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Менеджер не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Manager>()
+                .WithFormCreator(m => new ManagerForm(_salonId, manager))
+                .WithUpdateAction(m => _managerService.ManagerEdit(m))
+                .WithLoadData(LoadManagersData)
+                .ExecuteEdit(manager);
         }
 
         private void DeleteManager(int managerId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить менеджера?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _managerService.ManagerRemove(managerId);
-                    LoadManagersData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении менеджера: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Manager>()
+                  .WithRemoveAction(_managerService.ManagerRemove)
+                  .WithLoadData(LoadManagersData)
+                  .ExecuteDelete(managerId);
         }
 
         private void generateRevenueReportBtn_Click(object sender, EventArgs e)
@@ -478,6 +486,24 @@ namespace BeautySalonApp
                 }
             }
         }
+        private void DataGridViewServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewServices.Rows[e.RowIndex];
+                int serviceId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                if (e.ColumnIndex == dataGridViewServices.Columns["Edit"].Index)
+                {
+                    EditService(serviceId);
+                }
+                else if (e.ColumnIndex == dataGridViewServices.Columns["Delete"].Index)
+                {
+                    DeleteService(serviceId);
+                }
+            }
+        }
+
 
         private void addClientBtn_Click(object sender, EventArgs e)
         {
@@ -562,6 +588,15 @@ namespace BeautySalonApp
         {
             EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
             employeeDetailsForm.ShowDialog();
+        }
+
+        private void addServiceBtn_Click(object sender, EventArgs e)
+        {
+            ServiceForm serviceForm = new ServiceForm();
+            if (serviceForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadServicesData();
+            }
         }
     }
 }
