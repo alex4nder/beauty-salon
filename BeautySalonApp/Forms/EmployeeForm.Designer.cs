@@ -99,7 +99,7 @@
             Controls.Add(employeeFirstNameTextBox);
             Name = "EmployeeForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "EmployeeForm";
+            Text = "Сотрудник";
             ResumeLayout(false);
             PerformLayout();
         }

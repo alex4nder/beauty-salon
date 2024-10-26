@@ -54,6 +54,7 @@ namespace BeautySalonApp
                 services.AddTransient<ClientForm>();
                 services.AddTransient<EmployeeForm>();
                 services.AddTransient<ManagerForm>();
+                services.AddTransient<EmployeeDetailsForm>();
             })
             .Build();
 

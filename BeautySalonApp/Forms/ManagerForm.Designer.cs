@@ -88,7 +88,8 @@
             Controls.Add(managerLastNameTextBox);
             Controls.Add(managerFirstNameTextBox);
             Name = "ManagerForm";
-            Text = "ManagerForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Менеджер";
             ResumeLayout(false);
             PerformLayout();
         }

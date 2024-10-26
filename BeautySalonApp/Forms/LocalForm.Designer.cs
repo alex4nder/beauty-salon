@@ -118,6 +118,7 @@
             dataGridViewEmployees.Name = "dataGridViewEmployees";
             dataGridViewEmployees.Size = new Size(954, 426);
             dataGridViewEmployees.TabIndex = 0;
+            dataGridViewEmployees.CellContentDoubleClick += dataGridViewEmployees_CellContentDoubleClick;
             // 
             // managersTab
             // 

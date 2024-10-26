@@ -130,7 +130,7 @@
             Controls.Add(saveClientBtn);
             Name = "ClientForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "ClientForm";
+            Text = "Клиент";
             ResumeLayout(false);
             PerformLayout();
         }

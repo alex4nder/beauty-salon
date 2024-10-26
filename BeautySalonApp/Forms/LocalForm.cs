@@ -557,5 +557,11 @@ namespace BeautySalonApp
                 LoadManagersData();
             }
         }
+
+        private void dataGridViewEmployees_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
+            employeeDetailsForm.ShowDialog();
+        }
     }
 }
