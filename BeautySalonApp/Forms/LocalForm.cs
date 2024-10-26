@@ -61,6 +61,7 @@ namespace BeautySalonApp
 
             var serviceData = services.Select(service => new
             {
+                service.Id,
                 service.ServiceName,
                 service.Description,
                 service.Price,
@@ -76,6 +77,8 @@ namespace BeautySalonApp
             dataGridViewServices.Columns["Duration"].HeaderText = "Продолжительность (мин)";
             dataGridViewServices.Columns["IsPopular"].HeaderText = "Популярность";
 
+            dataGridViewServices.Columns["Id"].Visible = false;
+
             dataGridViewServices.CellFormatting += (s, e) =>
             {
                 if (e.ColumnIndex == dataGridViewServices.Columns["Price"].Index && e.Value is decimal price)
@@ -85,6 +88,43 @@ namespace BeautySalonApp
                     e.FormattingApplied = true;
                 }
             };
+
+            addActionColumns(dataGridViewServices, (sender, e) => DataGridViewServices_CellContentClick(sender, e));
+        }
+
+        private void EditService(int serviceId)
+        {
+            var service = _offeringsService.GetServiceById(serviceId);
+            if (service != null)
+            {
+                using (ServiceForm serviceForm = new ServiceForm(service))
+                {
+                    if (serviceForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadServicesData();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Услуга не найдена", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeleteService(int serviceId)
+        {
+            if (MessageBox.Show("Вы действительно хотите удалить услугу?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                try
+                {
+                    _offeringsService.ServiceRemove(serviceId);
+                    LoadServicesData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении услуги: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
         }
 
         private void LoadRevenueReportsData()
@@ -517,6 +557,24 @@ namespace BeautySalonApp
                 }
             }
         }
+        private void DataGridViewServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewServices.Rows[e.RowIndex];
+                int serviceId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                if (e.ColumnIndex == dataGridViewServices.Columns["Edit"].Index)
+                {
+                    EditService(serviceId);
+                }
+                else if (e.ColumnIndex == dataGridViewServices.Columns["Delete"].Index)
+                {
+                    DeleteService(serviceId);
+                }
+            }
+        }
+
 
         private void addClientBtn_Click(object sender, EventArgs e)
         {

@@ -28,6 +28,7 @@ namespace BeautySalonApp.Services
             var services = _context.Services
                 .Select(service => new OfferingsServiceDto
                 {
+                    Id = service.Id,
                     ServiceName = service.ServiceName,
                     Description = service.Description,
                     Price = service.Price,
@@ -44,7 +45,7 @@ namespace BeautySalonApp.Services
             return _context.Services.Find(serviceId);
         }
 
-        public void RemoveService(int serviceId)
+        public void ServiceRemove(int serviceId)
         {
             var service = _context.Services.Find(serviceId);
             if (service != null)
