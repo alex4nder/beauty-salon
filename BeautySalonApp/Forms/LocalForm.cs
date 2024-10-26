@@ -1,4 +1,6 @@
 ﻿using BeautySalonApp.Forms;
+using BeautySalonApp.Forms.EntityActions;
+using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
@@ -14,7 +16,6 @@ namespace BeautySalonApp
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
         private readonly OfferingsService _offeringsService;
-
         private int _salonId;
 
         public SalonForm()
@@ -25,7 +26,6 @@ namespace BeautySalonApp
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
             _managerService = Program.ServiceProvider.GetRequiredService<ManagerService>();
             _offeringsService = Program.ServiceProvider.GetRequiredService<OfferingsService>();
-
             InitializeComponent();
 
             // To force the loading of data for the first tab on form load
@@ -94,37 +94,19 @@ namespace BeautySalonApp
 
         private void EditService(int serviceId)
         {
-            var service = _offeringsService.GetServiceById(serviceId);
-            if (service != null)
-            {
-                using (ServiceForm serviceForm = new ServiceForm(service))
-                {
-                    if (serviceForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadServicesData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Услуга не найдена", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Service>()
+                .WithFormCreator(s => new ServiceForm(s))
+                .WithUpdateAction(s => _offeringsService.ServiceEdit(s))
+                .WithLoadData(LoadServicesData)
+                .ExecuteEdit(_offeringsService.GetServiceById(serviceId));
         }
 
         private void DeleteService(int serviceId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить услугу?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _offeringsService.ServiceRemove(serviceId);
-                    LoadServicesData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении услуги: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Service>()
+                   .WithRemoveAction(_offeringsService.ServiceRemove)
+                   .WithLoadData(LoadServicesData)
+                   .ExecuteDelete(serviceId);
         }
 
         private void LoadRevenueReportsData()
@@ -235,37 +217,19 @@ namespace BeautySalonApp
 
         private void EditClient(int clientId)
         {
-            var client = _clientService.GetClientById(clientId);
-            if (client != null)
-            {
-                using (ClientForm clientForm = new ClientForm(client))
-                {
-                    if (clientForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadClientsData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Клиент не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Models.Client>()
+                   .WithFormCreator(c => new ClientForm(c))
+                   .WithUpdateAction(c => _clientService.ClientEdit(c))
+                   .WithLoadData(LoadClientsData)
+                   .ExecuteEdit(_clientService.GetClientById(clientId));
         }
 
         private void DeleteClient(int clientId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить клиента?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _clientService.ClientRemove(clientId);
-                    LoadClientsData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении клиента: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Models.Client>()
+                    .WithRemoveAction(_clientService.ClientRemove)
+                    .WithLoadData(LoadClientsData)
+                    .ExecuteDelete(clientId);
         }
 
         private void LoadEmployeesData()
@@ -299,37 +263,19 @@ namespace BeautySalonApp
 
         private void EditEmployee(int employeeId)
         {
-            var employee = _employeeService.GetEmployeeById(employeeId);
-            if (employee != null)
-            {
-                using (EmployeeForm employeeForm = new EmployeeForm(employee))
-                {
-                    if (employeeForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadEmployeesData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Сотрудник не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Employee>()
+                .WithFormCreator(e => new EmployeeForm(e))
+                .WithUpdateAction(e => _employeeService.EmployeeEdit(e))
+                .WithLoadData(LoadEmployeesData)
+                .ExecuteEdit(_employeeService.GetEmployeeById(employeeId));
         }
 
         private void DeleteEmployee(int employeeId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить сотрудника?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _employeeService.EmployeeRemove(employeeId);
-                    LoadEmployeesData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении сотрудника: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Employee>()
+                  .WithRemoveAction(_employeeService.EmployeeRemove)
+                  .WithLoadData(LoadEmployeesData)
+                  .ExecuteDelete(employeeId);
         }
 
         private void LoadManagersData()
@@ -367,36 +313,19 @@ namespace BeautySalonApp
         private void EditManager(int managerId)
         {
             var manager = _managerService.GetManagerById(managerId);
-            if (manager != null)
-            {
-                using (ManagerForm managerForm = new ManagerForm(_salonId, manager))
-                {
-                    if (managerForm.ShowDialog() == DialogResult.OK)
-                    {
-                        LoadManagersData();
-                    }
-                }
-            }
-            else
-            {
-                MessageBox.Show("Менеджер не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
+            new EntityOperationBuilder<Manager>()
+                .WithFormCreator(m => new ManagerForm(_salonId, manager))
+                .WithUpdateAction(m => _managerService.ManagerEdit(m))
+                .WithLoadData(LoadManagersData)
+                .ExecuteEdit(manager);
         }
 
         private void DeleteManager(int managerId)
         {
-            if (MessageBox.Show("Вы действительно хотите удалить менеджера?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
-            {
-                try
-                {
-                    _managerService.ManagerRemove(managerId);
-                    LoadManagersData();
-                }
-                catch (Exception ex)
-                {
-                    MessageBox.Show($"Ошибка при удалении менеджера: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                }
-            }
+            new EntityOperationBuilder<Manager>()
+                  .WithRemoveAction(_managerService.ManagerRemove)
+                  .WithLoadData(LoadManagersData)
+                  .ExecuteDelete(managerId);
         }
 
         private void generateRevenueReportBtn_Click(object sender, EventArgs e)
