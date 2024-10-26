@@ -586,8 +586,16 @@ namespace BeautySalonApp
 
         private void dataGridViewEmployees_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
         {
-            EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm();
-            employeeDetailsForm.ShowDialog();
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
+                int employeeId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId);
+                employeeDetailsForm.ShowDialog();
+
+            }
+
         }
 
         private void addServiceBtn_Click(object sender, EventArgs e)

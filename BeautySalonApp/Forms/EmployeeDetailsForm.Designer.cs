@@ -30,12 +30,15 @@
         {
             EmployeeDetailsTabControl = new TabControl();
             appointmentsTab = new TabPage();
-            performanceTab = new TabPage();
-            appointmentsDataGridView = new DataGridView();
             addAppointmentBtn = new Button();
+            appointmentsDataGridView = new DataGridView();
+            performanceTab = new TabPage();
+            dataGridViewEmPerformance = new DataGridView();
             EmployeeDetailsTabControl.SuspendLayout();
             appointmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
+            performanceTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmPerformance).BeginInit();
             SuspendLayout();
             // 
             // EmployeeDetailsTabControl
@@ -47,6 +50,7 @@
             EmployeeDetailsTabControl.SelectedIndex = 0;
             EmployeeDetailsTabControl.Size = new Size(975, 498);
             EmployeeDetailsTabControl.TabIndex = 0;
+            EmployeeDetailsTabControl.SelectedIndexChanged += EmployeeDetailsTabControl_SelectedIndexChanged;
             // 
             // appointmentsTab
             // 
@@ -60,15 +64,14 @@
             appointmentsTab.Text = "Записи";
             appointmentsTab.UseVisualStyleBackColor = true;
             // 
-            // performanceTab
+            // addAppointmentBtn
             // 
-            performanceTab.Location = new Point(4, 24);
-            performanceTab.Name = "performanceTab";
-            performanceTab.Padding = new Padding(3);
-            performanceTab.Size = new Size(967, 470);
-            performanceTab.TabIndex = 1;
-            performanceTab.Text = "Производительность сотрудника";
-            performanceTab.UseVisualStyleBackColor = true;
+            addAppointmentBtn.Location = new Point(789, 7);
+            addAppointmentBtn.Name = "addAppointmentBtn";
+            addAppointmentBtn.Size = new Size(172, 23);
+            addAppointmentBtn.TabIndex = 1;
+            addAppointmentBtn.Text = "Новая запись";
+            addAppointmentBtn.UseVisualStyleBackColor = true;
             // 
             // appointmentsDataGridView
             // 
@@ -80,14 +83,26 @@
             appointmentsDataGridView.Size = new Size(961, 431);
             appointmentsDataGridView.TabIndex = 0;
             // 
-            // addAppointmentBtn
+            // performanceTab
             // 
-            addAppointmentBtn.Location = new Point(789, 7);
-            addAppointmentBtn.Name = "addAppointmentBtn";
-            addAppointmentBtn.Size = new Size(172, 23);
-            addAppointmentBtn.TabIndex = 1;
-            addAppointmentBtn.Text = "Новая запись";
-            addAppointmentBtn.UseVisualStyleBackColor = true;
+            performanceTab.Controls.Add(dataGridViewEmPerformance);
+            performanceTab.Location = new Point(4, 24);
+            performanceTab.Name = "performanceTab";
+            performanceTab.Padding = new Padding(3);
+            performanceTab.Size = new Size(967, 470);
+            performanceTab.TabIndex = 1;
+            performanceTab.Text = "Производительность сотрудника";
+            performanceTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewEmPerformance
+            // 
+            dataGridViewEmPerformance.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewEmPerformance.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewEmPerformance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewEmPerformance.Location = new Point(3, 36);
+            dataGridViewEmPerformance.Name = "dataGridViewEmPerformance";
+            dataGridViewEmPerformance.Size = new Size(961, 431);
+            dataGridViewEmPerformance.TabIndex = 1;
             // 
             // EmployeeDetailsForm
             // 
@@ -101,6 +116,8 @@
             EmployeeDetailsTabControl.ResumeLayout(false);
             appointmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).EndInit();
+            performanceTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmPerformance).EndInit();
             ResumeLayout(false);
         }
 
@@ -111,5 +128,6 @@
         private TabPage performanceTab;
         private DataGridView appointmentsDataGridView;
         private Button addAppointmentBtn;
+        private DataGridView dataGridViewEmPerformance;
     }
 }
