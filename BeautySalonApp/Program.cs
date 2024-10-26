@@ -47,11 +47,13 @@ namespace BeautySalonApp
                 services.AddScoped<ClientFeedbackService>();
                 services.AddScoped<ClientService>();
                 services.AddScoped<EmployeeService>();
+                services.AddScoped<ManagerService>();
 
                 services.AddTransient<MainForm>();
                 services.AddTransient<SalonForm>();
                 services.AddTransient<ClientForm>();
                 services.AddTransient<EmployeeForm>();
+                services.AddTransient<ManagerForm>();
             })
             .Build();
 

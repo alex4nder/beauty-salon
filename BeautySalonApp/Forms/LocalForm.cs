@@ -11,6 +11,7 @@ namespace BeautySalonApp
         private readonly ClientFeedbackService _clientFeedbackService;
         private readonly ClientService _clientService;
         private readonly EmployeeService _employeeService;
+        private readonly ManagerService _managerService;
 
         private int _salonId;
 
@@ -20,6 +21,7 @@ namespace BeautySalonApp
             _clientFeedbackService = Program.ServiceProvider.GetRequiredService<ClientFeedbackService>();
             _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
+            _managerService = Program.ServiceProvider.GetRequiredService<ManagerService>();
 
             InitializeComponent();
         }
@@ -36,7 +38,8 @@ namespace BeautySalonApp
                 { reportsTab, LoadRevenueReportsData },
                 { clientFeedbackTab, LoadClientFeedbacksData },
                 { clientsTab, LoadClientsData },
-                { employeeTab, LoadEmployeesData }
+                { employeeTab, LoadEmployeesData },
+                { managersTab, LoadManagersData }
             };
 
             if (tabLoadActions.TryGetValue(employeesTab.SelectedTab, out var loadAction))
@@ -250,6 +253,73 @@ namespace BeautySalonApp
             }
         }
 
+        private void LoadManagersData()
+        {
+            var managers = _managerService.GetManagers(_salonId);
+
+            var managersData = managers.Select(manager => new
+            {
+                manager.Id,
+                manager.FirstName,
+                manager.LastName,
+                manager.Email,
+                manager.Phone,
+            }).ToList();
+
+            dataGridViewManagers.DataSource = managersData;
+
+            dataGridViewManagers.Columns["FirstName"].HeaderText = "Имя";
+            dataGridViewManagers.Columns["LastName"].HeaderText = "Фамилия";
+            dataGridViewManagers.Columns["Email"].HeaderText = "Адрес эл. почты";
+            dataGridViewManagers.Columns["Phone"].HeaderText = "Номер телефона";
+
+            dataGridViewManagers.Columns["Id"].Visible = false;
+
+            DataGridViewLinkColumn emailColumn = new DataGridViewLinkColumn();
+            emailColumn.HeaderText = "Эл. почта";
+            emailColumn.DataPropertyName = "Email";
+            emailColumn.Name = "Email";
+            dataGridViewManagers.Columns.Remove("Email");
+            dataGridViewManagers.Columns.Insert(3, emailColumn);
+
+            addActionColumns(dataGridViewManagers, (sender, e) => DataGridViewManager_CellContentClick(sender, e));
+        }
+
+        private void EditManager(int managerId)
+        {
+            var manager = _managerService.GetManagerById(managerId);
+            if (manager != null)
+            {
+                using (ManagerForm managerForm = new ManagerForm(_salonId, manager))
+                {
+                    if (managerForm.ShowDialog() == DialogResult.OK)
+                    {
+                        LoadManagersData();
+                    }
+                }
+            }
+            else
+            {
+                MessageBox.Show("Менеджер не найден", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+        }
+
+        private void DeleteManager(int managerId)
+        {
+            if (MessageBox.Show("Вы действительно хотите удалить менеджера?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
+            {
+                try
+                {
+                    _managerService.ManagerRemove(managerId);
+                    LoadManagersData();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"Ошибка при удалении менеджера: {ex.Message}", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+            }
+        }
+
         private void generateRevenueReportBtn_Click(object sender, EventArgs e)
         {
             DateTime startDate = revenueReportDateFrom.Value;
@@ -391,6 +461,24 @@ namespace BeautySalonApp
             }
         }
 
+        private void DataGridViewManager_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewManagers.Rows[e.RowIndex];
+                int managerId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                if (e.ColumnIndex == dataGridViewManagers.Columns["Edit"].Index)
+                {
+                    EditManager(managerId);
+                }
+                else if (e.ColumnIndex == dataGridViewManagers.Columns["Delete"].Index)
+                {
+                    DeleteManager(managerId);
+                }
+            }
+        }
+
         private void addClientBtn_Click(object sender, EventArgs e)
         {
             ClientForm clientForm = new ClientForm();
@@ -458,6 +546,15 @@ namespace BeautySalonApp
             if (employeeForm.ShowDialog() == DialogResult.OK)
             {
                 LoadEmployeesData();
+            }
+        }
+
+        private void addManagerBtn_Click(object sender, EventArgs e)
+        {
+            ManagerForm managerForm = new ManagerForm(_salonId);
+            if (managerForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadManagersData();
             }
         }
     }

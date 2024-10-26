@@ -34,6 +34,8 @@
             addEmployeeBtn = new Button();
             dataGridViewEmployees = new DataGridView();
             managersTab = new TabPage();
+            addManagerBtn = new Button();
+            dataGridViewManagers = new DataGridView();
             reportsTab = new TabPage();
             label2 = new Label();
             label1 = new Label();
@@ -49,6 +51,8 @@
             employeesTab.SuspendLayout();
             employeeTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).BeginInit();
+            managersTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewManagers).BeginInit();
             reportsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
             clientsTab.SuspendLayout();
@@ -117,6 +121,8 @@
             // 
             // managersTab
             // 
+            managersTab.Controls.Add(addManagerBtn);
+            managersTab.Controls.Add(dataGridViewManagers);
             managersTab.Location = new Point(4, 24);
             managersTab.Name = "managersTab";
             managersTab.Padding = new Padding(3);
@@ -124,6 +130,26 @@
             managersTab.TabIndex = 2;
             managersTab.Text = "Менеджеры";
             managersTab.UseVisualStyleBackColor = true;
+            // 
+            // addManagerBtn
+            // 
+            addManagerBtn.Location = new Point(762, 8);
+            addManagerBtn.Name = "addManagerBtn";
+            addManagerBtn.Size = new Size(198, 23);
+            addManagerBtn.TabIndex = 1;
+            addManagerBtn.Text = "Добавить нового менеджера";
+            addManagerBtn.UseVisualStyleBackColor = true;
+            addManagerBtn.Click += addManagerBtn_Click;
+            // 
+            // dataGridViewManagers
+            // 
+            dataGridViewManagers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewManagers.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewManagers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewManagers.Location = new Point(6, 37);
+            dataGridViewManagers.Name = "dataGridViewManagers";
+            dataGridViewManagers.Size = new Size(954, 428);
+            dataGridViewManagers.TabIndex = 0;
             // 
             // reportsTab
             // 
@@ -261,6 +287,8 @@
             employeesTab.ResumeLayout(false);
             employeeTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmployees).EndInit();
+            managersTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewManagers).EndInit();
             reportsTab.ResumeLayout(false);
             reportsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
@@ -291,5 +319,7 @@
         private Button addClientBtn;
         private Button addEmployeeBtn;
         private DataGridView dataGridViewEmployees;
+        private Button addManagerBtn;
+        private DataGridView dataGridViewManagers;
     }
 }

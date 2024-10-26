@@ -17,7 +17,6 @@ namespace BeautySalonApp.Services
         public void EmployeeAdd(Employee employee)
         {
             _localContext.Employees.Add(employee);
-
             _localContext.SaveChanges();
         }
 
@@ -31,12 +30,12 @@ namespace BeautySalonApp.Services
             return _localContext.Employees.Find(employeeId);
         }
 
-        public void EmployeeRemove(int clientId)
+        public void EmployeeRemove(int employeeId)
         {
-            var client = _localContext.Employees.Find(clientId);
-            if (client != null)
+            var employee = _localContext.Employees.Find(employeeId);
+            if (employee != null)
             {
-                _localContext.Employees.Remove(client);
+                _localContext.Employees.Remove(employee);
                 _localContext.SaveChanges();
             }
         }
