@@ -1,4 +1,5 @@
-﻿public class RevenueReportWithService
+﻿// @Deprecated
+public class RevenueReportWithService
 {
     public DateTime ReportDate { get; set; }
     public DateTime ReportPeriodStartDate { get; set; }

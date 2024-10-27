@@ -8,34 +8,30 @@ namespace BeautySalonApp.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
-        [Required]
         [Column("first_name")]
-        [MaxLength(50)]
-        public required string FirstName { get; set; }
+        [MaxLength(255)]
+        public string? FirstName { get; set; }
 
-        [Required]
         [Column("last_name")]
-        [MaxLength(50)]
-        public required string LastName { get; set; }
+        [MaxLength(255)]
+        public string? LastName { get; set; }
 
-        [Required]
         [Column("phone")]
-        [MaxLength(20)]
-        [Index(IsUnique = true)]
-        public required string Phone { get; set; }
+        [MaxLength(18)]
+        public string? Phone { get; set; }
 
-        [Required]
+        [Column("email")]
+        [MaxLength(36)]
+        public string? Email { get; set; }
+
         [Column("position")]
-        [MaxLength(50)]
-        public required string Position { get; set; }
+        [MaxLength(100)]
+        public string? Position { get; set; }
 
-        [Required]
-        [Column("work_book_number")]
-        [MaxLength(50)]
-        public required string WorkBookNumber { get; set; }
-
+        // Navigation Property
         public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
+
 }

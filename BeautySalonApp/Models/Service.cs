@@ -8,25 +8,24 @@ namespace BeautySalonApp.Models
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        [Column("service_name")]
-        [MaxLength(100)]
-        public required string ServiceName { get; set; }
+        [Column("title")]
+        [MaxLength(36)]
+        public string Title { get; set; }
 
-        [Required]
         [Column("description")]
-        public required string Description { get; set; }
+        [MaxLength(255)]
+        public string? Description { get; set; }
 
-        [Required]
         [Column("price")]
-        public decimal Price { get; set; }
+        public decimal? Price { get; set; }
 
-        [Required]
         [Column("duration")]
-        public int Duration { get; set; }
+        public int? Duration { get; set; }
 
+        // Navigation Property
         public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();
     }
 }

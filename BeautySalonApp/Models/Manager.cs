@@ -3,36 +3,36 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BeautySalonApp.Models
 {
+
     [Table("managers")]
     public class Manager
     {
         [Key]
         [Column("id")]
-        public int Id { get; set; }
+        public Guid Id { get; set; }
 
         [Required]
-        [Column("salon_id")]
-        public int SalonId { get; set; }
+        [ForeignKey("Branch")]
+        [Column("branch_id")]
+        public Guid BranchId { get; set; }
 
-        [Required]
         [Column("first_name")]
-        [MaxLength(50)]
-        public required string FirstName { get; set; }
+        [MaxLength(36)]
+        public string? FirstName { get; set; }
 
-        [Required]
         [Column("last_name")]
-        [MaxLength(50)]
-        public required string LastName { get; set; }
+        [MaxLength(36)]
+        public string? LastName { get; set; }
+
+        [Column("phone")]
+        [MaxLength(19)]
+        public string? Phone { get; set; }
 
         [Column("email")]
-        [MaxLength(100)]
-        [Index(IsUnique = true)]
+        [MaxLength(36)]
         public string? Email { get; set; }
 
-        [Required]
-        [Column("phone")]
-        [MaxLength(20)]
-        [Index(IsUnique = true)]
-        public required string Phone { get; set; }
+        // Navigation Property
+        public virtual Branch Branch { get; set; }
     }
 }
