@@ -9,12 +9,14 @@ namespace BeautySalonApp.Forms
         private readonly EmployeeService _employeeService;
         private readonly EmployeePerformanceService _employeePerformanceService;
         private readonly int _employeeId;
+        private readonly int _salonId;
 
-        public EmployeeDetailsForm(int employeeId)
+        public EmployeeDetailsForm(int employeeId, int salonId)
         {
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
             _employeePerformanceService = Program.ServiceProvider.GetRequiredService<EmployeePerformanceService>();
             _employeeId = employeeId;
+            _salonId = salonId;
 
             InitializeComponent();
 
@@ -135,9 +137,7 @@ namespace BeautySalonApp.Forms
         {
             try
             {
-                // FIXME
-                int salonId = 1;
-                List<EmployeePerformance> performances = _employeePerformanceService.GetEmployeePerformanceReports(salonId, _employeeId);
+                List<EmployeePerformance> performances = _employeePerformanceService.GetEmployeePerformanceReports(_salonId, _employeeId);
 
                 dataGridViewEmPerformance.DataSource = performances.Select(ep => new
                 {
