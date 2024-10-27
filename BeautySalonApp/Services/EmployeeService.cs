@@ -1,5 +1,6 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalonApp.Services
 {
@@ -53,6 +54,17 @@ namespace BeautySalonApp.Services
 
                 _localContext.SaveChanges();
             }
+        }
+
+        public List<Appointment>? GetAppointments(int employeeId)
+        {
+            var appointments = _localContext.Appointments
+                .Where(a => a.EmployeeId == employeeId)
+                .Include(a => a.Client)
+                .Include(a => a.Service)
+                .ToList();
+
+            return appointments.Any() ? appointments : null;
         }
     }
 }
