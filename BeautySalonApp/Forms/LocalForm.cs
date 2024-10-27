@@ -258,7 +258,21 @@ namespace BeautySalonApp
 
             dataGridViewEmployees.CellFormatting += DataGridViewEmployee_CellFormatting;
 
+            if (!dataGridViewEmployees.Columns.Contains("Details"))
+            {
+                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Details",
+                    HeaderText = "",
+                    Text = "Детали",
+                    UseColumnTextForButtonValue = true
+                };
+                dataGridViewEmployees.Columns.Add(editButtonColumn);
+            }
+
             addActionColumns(dataGridViewEmployees, (sender, e) => DataGridViewEmployee_CellContentClick(sender, e));
+
+            dataGridViewEmployees.Columns["Details"].Width = 100;
         }
 
         private void EditEmployee(int employeeId)
@@ -466,6 +480,11 @@ namespace BeautySalonApp
                 {
                     DeleteEmployee(employeeId);
                 }
+                else if (e.ColumnIndex == dataGridViewEmployees.Columns["Details"].Index)
+                {
+                    EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId);
+                    employeeDetailsForm.ShowDialog();
+                }
             }
         }
 
@@ -486,6 +505,7 @@ namespace BeautySalonApp
                 }
             }
         }
+
         private void DataGridViewServices_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
@@ -503,7 +523,6 @@ namespace BeautySalonApp
                 }
             }
         }
-
 
         private void addClientBtn_Click(object sender, EventArgs e)
         {
@@ -559,6 +578,9 @@ namespace BeautySalonApp
                 };
                 dataGridView.Columns.Add(deleteButtonColumn);
             }
+
+            dataGridView.Columns["Edit"].Width = 100;
+            dataGridView.Columns["Delete"].Width = 100;
 
             void DataGridView_CellContentClickWrapper(object sender, DataGridViewCellEventArgs e)
             {

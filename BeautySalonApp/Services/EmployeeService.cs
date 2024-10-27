@@ -1,5 +1,6 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalonApp.Services
 {
@@ -53,6 +54,48 @@ namespace BeautySalonApp.Services
 
                 _localContext.SaveChanges();
             }
+        }
+
+        public List<Appointment>? GetAppointments(int employeeId)
+        {
+            var appointments = _localContext.Appointments
+                .Where(a => a.EmployeeId == employeeId)
+                .Include(a => a.Client)
+                .Include(a => a.Service)
+                .ToList();
+
+            return appointments.Any() ? appointments : null;
+        }
+
+        public void UpdateAppointmentStatus(int appointmentId, string newStatus)
+        {
+            var appointment = _localContext.Appointments.Find(appointmentId);
+            if (appointment != null)
+            {
+                appointment.Status = newStatus;
+                _localContext.SaveChanges();
+            }
+        }
+
+        public Appointment GetAppointmentById(int id)
+        {
+            return _localContext.Appointments.Find(id);
+        }
+
+        public void AddAppointment(Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment), "Appointment cannot be null");
+            }
+
+            if (appointment.EndTime < appointment.StartTime)
+            {
+                throw new ArgumentException("The end date cannot be earlier than the start date.");
+            }
+
+            _localContext.Appointments.Add(appointment);
+            _localContext.SaveChanges();
         }
     }
 }

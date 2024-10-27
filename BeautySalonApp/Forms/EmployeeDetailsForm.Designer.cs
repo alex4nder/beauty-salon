@@ -28,29 +28,29 @@
         /// </summary>
         private void InitializeComponent()
         {
-            EmployeeDetailsTabControl = new TabControl();
+            employeeDetailsTabControl = new TabControl();
             appointmentsTab = new TabPage();
             addAppointmentBtn = new Button();
             appointmentsDataGridView = new DataGridView();
             performanceTab = new TabPage();
             dataGridViewEmPerformance = new DataGridView();
-            EmployeeDetailsTabControl.SuspendLayout();
+            employeeDetailsTabControl.SuspendLayout();
             appointmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
             performanceTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmPerformance).BeginInit();
             SuspendLayout();
             // 
-            // EmployeeDetailsTabControl
+            // employeeDetailsTabControl
             // 
-            EmployeeDetailsTabControl.Controls.Add(appointmentsTab);
-            EmployeeDetailsTabControl.Controls.Add(performanceTab);
-            EmployeeDetailsTabControl.Location = new Point(1, 2);
-            EmployeeDetailsTabControl.Name = "EmployeeDetailsTabControl";
-            EmployeeDetailsTabControl.SelectedIndex = 0;
-            EmployeeDetailsTabControl.Size = new Size(975, 498);
-            EmployeeDetailsTabControl.TabIndex = 0;
-            EmployeeDetailsTabControl.SelectedIndexChanged += EmployeeDetailsTabControl_SelectedIndexChanged;
+            employeeDetailsTabControl.Controls.Add(appointmentsTab);
+            employeeDetailsTabControl.Controls.Add(performanceTab);
+            employeeDetailsTabControl.Location = new Point(1, 2);
+            employeeDetailsTabControl.Name = "EmployeeDetailsTabControl";
+            employeeDetailsTabControl.SelectedIndex = 0;
+            employeeDetailsTabControl.Size = new Size(975, 498);
+            employeeDetailsTabControl.TabIndex = 0;
+            employeeDetailsTabControl.SelectedIndexChanged += employeeDetailsTabControl_SelectedIndexChanged;
             // 
             // appointmentsTab
             // 
@@ -72,6 +72,7 @@
             addAppointmentBtn.TabIndex = 1;
             addAppointmentBtn.Text = "Новая запись";
             addAppointmentBtn.UseVisualStyleBackColor = true;
+            addAppointmentBtn.Click += addAppointmentBtn_Click;
             // 
             // appointmentsDataGridView
             // 
@@ -109,11 +110,11 @@
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(976, 501);
-            Controls.Add(EmployeeDetailsTabControl);
+            Controls.Add(employeeDetailsTabControl);
             Name = "EmployeeDetailsForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Сотрудник";
-            EmployeeDetailsTabControl.ResumeLayout(false);
+            employeeDetailsTabControl.ResumeLayout(false);
             appointmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).EndInit();
             performanceTab.ResumeLayout(false);
@@ -123,7 +124,7 @@
 
         #endregion
 
-        private TabControl EmployeeDetailsTabControl;
+        private TabControl employeeDetailsTabControl;
         private TabPage appointmentsTab;
         private TabPage performanceTab;
         private DataGridView appointmentsDataGridView;
