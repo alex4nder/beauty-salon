@@ -487,7 +487,7 @@ namespace BeautySalonApp
                 }
                 else if (e.ColumnIndex == dataGridViewEmployees.Columns["Details"].Index)
                 {
-                    EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId);
+                    EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _salonId);
                     employeeDetailsForm.ShowDialog();
                 }
             }
@@ -609,6 +609,20 @@ namespace BeautySalonApp
             {
                 LoadManagersData();
             }
+        }
+
+        private void dataGridViewEmployees_CellContentDoubleClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
+                int employeeId = Convert.ToInt32(row.Cells["Id"].Value);
+
+                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _salonId);
+                employeeDetailsForm.ShowDialog();
+
+            }
+
         }
 
         private void addServiceBtn_Click(object sender, EventArgs e)

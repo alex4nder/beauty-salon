@@ -33,9 +33,12 @@
             addAppointmentBtn = new Button();
             appointmentsDataGridView = new DataGridView();
             performanceTab = new TabPage();
+            dataGridViewEmPerformance = new DataGridView();
             employeeDetailsTabControl.SuspendLayout();
             appointmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
+            performanceTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmPerformance).BeginInit();
             SuspendLayout();
             // 
             // employeeDetailsTabControl
@@ -43,7 +46,7 @@
             employeeDetailsTabControl.Controls.Add(appointmentsTab);
             employeeDetailsTabControl.Controls.Add(performanceTab);
             employeeDetailsTabControl.Location = new Point(1, 2);
-            employeeDetailsTabControl.Name = "employeeDetailsTabControl";
+            employeeDetailsTabControl.Name = "EmployeeDetailsTabControl";
             employeeDetailsTabControl.SelectedIndex = 0;
             employeeDetailsTabControl.Size = new Size(975, 498);
             employeeDetailsTabControl.TabIndex = 0;
@@ -83,6 +86,7 @@
             // 
             // performanceTab
             // 
+            performanceTab.Controls.Add(dataGridViewEmPerformance);
             performanceTab.Location = new Point(4, 24);
             performanceTab.Name = "performanceTab";
             performanceTab.Padding = new Padding(3);
@@ -90,6 +94,16 @@
             performanceTab.TabIndex = 1;
             performanceTab.Text = "Производительность сотрудника";
             performanceTab.UseVisualStyleBackColor = true;
+            // 
+            // dataGridViewEmPerformance
+            // 
+            dataGridViewEmPerformance.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewEmPerformance.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewEmPerformance.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewEmPerformance.Location = new Point(3, 36);
+            dataGridViewEmPerformance.Name = "dataGridViewEmPerformance";
+            dataGridViewEmPerformance.Size = new Size(961, 431);
+            dataGridViewEmPerformance.TabIndex = 1;
             // 
             // EmployeeDetailsForm
             // 
@@ -103,6 +117,8 @@
             employeeDetailsTabControl.ResumeLayout(false);
             appointmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).EndInit();
+            performanceTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewEmPerformance).EndInit();
             ResumeLayout(false);
         }
 
@@ -113,5 +129,6 @@
         private TabPage performanceTab;
         private DataGridView appointmentsDataGridView;
         private Button addAppointmentBtn;
+        private DataGridView dataGridViewEmPerformance;
     }
 }
