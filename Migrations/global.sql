@@ -1,181 +1,89 @@
+-- Global Database Schema: beautysalonglobaldb
+create database beautysalonglobaldb;
+
 USE beautysalonglobaldb;
 
-CREATE TABLE addresses (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    address_line VARCHAR(100) NOT NULL,
-    postal_code VARCHAR(10) NOT NULL,
-    city VARCHAR(50) NOT NULL,
-    state VARCHAR(50) NOT NULL
+-- Branches Table
+CREATE TABLE branches (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    location VARCHAR(255),
+    title VARCHAR(255),
+    phone VARCHAR(18),
+    contact_info VARCHAR(255)
 );
 
-CREATE TABLE salons (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    salon_name VARCHAR(100) NOT NULL,
-    address_id INTEGER NOT NULL,
-    phone VARCHAR(20),
-    FOREIGN KEY (address_id) REFERENCES addresses(id) ON DELETE CASCADE
-);
-
+-- Managers Table
 CREATE TABLE managers (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    first_name VARCHAR(50) NOT NULL,
-    last_name VARCHAR(50) NOT NULL,
-    email VARCHAR(50) NOT NULL,
-    phone VARCHAR(20) NOT NULL,
-    salon_id INTEGER NOT NULL,
-    FOREIGN KEY (salon_id) REFERENCES salons(id) ON DELETE CASCADE 
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    branch_id CHAR(36) NOT NULL,
+    first_name VARCHAR(36),
+    last_name VARCHAR(36),
+    phone VARCHAR(19),
+    email VARCHAR(36),
+    FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE
 );
 
-CREATE TABLE revenue_reports (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    salon_id INTEGER NOT NULL,
-    report_date TIMESTAMP NOT NULL,
-    report_period_start_date TIMESTAMP NOT NULL,
-    report_period_end_date TIMESTAMP NOT NULL,
-    total_revenue DECIMAL(15, 2),
-    number_of_clients INTEGER NOT NULL,
-    most_popular_service_id INTEGER NOT NULL,
-    FOREIGN KEY (salon_id) REFERENCES salons(id) ON DELETE CASCADE
+-- Global Reports Table
+CREATE TABLE global_reports (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    branch_id CHAR(36) NOT NULL,
+    report_type ENUM('income_report', 'customer_report', 'service_report') NOT NULL,
+    report_date DATE NOT NULL,
+    clients_served INTEGER,
+    total_income DECIMAL(10, 2),
+    data TEXT,
+    FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE
 );
 
-CREATE TABLE employee_performance (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    employee_id INTEGER NOT NULL,
-    salon_id INTEGER NOT NULL,
-    evaluation_date TIMESTAMP NOT NULL,
-    total_appointments INTEGER,
-    total_revenue DECIMAL(15, 2),
-    FOREIGN KEY (salon_id) REFERENCES salons(id) ON DELETE CASCADE
+-- Customer Review Table
+CREATE TABLE customer_review (
+    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    customer_id CHAR(36) NOT NULL,
+    branch_id CHAR(36) NOT NULL,
+    rate INTEGER CHECK (rate BETWEEN 1 AND 5),
+    comment VARCHAR(255),
+    created_at DATE,
+    updated_at DATE,
+    FOREIGN KEY (branch_id) REFERENCES branches(id) ON DELETE CASCADE
 );
 
-CREATE TABLE client_feedback (
-    id INT PRIMARY KEY AUTO_INCREMENT,
-    salon_id INTEGER NOT NULL,
-    service_id INTEGER NOT NULL,
-    client_id INTEGER,
-    comments TEXT,
-    rating INTEGER CHECK (rating >= 1 AND rating <= 5),
-    feedback_date TIMESTAMP,
-    FOREIGN KEY (salon_id) REFERENCES salons(id) ON DELETE CASCADE
-);
+INSERT INTO branches (location, title, phone, contact_info) VALUES
+('New York', 'Beauty Salon NYC', '123-456-7890', 'contact@nycbeautysalon.com'),
+('Los Angeles', 'Beauty Salon LA', '987-654-3210', 'contact@labeautysalon.com'),
+('Chicago', 'Beauty Salon Chicago', '555-555-5555', 'contact@chicagobeautysalon.com');
 
-CREATE INDEX idx_salon_name ON salons(salon_name);
-CREATE INDEX idx_revenue_date ON revenue_reports(report_date);
-CREATE INDEX idx_performance_date ON employee_performance(evaluation_date);
-CREATE INDEX idx_feedback_date ON client_feedback(feedback_date);
+INSERT INTO managers (branch_id, first_name, last_name, phone, email) VALUES
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'John', 'Doe', '111-222-3333', 'john.doe@nycbeautysalon.com'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'Jane', 'Smith', '222-333-4444', 'jane.smith@nycbeautysalon.com'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'Emily', 'Johnson', '333-444-5555', 'emily.johnson@labeautysalon.com'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'Michael', 'Brown', '444-555-6666', 'michael.brown@labeautysalon.com'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'Chris', 'Davis', '555-666-7777', 'chris.davis@chicagobeautysalon.com'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'Sarah', 'Miller', '666-777-8888', 'sarah.miller@chicagobeautysalon.com');
 
-INSERT INTO addresses (address_line, postal_code, city, state) VALUES
-('Ул. Красоты, 123', '10001', 'Нью-Йорк', 'Нью-Йорк'),
-('Проспект Гламура, 456', '90001', 'Лос-Анджелес', 'Калифорния'),
-('Бул. Шика, 789', '60601', 'Чикаго', 'Иллинойс'),
-('Ул. Стиля, 101', '75201', 'Даллас', 'Техас'),
-('Переулок Роскоши, 202', '30301', 'Атланта', 'Джорджия'),
-('Ул. Элегантности, 303', '98101', 'Сиэтл', 'Вашингтон'),
-('Переулок Блеска, 404', '33101', 'Майами', 'Флорида'),
-('Кв. Сияния, 505', '85001', 'Феникс', 'Аризона'),
-('Площадь Свечения, 606', '80201', 'Денвер', 'Колорадо'),
-('Аллея Блеска, 707', '19101', 'Филадельфия', 'Пенсильвания'),
-('Ул. Роскоши, 808', '64101', 'Канзас-Сити', 'Миссури'),
-('Авеню Полировки, 909', '37201', 'Нэшвилл', 'Теннесси'),
-('Линия Сияния, 1010', '46201', 'Индианаполис', 'Индиана'),
-('Ул. Глоу Ап, 1111', '78701', 'Остин', 'Техас'),
-('Кв. Шика, 1212', '63101', 'Сент-Луис', 'Миссури'),
-('Бул. Блеска, 1313', '55401', 'Миннеаполис', 'Миннесота'),
-('Ул. Искры, 1414', '37202', 'Мемфис', 'Теннесси'),
-('Дорога Сияния, 1515', '32801', 'Орландо', 'Флорида'),
-('Авеню Стиля, 1616', '84101', 'Солт-Лейк-Сити', 'Юта'),
-('Бульвар Лоска, 1717', '44101', 'Кливленд', 'Огайо');
+INSERT INTO global_reports (branch_id, report_type, report_date, clients_served, total_income, data) VALUES
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'income_report', '2024-10-01', 100, 5000.00, 'Income report for NYC'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'customer_report', '2024-10-01', 80, 0.00, 'Customer report for NYC'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'service_report', '2024-10-01', 70, 0.00, 'Service report for NYC'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'income_report', '2024-10-01', 90, 4500.00, 'Income report for LA'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'customer_report', '2024-10-01', 70, 0.00, 'Customer report for LA'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'service_report', '2024-10-01', 60, 0.00, 'Service report for LA'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'income_report', '2024-10-01', 110, 6000.00, 'Income report for Chicago'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'customer_report', '2024-10-01', 95, 0.00, 'Customer report for Chicago'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'service_report', '2024-10-01', 85, 0.00, 'Service report for Chicago');
 
-INSERT INTO salons (salon_name, address_id, phone) VALUES
-('Центр Красоты', 1, '123-456-7890'),
-('Студия Гламура', 2, '234-567-8901'),
-('Шик Красоты', 3, '345-678-9012');
-
-
-INSERT INTO managers (first_name, last_name, email, phone, salon_id) VALUES
-('Эмма', 'Джонсон', 'emma.j@example.com', '123-111-7890', 1),
-('Оливия', 'Смит', 'olivia.s@example.com', '234-222-8901', 2),
-('Ава', 'Уильямс', 'ava.w@example.com', '345-333-9012', 3),
-('София', 'Браун', 'sophia.b@example.com', '456-444-0123', 2),
-('Изабелла', 'Джонс', 'isabella.j@example.com', '567-555-1234', 1),
-('Миа', 'Гарсия', 'mia.g@example.com', '678-666-2345', 3),
-('Амелия', 'Миллер', 'amelia.m@example.com', '789-777-3456', 2),
-('Харпер', 'Дэвис', 'harper.d@example.com', '890-888-4567', 3),
-('Эвелин', 'Родригес', 'evelyn.r@example.com', '901-999-5678',1),
-('Абигейл', 'Мартинес', 'abigail.m@example.com', '012-000-6789', 3),
-('Элла', 'Эрнандес', 'ella.h@example.com', '123-111-7890', 3),
-('Эвери', 'Лопес', 'avery.l@example.com', '234-222-8901', 2),
-('Скарлетт', 'Гонсалес', 'scarlett.g@example.com', '345-333-9012', 1),
-('Грейс', 'Уилсон', 'grace.w@example.com', '456-444-0123', 1),
-('Зои', 'Андерсон', 'zoey.a@example.com', '567-555-1234', 2),
-('Лили', 'Томас', 'lily.t@example.com', '678-666-2345', 1),
-('Ханна', 'Тейлор', 'hannah.t@example.com', '789-777-3456', 3),
-('Виктория', 'Мур', 'victoria.m@example.com', '890-888-4567', 1),
-('София', 'Джексон', 'sofia.j@example.com', '901-999-5678', 2),
-('Ария', 'Мартин', 'aria.m@example.com', '012-000-6789', 2);
-
-INSERT INTO revenue_reports (salon_id, report_date, report_period_start_date, report_period_end_date, total_revenue, number_of_clients, most_popular_service_id) VALUES
-(1, '2024-10-01 09:00:00', '2024-10-01 09:00:00', '2024-10-01 09:00:00', 15000.50, 4, 1),
-(2, '2024-10-02 09:00:00', '2024-10-02 09:00:00', '2024-10-02 09:00:00', 12000.00, 2, 2),
-(3, '2024-10-03 09:00:00', '2024-10-03 09:00:00', '2024-10-03 09:00:00', 14000.75, 220, 3),
-(1, '2024-10-04 09:00:00', '2024-10-04 09:00:00', '2024-10-04 09:00:00', 16000.30, 5, 4),
-(2, '2024-10-05 09:00:00', '2024-10-05 09:00:00', '2024-10-05 09:00:00', 13000.90, 4, 5),
-(3, '2024-10-06 09:00:00', '2024-10-06 09:00:00', '2024-10-06 09:00:00', 17000.80, 1, 1),
-(2, '2024-10-07 09:00:00', '2024-10-07 09:00:00', '2024-10-07 09:00:00', 15500.40, 2, 2),
-(3, '2024-10-08 09:00:00', '2024-10-08 09:00:00', '2024-10-08 09:00:00', 12500.50, 5, 3),
-(3, '2024-10-09 09:00:00', '2024-10-09 09:00:00', '2024-10-09 09:00:00', 14500.20, 4, 4),
-(2, '2024-10-10 09:00:00', '2024-10-10 09:00:00', '2024-10-10 09:00:00', 16500.60, 5, 5),
-(3, '2024-10-11 09:00:00', '2024-10-11 09:00:00', '2024-10-11 09:00:00', 13500.70, 1, 1),
-(1, '2024-10-12 09:00:00', '2024-10-12 09:00:00', '2024-10-12 09:00:00', 17500.20, 1, 2),
-(1, '2024-10-13 09:00:00', '2024-10-13 09:00:00', '2024-10-13 09:00:00', 15000.30, 2, 3),
-(1, '2024-10-14 09:00:00', '2024-10-14 09:00:00', '2024-10-14 09:00:00', 18000.40, 7, 4),
-(2, '2024-10-15 09:00:00', '2024-10-15 09:00:00', '2024-10-15 09:00:00', 16000.50, 2, 5),
-(3, '2024-10-16 09:00:00', '2024-10-16 09:00:00', '2024-10-16 09:00:00', 14500.10, 5, 1),
-(3, '2024-10-17 09:00:00', '2024-10-17 09:00:00', '2024-10-17 09:00:00', 16500.60, 4, 2),
-(3, '2024-10-18 09:00:00', '2024-10-18 09:00:00', '2024-10-18 09:00:00', 13000.40, 9, 3),
-(2, '2024-10-19 09:00:00', '2024-10-19 09:00:00', '2024-10-19 09:00:00', 15500.70, 6, 4),
-(2, '2024-10-20 09:00:00', '2024-10-20 09:00:00', '2024-10-20 09:00:00', 17000.80, 2, 5);
-
-INSERT INTO employee_performance (employee_id, salon_id, evaluation_date, total_appointments, total_revenue) VALUES
-(1, 1, '2024-10-01 09:00:00', 30, 5000.50),
-(2, 2, '2024-10-02 09:00:00', 25, 4000.00),
-(3, 3, '2024-10-03 09:00:00', 28, 4800.75),
-(4, 2, '2024-10-04 09:00:00', 35, 6000.30),
-(5, 3, '2024-10-05 09:00:00', 24, 3900.90),
-(6, 2, '2024-10-06 09:00:00', 37, 6200.80),
-(7, 1, '2024-10-07 09:00:00', 31, 5300.40),
-(8, 3, '2024-10-08 09:00:00', 22, 3400.50),
-(9, 2, '2024-10-09 09:00:00', 29, 4700.20),
-(10, 2, '2024-10-10 09:00:00', 34, 5800.60),
-(11, 2, '2024-10-11 09:00:00', 26, 3600.70),
-(12, 1, '2024-10-12 09:00:00', 36, 6200.20),
-(13, 1, '2024-10-13 09:00:00', 30, 4700.30),
-(14, 2, '2024-10-14 09:00:00', 40, 7200.40),
-(15, 3, '2024-10-15 09:00:00', 33, 5300.50),
-(16, 3, '2024-10-16 09:00:00', 28, 4500.10),
-(17, 3, '2024-10-17 09:00:00', 32, 5900.60),
-(18, 2, '2024-10-18 09:00:00', 25, 3400.40),
-(19, 1, '2024-10-19 09:00:00', 31, 5100.70),
-(20, 1, '2024-10-20 09:00:00', 35, 6800.80);
-
-INSERT INTO client_feedback (salon_id, service_id, client_id, comments, rating, feedback_date) VALUES
-(1, 1, 1, 'Отличный сервис, очень довольна!', 5, '2024-10-01 09:00:00'),
-(2, 2, 2, 'Хорошо, но могло быть лучше', 4, '2024-10-02 09:00:00'),
-(3, 3, 3, 'Прекрасный опыт!', 5, '2024-10-03 09:00:00'),
-(1, 4, 4, 'Неплохо, но дороговато', 3, '2024-10-04 09:00:00'),
-(2, 5, 5, 'Просто великолепно!', 5, '2024-10-05 09:00:00'),
-(1, 1, 6, 'Нормальный сервис, дружелюбный персонал', 4, '2024-10-06 09:00:00'),
-(2, 2, 7, 'Хорошая атмосфера, вернусь', 5, '2024-10-07 09:00:00'),
-(3, 3, 8, 'Неплохо, но ожидала большего', 3, '2024-10-08 09:00:00'),
-(2, 4, 9, 'Фантастическая работа!', 5, '2024-10-09 09:00:00'),
-(3, 5, 10, 'Хорошая работа', 4, '2024-10-10 09:00:00'),
-(3, 1, 11, 'Понравился результат!', 5, '2024-10-11 09:00:00'),
-(2, 2, 12, 'Нормально, ничего особенного', 4, '2024-10-12 09:00:00'),
-(1, 3, 13, 'Очень довольна!', 5, '2024-10-13 09:00:00'),
-(1, 4, 14, 'Нормально, но медленно', 3, '2024-10-14 09:00:00'),
-(1, 5, 15, 'Прекрасно! Всем рекомендую', 5, '2024-10-15 09:00:00'),
-(2, 1, 16, 'Было нормально, но без восторга', 3, '2024-10-16 09:00:00'),
-(3, 2, 17, 'Отличная работа, вернусь снова', 5, '2024-10-17 09:00:00'),
-(3, 3, 18, 'Очень понравилось!', 4, '2024-10-18 09:00:00'),
-(2, 4, 19, 'Отличная работа!', 5, '2024-10-19 09:00:00'),
-(2, 5, 20, 'Хорошее качество', 4, '2024-10-20 09:00:00');
+INSERT INTO customer_review (customer_id, branch_id, rate, comment, created_at, updated_at) VALUES
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 5, 'Great service!', '2024-10-05', '2024-10-06'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 4, 'Loved the atmosphere.', '2024-10-07', '2024-10-08'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 3, 'It was okay.', '2024-10-09', '2024-10-10'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 5, 'Amazing experience!', '2024-10-05', '2024-10-06'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 4, 'Very professional staff.', '2024-10-07', '2024-10-08'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 2, 'Not what I expected.', '2024-10-09', '2024-10-10'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 5, 'Best salon in the city!', '2024-10-05', '2024-10-06'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 4, 'I will come back for sure!', '2024-10-07', '2024-10-08'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 3, 'Decent, but could improve.', '2024-10-09', '2024-10-10'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 4, 'Had a good time!', '2024-10-11', '2024-10-12'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 5, 'Highly recommend!', '2024-10-11', '2024-10-12'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 2, 'Service was slow.', '2024-10-11', '2024-10-12'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 1, 'Very disappointed.', '2024-10-11', '2024-10-12'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 3, 'Average experience.', '2024-10-11', '2024-10-12'),
+(UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 5, 'Exceptional service!', '2024-10-11', '2024-10-12');
