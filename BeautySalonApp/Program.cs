@@ -8,6 +8,11 @@ using Microsoft.Extensions.Hosting;
 
 namespace BeautySalonApp
 {
+    public class CurrentSalonContext
+    {
+        public int SalonId { get; set; }
+    }
+
     internal static class Program
     {
         public static IServiceProvider ServiceProvider { get; private set; }
@@ -41,12 +46,25 @@ namespace BeautySalonApp
                         ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonGlobal"))));
 
                 services.AddSingleton<DatabaseService>();
+                services.AddSingleton<CurrentSalonContext>();
 
                 services.AddScoped<SalonService>();
                 services.AddScoped<RevenueReportService>();
                 services.AddScoped<ClientFeedbackService>();
                 services.AddScoped<ClientService>();
                 services.AddScoped<EmployeeService>();
+                //services.AddScoped<EmployeeService>(provider =>
+                //{
+                //    var currentSalonContext = provider.GetRequiredService<CurrentSalonContext>();
+                //    var salonId = currentSalonContext.SalonId;
+                //    var databaseService = provider.GetRequiredService<DatabaseService>();
+                //    var globalContext = databaseService.GetGlobalDbContext();
+                //    var localContext = databaseService.GetLocalDbContext(salonId);
+                //    return new EmployeeService(globalContext, localContext);
+
+                //    //return new EmployeeService(dbService.GetGlobalDbContext(), context);
+
+                //});
                 services.AddScoped<ManagerService>();
                 services.AddScoped<OfferingsService>();
 

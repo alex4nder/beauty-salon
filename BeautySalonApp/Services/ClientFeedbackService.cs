@@ -1,16 +1,22 @@
 ﻿using BeautySalonApp.Data;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp.Services
 {
     public class ClientFeedbackService
     {
+        private DatabaseService _databaseService;
         private readonly GlobalDbContext _globalContext;
-        private readonly LocalDbContext _localContext;
+        private LocalDbContext _localContext;
+        private readonly CurrentSalonContext _currentSalonContext;
 
-        public ClientFeedbackService(GlobalDbContext globalContext, LocalDbContext localContext)
+        public ClientFeedbackService()
         {
-            _globalContext = globalContext;
-            _localContext = localContext;
+            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
+
+            _globalContext = _databaseService.GetGlobalDbContext();
+            _localContext = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
         }
 
         public List<ClientFeedbackWithService> GetClientFeedbacks(int salonId)

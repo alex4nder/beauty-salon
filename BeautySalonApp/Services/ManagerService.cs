@@ -1,17 +1,19 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp.Services
 {
     public class ManagerService
     {
+        private DatabaseService _databaseService;
         private readonly GlobalDbContext _globalContext;
-        private readonly LocalDbContext _localContext;
 
-        public ManagerService(GlobalDbContext globalContext, LocalDbContext localContext)
+        public ManagerService()
         {
-            _globalContext = globalContext;
-            _localContext = localContext;
+            _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
+
+            _globalContext = _databaseService.GetGlobalDbContext();
         }
 
         public void ManagerAdd(Manager manager)

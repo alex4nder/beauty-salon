@@ -1,18 +1,24 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp.Services
 {
     public class RevenueReportService
     {
+        private DatabaseService _databaseService;
         private readonly GlobalDbContext _globalContext;
         private readonly LocalDbContext _localContext;
+        private readonly CurrentSalonContext _currentSalonContext;
 
-        public RevenueReportService(GlobalDbContext globalContext, LocalDbContext localContext)
+        public RevenueReportService()
         {
-            _globalContext = globalContext;
-            _localContext = localContext;
+            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
+
+            _globalContext = _databaseService.GetGlobalDbContext();
+            _localContext = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
         }
 
         public List<RevenueReportWithService> GetReportsWithDetails(int salonId)

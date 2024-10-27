@@ -24,22 +24,33 @@ namespace BeautySalonApp.Services
 
         public LocalDbContext GetLocalDbContext(int dbIndex)
         {
-            var optionsBuilder = new DbContextOptionsBuilder<LocalDbContext>();
+            //var optionsBuilder = new DbContextOptionsBuilder<LocalDbContext>();
 
-            switch (dbIndex)
+            var connectionString = dbIndex switch
             {
-                case 1:
-                    optionsBuilder.UseMySql(_localDb1, ServerVersion.AutoDetect(_localDb1));
-                    break;
-                case 2:
-                    optionsBuilder.UseMySql(_localDb2, ServerVersion.AutoDetect(_localDb2));
-                    break;
-                case 3:
-                    optionsBuilder.UseMySql(_localDb3, ServerVersion.AutoDetect(_localDb3));
-                    break;
-                default:
-                    throw new ArgumentException("Invalid database index");
-            }
+                1 => _configuration.GetConnectionString("BeautySalonLocal1"),
+                2 => _configuration.GetConnectionString("BeautySalonLocal2"),
+                3 => _configuration.GetConnectionString("BeautySalonLocal3"),
+                _ => throw new ArgumentException("Invalid salonId")
+            };
+
+            //switch (dbIndex)
+            //{
+            //    case 1:
+            //        optionsBuilder.UseMySql(_localDb1, ServerVersion.AutoDetect(_localDb1));
+            //        break;
+            //    case 2:
+            //        optionsBuilder.UseMySql(_localDb2, ServerVersion.AutoDetect(_localDb2));
+            //        break;
+            //    case 3:
+            //        optionsBuilder.UseMySql(_localDb3, ServerVersion.AutoDetect(_localDb3));
+            //        break;
+            //    default:
+            //        throw new ArgumentException("Invalid database index");
+            //}
+
+            var optionsBuilder = new DbContextOptionsBuilder<LocalDbContext>()
+              .UseMySql(connectionString, ServerVersion.AutoDetect(connectionString));
 
             return new LocalDbContext(optionsBuilder.Options);
         }

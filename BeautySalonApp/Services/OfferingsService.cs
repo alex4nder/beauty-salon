@@ -1,17 +1,26 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
 using BeautySalonApp.Services.dtos;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp.Services
 {
     public class OfferingsService
     {
-        private readonly LocalDbContext _context;
+        private DatabaseService _databaseService;
+        private readonly GlobalDbContext _globalContext;
+        private LocalDbContext _context;
+        private readonly CurrentSalonContext _currentSalonContext;
+
         private const int PopularityThreshold = 5;
 
-        public OfferingsService(LocalDbContext context)
+        public OfferingsService()
         {
-            _context = context;
+            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
+
+            _globalContext = _databaseService.GetGlobalDbContext();
+            _context = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
         }
 
         public void ServiceAdd(Service service)

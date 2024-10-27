@@ -1,4 +1,5 @@
-﻿using BeautySalonApp.Forms;
+﻿using BeautySalonApp.Data;
+using BeautySalonApp.Forms;
 using BeautySalonApp.Forms.EntityActions;
 using BeautySalonApp.Models;
 using BeautySalonApp.Services;
@@ -15,27 +16,31 @@ namespace BeautySalonApp
         private readonly ClientService _clientService;
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
-        private readonly OfferingsService _offeringsService;
+        private OfferingsService _offeringsService;
+        private LocalDbContext _localDbContext;
+
         private int _salonId;
 
         public SalonForm()
         {
-            _revenueReportService = Program.ServiceProvider.GetRequiredService<RevenueReportService>();
-            _clientFeedbackService = Program.ServiceProvider.GetRequiredService<ClientFeedbackService>();
-            _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
-            _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
-            _managerService = Program.ServiceProvider.GetRequiredService<ManagerService>();
-            _offeringsService = Program.ServiceProvider.GetRequiredService<OfferingsService>();
+            var currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+
+            _employeeService = new EmployeeService();
+            _revenueReportService = new RevenueReportService();
+            _clientFeedbackService = new ClientFeedbackService();
+            _clientService = new ClientService();
+            _managerService = new ManagerService();
+            _offeringsService = new OfferingsService();
+
+            _salonId = currentSalonContext.SalonId;
+
             InitializeComponent();
 
             // To force the loading of data for the first tab on form load
             employeesTab_SelectedIndexChanged(employeesTab, EventArgs.Empty);
         }
 
-        public void SetSalonId(int salonId)
-        {
-            _salonId = salonId;
-        }
+
 
         private void employeesTab_SelectedIndexChanged(object sender, EventArgs e)
         {

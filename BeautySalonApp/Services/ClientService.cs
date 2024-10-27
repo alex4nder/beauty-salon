@@ -1,15 +1,21 @@
 ﻿using BeautySalonApp.Data;
 using BeautySalonApp.Models;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace BeautySalonApp.Services
 {
     public class ClientService
     {
-        private readonly LocalDbContext _context;
+        private DatabaseService _databaseService;
+        private LocalDbContext _context;
+        private readonly CurrentSalonContext _currentSalonContext;
 
-        public ClientService(LocalDbContext context)
+        public ClientService()
         {
-            _context = context;
+            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
+
+            _context = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
         }
 
         public void ClientAdd(Client client)
