@@ -69,6 +69,7 @@
             addAppointmentBtn.TabIndex = 1;
             addAppointmentBtn.Text = "Новая запись";
             addAppointmentBtn.UseVisualStyleBackColor = true;
+            addAppointmentBtn.Click += addAppointmentBtn_Click;
             // 
             // appointmentsDataGridView
             // 

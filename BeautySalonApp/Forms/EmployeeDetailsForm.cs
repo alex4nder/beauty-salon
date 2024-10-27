@@ -56,24 +56,74 @@ namespace BeautySalonApp.Forms
 
             appointmentsDataGridView.Columns["Id"].Visible = false;
 
-            //addActionColumns(dataGridViewClients, (sender, e) => DataGridViewClient_CellContentClick(sender, e));
+            if (!appointmentsDataGridView.Columns.Contains("Close") && !appointmentsDataGridView.Columns.Contains("Cancel"))
+            {
+                appointmentsDataGridView.CellContentClick -= DataGridViewAppoinments_CellContentClick;
+                appointmentsDataGridView.CellContentClick += DataGridViewAppoinments_CellContentClick;
+            }
+
+            if (!appointmentsDataGridView.Columns.Contains("Close") && !appointmentsDataGridView.Columns.Contains("Cancel"))
+            {
+                DataGridViewButtonColumn closeAppointmentButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Close",
+                    HeaderText = "",
+                    Text = "Завершить",
+                    UseColumnTextForButtonValue = true
+                };
+
+                DataGridViewButtonColumn cancelAppointmentButtonColumn = new DataGridViewButtonColumn
+                {
+                    Name = "Cancel",
+                    HeaderText = "",
+                    Text = "Отменить",
+                    UseColumnTextForButtonValue = true
+                };
+
+                appointmentsDataGridView.Columns.Add(closeAppointmentButtonColumn);
+                appointmentsDataGridView.Columns.Add(cancelAppointmentButtonColumn);
+            }
         }
 
-        //private void EditClient(int clientId)
-        //{
-        //    new EntityOperationBuilder<Models.Client>()
-        //           .WithFormCreator(c => new ClientForm(c))
-        //           .WithUpdateAction(c => _clientService.ClientEdit(c))
-        //           .WithLoadData(LoadClientsData)
-        //           .ExecuteEdit(_clientService.GetClientById(clientId));
-        //}
+        private void DataGridViewAppoinments_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = appointmentsDataGridView.Rows[e.RowIndex];
+                int appointmentId = Convert.ToInt32(row.Cells["Id"].Value);
 
-        //private void DeleteClient(int clientId)
-        //{
-        //    new EntityOperationBuilder<Models.Client>()
-        //            .WithRemoveAction(_clientService.ClientRemove)
-        //            .WithLoadData(LoadClientsData)
-        //            .ExecuteDelete(clientId);
-        //}
+                if (e.ColumnIndex == appointmentsDataGridView.Columns["Close"].Index)
+                {
+                    UpdateAppointmentStatus(appointmentId, "завершено");
+                }
+                else if (e.ColumnIndex == appointmentsDataGridView.Columns["Cancel"].Index)
+                {
+                    UpdateAppointmentStatus(appointmentId, "отменено");
+                }
+            }
+        }
+
+        private void UpdateAppointmentStatus(int appointmentId, string newStatus)
+        {
+            try
+            {
+                _employeeService.UpdateAppointmentStatus(appointmentId, newStatus);
+                MessageBox.Show("Статус записи успешно обновлён.");
+                LoadAppointmentsData();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"Ошибка при обновлении статуса: {ex.Message}");
+            }
+        }
+
+        private void addAppointmentBtn_Click(object sender, EventArgs e)
+        {
+            AppointmentForm appointmentForm = new AppointmentForm(_employeeId);
+            if (appointmentForm.ShowDialog() == DialogResult.OK)
+            {
+                LoadAppointmentsData();
+            }
+        }
     }
 }

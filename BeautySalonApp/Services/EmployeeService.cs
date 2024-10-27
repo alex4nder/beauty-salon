@@ -66,5 +66,36 @@ namespace BeautySalonApp.Services
 
             return appointments.Any() ? appointments : null;
         }
+
+        public void UpdateAppointmentStatus(int appointmentId, string newStatus)
+        {
+            var appointment = _localContext.Appointments.Find(appointmentId);
+            if (appointment != null)
+            {
+                appointment.Status = newStatus;
+                _localContext.SaveChanges();
+            }
+        }
+
+        public Appointment GetAppointmentById(int id)
+        {
+            return _localContext.Appointments.Find(id);
+        }
+
+        public void AddAppointment(Appointment appointment)
+        {
+            if (appointment == null)
+            {
+                throw new ArgumentNullException(nameof(appointment), "Appointment cannot be null");
+            }
+
+            if (appointment.EndTime < appointment.StartTime)
+            {
+                throw new ArgumentException("The end date cannot be earlier than the start date.");
+            }
+
+            _localContext.Appointments.Add(appointment);
+            _localContext.SaveChanges();
+        }
     }
 }
