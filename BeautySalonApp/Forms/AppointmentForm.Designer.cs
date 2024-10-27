@@ -157,7 +157,8 @@
             Controls.Add(comboBoxService);
             Controls.Add(comboBoxClient);
             Name = "AppointmentForm";
-            Text = "AppointmentForm";
+            StartPosition = FormStartPosition.CenterParent;
+            Text = "Новая запись";
             Load += AppointmentForm_Load;
             ResumeLayout(false);
             PerformLayout();
