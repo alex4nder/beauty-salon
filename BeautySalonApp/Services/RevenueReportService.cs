@@ -10,42 +10,28 @@ namespace BeautySalonApp.Services
         private DatabaseService _databaseService;
         private readonly GlobalDbContext _globalContext;
         private readonly LocalDbContext _localContext;
-        private readonly CurrentSalonContext _currentSalonContext;
+        private readonly CurrentBranchContext _CurrentBranchContext;
 
         public RevenueReportService()
         {
-            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
             _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
 
             _globalContext = _databaseService.GetGlobalDbContext();
-            _localContext = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
+            _localContext = _databaseService.GetLocalDbContext(_CurrentBranchContext.BranchId);
         }
 
-        public List<RevenueReportWithService> GetReportsWithDetails(int salonId)
+        public List<GlobalReport> GetReportsWithDetails(int BranchId)
         {
-            var reports = _globalContext.RevenueReports
-                .Where(rr => rr.SalonId == salonId)
+            return _globalContext.GlobalReports
+                .Where(rr => rr.BranchId == _CurrentBranchContext.BranchId)
                 .ToList();
-
-            var services = _localContext.Services.ToList();
-
-            var reportWithService = reports.Select(rr => new RevenueReportWithService
-            {
-                ReportDate = rr.ReportDate,
-                ReportPeriodStartDate = rr.ReportPeriodStartDate,
-                ReportPeriodEndDate = rr.ReportPeriodEndDate,
-                TotalRevenue = rr.TotalRevenue,
-                MostPopularService = services.FirstOrDefault(s => s.Id == rr.MostPopularServiceId)?.ServiceName,
-                TotalCustomers = rr.NumberOfClients
-            }).ToList();
-
-            return reportWithService;
         }
 
-        public void GenerateAndSaveRevenueReport(DateTime startDate, DateTime endDate, int salonId)
+        public void GenerateAndSaveRevenueReport(DateTime startDate, DateTime endDate, int BranchId)
         {
             var appointments = _localContext.Appointments
-                .Where(a => a.AppointmentDate >= startDate.Date && a.AppointmentDate <= endDate.Date)
+                .Where(a => a.Date >= startDate.Date && a.Date <= endDate.Date)
                 .Include(a => a.Service)
                 .ToList();
 
@@ -57,26 +43,19 @@ namespace BeautySalonApp.Services
 
             decimal totalRevenue = appointments.Sum(a => a.Service.Price);
 
-            int numberOfClients = appointments.Select(a => a.ClientId).Distinct().Count();
+            int numberOfClients = appointments.Select(a => a.CustomerId).Distinct().Count();
 
-            int mostPopularServiceId = appointments
-                .GroupBy(a => a.ServiceId)
-                .OrderByDescending(g => g.Count())
-                .Select(g => g.Key)
-                .FirstOrDefault();
-
-            var revenueReport = new RevenueReport
+            var globalReport = new GlobalReport
             {
-                SalonId = salonId,
+                BranchId = _CurrentBranchContext.BranchId,
                 ReportDate = DateTime.Now,
-                ReportPeriodStartDate = startDate,
-                ReportPeriodEndDate = endDate,
-                TotalRevenue = totalRevenue,
-                NumberOfClients = numberOfClients,
-                MostPopularServiceId = mostPopularServiceId
+                StartDate = startDate,
+                EndDate = endDate,
+                TotalIncome = totalRevenue,
+                ClientsServed = numberOfClients
             };
 
-            _globalContext.RevenueReports.Add(revenueReport);
+            _globalContext.GlobalReports.Add(globalReport);
             _globalContext.SaveChanges();
 
             MessageBox.Show("Отчет успешно создан и сохранен.");

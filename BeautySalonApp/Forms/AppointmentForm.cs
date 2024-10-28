@@ -6,16 +6,16 @@ namespace BeautySalonApp.Forms
 {
     public partial class AppointmentForm : Form
     {
-        private readonly ClientService _clientService;
+        private readonly CustomerService _customerService;
         private readonly OfferingsService _offeringsService;
         private readonly EmployeeService _employeeService;
-        private int _employeeId;
+        private Guid _employeeId;
 
-        public AppointmentForm(int employeeId)
+        public AppointmentForm(Guid employeeId)
         {
             InitializeComponent();
 
-            _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
+            _customerService = Program.ServiceProvider.GetRequiredService<CustomerService>();
             _offeringsService = Program.ServiceProvider.GetRequiredService<OfferingsService>();
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
 
@@ -24,7 +24,7 @@ namespace BeautySalonApp.Forms
 
         private void LoadClients()
         {
-            var clients = _clientService.GetClients();
+            var clients = _customerService.GetCustomers();
             comboBoxClient.DataSource = clients;
             comboBoxClient.DisplayMember = "FirstName"; // Предположим, что у клиента есть свойство FullName
             comboBoxClient.ValueMember = "Id"; // Идентификатор клиента
@@ -50,13 +50,13 @@ namespace BeautySalonApp.Forms
             {
                 var appointment = new Appointment
                 {
-                    ClientId = (int)comboBoxClient.SelectedValue,
-                    ServiceId = (int)comboBoxService.SelectedValue,
+                    CustomerId = (Guid)comboBoxClient.SelectedValue,
+                    ServiceId = (Guid)comboBoxService.SelectedValue,
                     EmployeeId = _employeeId,
-                    AppointmentDate = DateTime.Now,
+                    Date = DateTime.Now,
                     StartTime = dateTimePickerStartDate.Value.Date + dateTimePickerStartTime.Value.TimeOfDay,
                     EndTime = dateTimePickerEndDate.Value.Date + dateTimePickerEndTime.Value.TimeOfDay,
-                    Status = "запланировано"
+                    Status = AppointmentStatus.Created
                 };
 
                 _employeeService.AddAppointment(appointment);

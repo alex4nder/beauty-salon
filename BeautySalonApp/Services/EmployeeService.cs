@@ -8,17 +8,15 @@ namespace BeautySalonApp.Services
     public class EmployeeService
     {
         private DatabaseService _databaseService;
-        private readonly GlobalDbContext _globalContext;
         private LocalDbContext _localContext;
-        private readonly CurrentSalonContext _currentSalonContext;
+        private readonly CurrentBranchContext _CurrentBranchContext;
 
         public EmployeeService()
         {
-            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
             _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
 
-            _globalContext = _databaseService.GetGlobalDbContext();
-            _localContext = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
+            _localContext = _databaseService.GetLocalDbContext(_CurrentBranchContext.BranchId);
         }
 
         public void EmployeeAdd(Employee employee)
@@ -32,12 +30,12 @@ namespace BeautySalonApp.Services
             return _localContext.Employees.ToList();
         }
 
-        public Employee GetEmployeeById(int employeeId)
+        public Employee GetEmployeeById(Guid employeeId)
         {
             return _localContext.Employees.Find(employeeId);
         }
 
-        public void EmployeeRemove(int employeeId)
+        public void EmployeeRemove(Guid employeeId)
         {
             var employee = _localContext.Employees.Find(employeeId);
             if (employee != null)
@@ -56,24 +54,23 @@ namespace BeautySalonApp.Services
                 existingEmployee.LastName = employee.LastName;
                 existingEmployee.Phone = employee.Phone;
                 existingEmployee.Position = employee.Position;
-                existingEmployee.WorkBookNumber = employee.WorkBookNumber;
 
                 _localContext.SaveChanges();
             }
         }
 
-        public List<Appointment>? GetAppointments(int employeeId)
+        public List<Appointment>? GetAppointments(Guid employeeId)
         {
             var appointments = _localContext.Appointments
                 .Where(a => a.EmployeeId == employeeId)
-                .Include(a => a.Client)
+                .Include(a => a.Customer)
                 .Include(a => a.Service)
                 .ToList();
 
             return appointments.Any() ? appointments : null;
         }
 
-        public void UpdateAppointmentStatus(int appointmentId, string newStatus)
+        public void UpdateAppointmentStatus(Guid appointmentId, AppointmentStatus newStatus)
         {
             var appointment = _localContext.Appointments.Find(appointmentId);
             if (appointment != null)
@@ -83,7 +80,7 @@ namespace BeautySalonApp.Services
             }
         }
 
-        public Appointment GetAppointmentById(int id)
+        public Appointment GetAppointmentById(Guid id)
         {
             return _localContext.Appointments.Find(id);
         }

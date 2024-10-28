@@ -27,7 +27,7 @@ namespace BeautySalonApp.Forms
             {
                 _service = new Service
                 {
-                    ServiceName = "",
+                    Title = "",
                     Description = "",
                     Price = 0.0m,
                     Duration = 0,
@@ -38,7 +38,7 @@ namespace BeautySalonApp.Forms
 
         private void PreFillServiceData()
         {
-            serviceNameTextBox.Text = _service.ServiceName;
+            serviceNameTextBox.Text = _service.Title;
             descriptionTextBox.Text = _service.Description;
             priceTextBox.Text = _service.Price.ToString("F2");
             durationTextBox.Text = _service.Duration.ToString();
@@ -46,7 +46,7 @@ namespace BeautySalonApp.Forms
 
         private void saveServiceBtn_Click(object sender, EventArgs e)
         {
-            _service.ServiceName = serviceNameTextBox.Text;
+            _service.Title = serviceNameTextBox.Text;
             _service.Description = descriptionTextBox.Text;
             _service.Price = decimal.TryParse(priceTextBox.Text, out var price) ? price : 0.0m;
             _service.Duration = int.TryParse(durationTextBox.Text, out var duration) ? duration : 0;

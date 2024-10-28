@@ -5,7 +5,7 @@ USE beautysalonglobaldb;
 
 -- Branches Table
 CREATE TABLE branches (
-    id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
+    id INT PRIMARY KEY AUTO_INCREMENT,
     location VARCHAR(255),
     title VARCHAR(255),
     phone VARCHAR(18),
@@ -15,7 +15,7 @@ CREATE TABLE branches (
 -- Managers Table
 CREATE TABLE managers (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    branch_id CHAR(36) NOT NULL,
+    branch_id INT NOT NULL,
     first_name VARCHAR(36),
     last_name VARCHAR(36),
     phone VARCHAR(19),
@@ -26,9 +26,10 @@ CREATE TABLE managers (
 -- Global Reports Table
 CREATE TABLE global_reports (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
-    branch_id CHAR(36) NOT NULL,
-    report_type ENUM('income_report', 'customer_report', 'service_report') NOT NULL,
+    branch_id INT NOT NULL,
     report_date DATE NOT NULL,
+    start_date TIMESTAMP NOT NULL,
+    end_date TIMESTAMP NOT NULL,
     clients_served INTEGER,
     total_income DECIMAL(10, 2),
     data TEXT,
@@ -39,7 +40,7 @@ CREATE TABLE global_reports (
 CREATE TABLE customer_review (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     customer_id CHAR(36) NOT NULL,
-    branch_id CHAR(36) NOT NULL,
+    branch_id INT NOT NULL,
     rate INTEGER CHECK (rate BETWEEN 1 AND 5),
     comment VARCHAR(255),
     created_at DATE,
@@ -60,16 +61,19 @@ INSERT INTO managers (branch_id, first_name, last_name, phone, email) VALUES
 ((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'Chris', 'Davis', '555-666-7777', 'chris.davis@chicagobeautysalon.com'),
 ((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'Sarah', 'Miller', '666-777-8888', 'sarah.miller@chicagobeautysalon.com');
 
-INSERT INTO global_reports (branch_id, report_type, report_date, clients_served, total_income, data) VALUES
-((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'income_report', '2024-10-01', 100, 5000.00, 'Income report for NYC'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'customer_report', '2024-10-01', 80, 0.00, 'Customer report for NYC'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 'service_report', '2024-10-01', 70, 0.00, 'Service report for NYC'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'income_report', '2024-10-01', 90, 4500.00, 'Income report for LA'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'customer_report', '2024-10-01', 70, 0.00, 'Customer report for LA'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), 'service_report', '2024-10-01', 60, 0.00, 'Service report for LA'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'income_report', '2024-10-01', 110, 6000.00, 'Income report for Chicago'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'customer_report', '2024-10-01', 95, 0.00, 'Customer report for Chicago'),
-((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'), 'service_report', '2024-10-01', 85, 0.00, 'Service report for Chicago');
+INSERT INTO global_reports (branch_id, report_date, start_date, end_date, clients_served, total_income, data) VALUES
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), '2024-10-01', '2024-10-01 09:00:00', '2024-10-01 18:00:00', 100, 5000.00, 'Income report for NYC'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), '2024-10-01', '2024-10-01 09:00:00', '2024-10-01 18:00:00', 80, 0.00, 'Customer report for NYC'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), '2024-10-01', '2024-10-01 09:00:00', '2024-10-01 18:00:00', 70, 0.00, 'Service report for NYC'),
+
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), '2024-10-01', '2024-10-01 10:00:00', '2024-10-01 19:00:00', 90, 4500.00, 'Income report for LA'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), '2024-10-01', '2024-10-01 10:00:00', '2024-10-01 19:00:00', 70, 0.00, 'Customer report for LA'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon LA'), '2024-10-01', '2024-10-01 10:00:00', '2024-10-01 19:00:00', 60, 0.00, 'Service report for LA'),
+
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'),  '2024-10-01', '2024-10-01 08:30:00', '2024-10-01 17:30:00', 110, 6000.00, 'Income report for Chicago'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'),  '2024-10-01', '2024-10-01 08:30:00', '2024-10-01 17:30:00', 95, 0.00, 'Customer report for Chicago'),
+((SELECT id FROM branches WHERE title = 'Beauty Salon Chicago'),  '2024-10-01', '2024-10-01 08:30:00', '2024-10-01 17:30:00', 85, 0.00, 'Service report for Chicago');
+
 
 INSERT INTO customer_review (customer_id, branch_id, rate, comment, created_at, updated_at) VALUES
 (UUID(), (SELECT id FROM branches WHERE title = 'Beauty Salon NYC'), 5, 'Great service!', '2024-10-05', '2024-10-06'),

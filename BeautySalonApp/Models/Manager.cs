@@ -14,7 +14,7 @@ namespace BeautySalonApp.Models
         [Required]
         [ForeignKey("Branch")]
         [Column("branch_id")]
-        public Guid BranchId { get; set; }
+        public int BranchId { get; set; }
 
         [Column("first_name")]
         [MaxLength(36)]

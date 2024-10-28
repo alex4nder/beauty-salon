@@ -5,13 +5,13 @@ namespace BeautySalonApp
 {
     public partial class MainForm : Form
     {
-        private readonly SalonService _salonService;
+        private readonly BranchService _salonService;
         private readonly DatabaseService _databaseService;
         private int _salonId;
 
         public MainForm()
         {
-            _salonService = Program.ServiceProvider.GetRequiredService<SalonService>();
+            _salonService = Program.ServiceProvider.GetRequiredService<BranchService>();
             _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
 
             InitializeComponent();
@@ -24,27 +24,27 @@ namespace BeautySalonApp
 
         private void LoadSalonData()
         {
-            var salons = _salonService.GetSalons();
+            var salons = _salonService.GetBranches();
             var salonData = salons.Select(s => new
             {
                 s.Id,
-                Name = s.SalonName,
-                Address = $"{s.Address.AddressLine}, {s.Address.City}, {s.Address.State}, {s.Address.PostalCode}",
+                Name = s.Title,
+                Address = s.Location,
                 PhoneNumber = s.Phone
             }).ToList();
 
             dataGridViewSalons.DataSource = salonData;
 
-            dataGridViewSalons.Columns["Name"].HeaderText = "Название филиала";
-            dataGridViewSalons.Columns["Address"].HeaderText = "Адрес";
-            dataGridViewSalons.Columns["PhoneNumber"].HeaderText = "Номер телефона";
+            dataGridViewSalons.Columns["Name"].HeaderText = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
+            dataGridViewSalons.Columns["Address"].HeaderText = "пїЅпїЅпїЅпїЅпїЅ";
+            dataGridViewSalons.Columns["PhoneNumber"].HeaderText = "пїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ";
 
             dataGridViewSalons.Columns["Id"].Visible = false;
 
             DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn
             {
-                HeaderText = "Действия",
-                Text = "Перейти",
+                HeaderText = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
+                Text = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ",
                 UseColumnTextForButtonValue = true,
                 Width = 100,
                 Name = "actionButtonColumn"
@@ -73,37 +73,16 @@ namespace BeautySalonApp
                 _salonId = e.RowIndex + 1;
 
                 //_databaseService.GetLocalDbContext(salonId);
-                var currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
-                currentSalonContext.SalonId = _salonId;
+                var CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
+                CurrentBranchContext.BranchId = _salonId;
 
                 SalonForm salonForm = new SalonForm();
                 //salonForm.SetSalonId(_salonId);
                 //salonForm.setDbContext();
-                salonForm.Text = $"Салон - {selectedRow.Cells["name"].Value.ToString()}";
+                salonForm.Text = $"пїЅпїЅпїЅпїЅпїЅ - {selectedRow.Cells["name"].Value.ToString()}";
                 salonForm.ShowDialog();
 
             }
         }
-
-        //private void UpdateServices()
-        //{
-        //    // Получаем доступ к службе, которая хранит контекст и другие зависимые сервисы
-        //    var dbService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
-        //    var employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
-
-        //    // Обновляем контекст в сервисах
-        //    // Если ваш EmployeeService имеет метод для обновления контекста, вызываем его
-        //    employeeService.UpdateDbContext(dbService.GetLocalDbContext(_salonId));
-
-        //    // Если есть другие сервисы, которые также зависят от salonId,
-        //    // добавьте их здесь аналогичным образом
-
-        //    // Например, если у вас есть ClientService, которая тоже нуждается в обновлении
-        //    var clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
-        //    clientService.UpdateDbContext(dbService.GetLocalDbContext(_salonId));
-
-        //    // Повторите для других сервисов по мере необходимости
-        //}
-
     }
 }

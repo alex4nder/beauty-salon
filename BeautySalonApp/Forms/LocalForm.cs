@@ -2,6 +2,7 @@
 using BeautySalonApp.Forms;
 using BeautySalonApp.Forms.EntityActions;
 using BeautySalonApp.Models;
+using BeautySalonApp.Models.BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Diagnostics;
@@ -12,8 +13,8 @@ namespace BeautySalonApp
     public partial class SalonForm : Form
     {
         private readonly RevenueReportService _revenueReportService;
-        private readonly ClientFeedbackService _clientFeedbackService;
-        private readonly ClientService _clientService;
+        private readonly CustomerFeedbackService _customerFeedbackService;
+        private readonly CustomerService _customerService;
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
         private OfferingsService _offeringsService;
@@ -23,16 +24,16 @@ namespace BeautySalonApp
 
         public SalonForm()
         {
-            var currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            var CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
 
             _employeeService = new EmployeeService();
             _revenueReportService = new RevenueReportService();
-            _clientFeedbackService = new ClientFeedbackService();
-            _clientService = new ClientService();
+            _customerFeedbackService = new CustomerFeedbackService();
+            _customerService = new CustomerService();
             _managerService = new ManagerService();
             _offeringsService = new OfferingsService();
 
-            _salonId = currentSalonContext.SalonId;
+            _salonId = CurrentBranchContext.BranchId;
 
             InitializeComponent();
 
@@ -47,8 +48,8 @@ namespace BeautySalonApp
             var tabLoadActions = new Dictionary<TabPage, Action>
             {
                 { reportsTab, LoadRevenueReportsData },
-                { clientFeedbackTab, LoadClientFeedbacksData },
-                { clientsTab, LoadClientsData },
+                { CustomerFeedbackTab, LoadCustomerFeedbacksData },
+                { CustomersTab, LoadCustomersData },
                 { employeeTab, LoadEmployeesData },
                 { managersTab, LoadManagersData },
                 { servicesTab, LoadServicesData }
@@ -97,7 +98,7 @@ namespace BeautySalonApp
             addActionColumns(dataGridViewServices, (sender, e) => DataGridViewServices_CellContentClick(sender, e));
         }
 
-        private void EditService(int serviceId)
+        private void EditService(Guid serviceId)
         {
             new EntityOperationBuilder<Service>()
                 .WithFormCreator(s => new ServiceForm(s))
@@ -106,7 +107,7 @@ namespace BeautySalonApp
                 .ExecuteEdit(_offeringsService.GetServiceById(serviceId));
         }
 
-        private void DeleteService(int serviceId)
+        private void DeleteService(Guid serviceId)
         {
             new EntityOperationBuilder<Service>()
                    .WithRemoveAction(_offeringsService.ServiceRemove)
@@ -121,26 +122,24 @@ namespace BeautySalonApp
             var revenueReportData = revenueReports.Select(rr => new
             {
                 rr.ReportDate,
-                rr.ReportPeriodStartDate,
-                rr.ReportPeriodEndDate,
-                rr.TotalRevenue,
-                NumberOfClients = rr.TotalCustomers,
-                MostPopularService = $"{rr.MostPopularService}"
+                rr.StartDate,
+                rr.EndDate,
+                rr.TotalIncome,
+                NumberOfCustomers = rr.ClientsServed,
             }).ToList();
 
             dataGridViewRevenueReports.DataSource = revenueReportData;
 
             dataGridViewRevenueReports.Columns["ReportDate"].HeaderText = "Дата/время отчета";
-            dataGridViewRevenueReports.Columns["ReportPeriodStartDate"].HeaderText = "От";
-            dataGridViewRevenueReports.Columns["ReportPeriodEndDate"].HeaderText = "До";
-            dataGridViewRevenueReports.Columns["TotalRevenue"].HeaderText = "Общая выручка";
-            dataGridViewRevenueReports.Columns["NumberOfClients"].HeaderText = "Количество клиентов";
-            dataGridViewRevenueReports.Columns["MostPopularService"].HeaderText = "Самая популярная услуга";
+            dataGridViewRevenueReports.Columns["StartDate"].HeaderText = "От";
+            dataGridViewRevenueReports.Columns["EndDate"].HeaderText = "До";
+            dataGridViewRevenueReports.Columns["TotalIncome"].HeaderText = "Общая выручка";
+            dataGridViewRevenueReports.Columns["NumberOfCustomers"].HeaderText = "Количество клиентов";
         }
 
-        private void LoadClientFeedbacksData()
+        private void LoadCustomerFeedbacksData()
         {
-            var feedbacks = _clientFeedbackService.GetClientFeedbacks(_salonId);
+            var feedbacks = _customerFeedbackService.GetCustomerFeedbacks();
 
             Dictionary<int, string> emojiRatings = new Dictionary<int, string>
             {
@@ -154,87 +153,83 @@ namespace BeautySalonApp
             var feedbackData = feedbacks.Select(feedback => new
             {
                 feedback.FeedbackDate,
-                ClientName = $"{feedback.ClientFirstName} {feedback.ClientLastName}",
-                feedback.ClientEmail,
-                feedback.Service,
+                CustomerName = $"{feedback.CustomerFirstName} {feedback.CustomerLastName}",
+                feedback.CustomerEmail,
                 Rating = $"{feedback.Rating} {emojiRatings[feedback.Rating]}",
                 Comment = feedback.Comments,
             }).ToList();
 
-            dataGridViewClientFeedback.DataSource = feedbackData;
+            dataGridViewCustomerFeedback.DataSource = feedbackData;
 
-            dataGridViewClientFeedback.Columns["FeedbackDate"].HeaderText = "Дата отзыва";
-            dataGridViewClientFeedback.Columns["ClientName"].HeaderText = "Имя клиента";
-            dataGridViewClientFeedback.Columns["ClientEmail"].HeaderText = "Эл. почта клиента";
-            dataGridViewClientFeedback.Columns["Service"].HeaderText = "Услуга";
-            dataGridViewClientFeedback.Columns["Rating"].HeaderText = "Оценка";
-            dataGridViewClientFeedback.Columns["Comment"].HeaderText = "Комментарий";
+            dataGridViewCustomerFeedback.Columns["FeedbackDate"].HeaderText = "Дата отзыва";
+            dataGridViewCustomerFeedback.Columns["CustomerName"].HeaderText = "Имя клиента";
+            dataGridViewCustomerFeedback.Columns["CustomerEmail"].HeaderText = "Эл. почта клиента";
+            dataGridViewCustomerFeedback.Columns["Rating"].HeaderText = "Оценка";
+            dataGridViewCustomerFeedback.Columns["Comment"].HeaderText = "Комментарий";
 
-            dataGridViewClientFeedback.CellFormatting += DataGridViewClientFeedback_CellFormatting;
+            dataGridViewCustomerFeedback.CellFormatting += DataGridViewCustomerFeedback_CellFormatting;
 
             DataGridViewLinkColumn emailColumn = new DataGridViewLinkColumn();
             emailColumn.HeaderText = "Эл. почта клиента";
-            emailColumn.DataPropertyName = "ClientEmail";
-            emailColumn.Name = "ClientEmail";
-            dataGridViewClientFeedback.Columns.Remove("ClientEmail");
-            dataGridViewClientFeedback.Columns.Insert(2, emailColumn);
+            emailColumn.DataPropertyName = "CustomerEmail";
+            emailColumn.Name = "CustomerEmail";
+            dataGridViewCustomerFeedback.Columns.Remove("CustomerEmail");
+            dataGridViewCustomerFeedback.Columns.Insert(2, emailColumn);
 
-            dataGridViewClientFeedback.CellContentClick += DataGridViewClientFeedback_CellContentClick;
+            dataGridViewCustomerFeedback.CellContentClick += DataGridViewCustomerFeedback_CellContentClick;
         }
 
-        private void LoadClientsData()
+        private void LoadCustomersData()
         {
-            var revenueReports = _clientService.GetClients();
+            var revenueReports = _customerService.GetCustomers();
 
-            var revenueReportData = revenueReports.Select(client => new
+            var revenueReportData = revenueReports.Select(Customer => new
             {
-                client.Id,
-                client.FirstName,
-                client.LastName,
-                client.Email,
-                client.Phone,
-                client.DateOfBirth,
-                client.Notes
+                Customer.Id,
+                Customer.FirstName,
+                Customer.LastName,
+                Customer.Email,
+                Customer.Phone,
+                Customer.Birthday,
             }).ToList();
 
-            dataGridViewClients.DataSource = revenueReportData;
+            dataGridViewCustomers.DataSource = revenueReportData;
 
-            dataGridViewClients.Columns["FirstName"].HeaderText = "Имя";
-            dataGridViewClients.Columns["LastName"].HeaderText = "Фамилия";
-            dataGridViewClients.Columns["Email"].HeaderText = "Эл. почта";
-            dataGridViewClients.Columns["Phone"].HeaderText = "Номер телефона";
-            dataGridViewClients.Columns["DateOfBirth"].HeaderText = "Дата рождения";
-            dataGridViewClients.Columns["Notes"].HeaderText = "Примечания";
+            dataGridViewCustomers.Columns["FirstName"].HeaderText = "Имя";
+            dataGridViewCustomers.Columns["LastName"].HeaderText = "Фамилия";
+            dataGridViewCustomers.Columns["Email"].HeaderText = "Эл. почта";
+            dataGridViewCustomers.Columns["Phone"].HeaderText = "Номер телефона";
+            dataGridViewCustomers.Columns["Birthday"].HeaderText = "Дата рождения";
 
-            dataGridViewClients.Columns["Id"].Visible = false;
+            dataGridViewCustomers.Columns["Id"].Visible = false;
 
             DataGridViewLinkColumn emailColumn = new DataGridViewLinkColumn();
             emailColumn.HeaderText = "Эл. почта";
             emailColumn.DataPropertyName = "Email";
             emailColumn.Name = "Email";
-            dataGridViewClients.Columns.Remove("Email");
-            dataGridViewClients.Columns.Insert(3, emailColumn);
+            dataGridViewCustomers.Columns.Remove("Email");
+            dataGridViewCustomers.Columns.Insert(3, emailColumn);
 
-            dataGridViewClients.CellFormatting += DataGridViewClient_CellFormatting;
+            dataGridViewCustomers.CellFormatting += DataGridViewCustomer_CellFormatting;
 
-            addActionColumns(dataGridViewClients, (sender, e) => DataGridViewClient_CellContentClick(sender, e));
+            addActionColumns(dataGridViewCustomers, (sender, e) => DataGridViewCustomer_CellContentClick(sender, e));
         }
 
-        private void EditClient(int clientId)
+        private void EditCustomer(Guid CustomerId)
         {
-            new EntityOperationBuilder<Models.Client>()
-                   .WithFormCreator(c => new ClientForm(c))
-                   .WithUpdateAction(c => _clientService.ClientEdit(c))
-                   .WithLoadData(LoadClientsData)
-                   .ExecuteEdit(_clientService.GetClientById(clientId));
+            new EntityOperationBuilder<Customer>()
+                   .WithFormCreator(c => new CustomerForm(c))
+                   .WithUpdateAction(c => _customerService.CustomerEdit(c))
+                   .WithLoadData(LoadCustomersData)
+                   .ExecuteEdit(_customerService.GetCustomerById(CustomerId));
         }
 
-        private void DeleteClient(int clientId)
+        private void DeleteCustomer(Guid CustomerId)
         {
-            new EntityOperationBuilder<Models.Client>()
-                    .WithRemoveAction(_clientService.ClientRemove)
-                    .WithLoadData(LoadClientsData)
-                    .ExecuteDelete(clientId);
+            new EntityOperationBuilder<Customer>()
+                    .WithRemoveAction(_customerService.CustomerRemove)
+                    .WithLoadData(LoadCustomersData)
+                    .ExecuteDelete(CustomerId);
         }
 
         private void LoadEmployeesData()
@@ -248,7 +243,6 @@ namespace BeautySalonApp
                 employee.LastName,
                 employee.Position,
                 employee.Phone,
-                employee.WorkBookNumber,
             }).ToList();
 
             dataGridViewEmployees.DataSource = employeesData;
@@ -257,7 +251,6 @@ namespace BeautySalonApp
             dataGridViewEmployees.Columns["LastName"].HeaderText = "Фамилия";
             dataGridViewEmployees.Columns["Position"].HeaderText = "Должность";
             dataGridViewEmployees.Columns["Phone"].HeaderText = "Номер телефона";
-            dataGridViewEmployees.Columns["WorkBookNumber"].HeaderText = "Номер трудовой книжки";
 
             dataGridViewEmployees.Columns["Id"].Visible = false;
 
@@ -280,7 +273,7 @@ namespace BeautySalonApp
             dataGridViewEmployees.Columns["Details"].Width = 100;
         }
 
-        private void EditEmployee(int employeeId)
+        private void EditEmployee(Guid employeeId)
         {
             new EntityOperationBuilder<Employee>()
                 .WithFormCreator(e => new EmployeeForm(e))
@@ -289,7 +282,7 @@ namespace BeautySalonApp
                 .ExecuteEdit(_employeeService.GetEmployeeById(employeeId));
         }
 
-        private void DeleteEmployee(int employeeId)
+        private void DeleteEmployee(Guid employeeId)
         {
             new EntityOperationBuilder<Employee>()
                   .WithRemoveAction(_employeeService.EmployeeRemove)
@@ -329,7 +322,7 @@ namespace BeautySalonApp
             addActionColumns(dataGridViewManagers, (sender, e) => DataGridViewManager_CellContentClick(sender, e));
         }
 
-        private void EditManager(int managerId)
+        private void EditManager(Guid managerId)
         {
             var manager = _managerService.GetManagerById(managerId);
             new EntityOperationBuilder<Manager>()
@@ -339,7 +332,7 @@ namespace BeautySalonApp
                 .ExecuteEdit(manager);
         }
 
-        private void DeleteManager(int managerId)
+        private void DeleteManager(Guid managerId)
         {
             new EntityOperationBuilder<Manager>()
                   .WithRemoveAction(_managerService.ManagerRemove)
@@ -357,9 +350,9 @@ namespace BeautySalonApp
             LoadRevenueReportsData();
         }
 
-        private void DataGridViewClientFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DataGridViewCustomerFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridViewClientFeedback.Columns[e.ColumnIndex].Name == "Rating" && e.Value != null)
+            if (dataGridViewCustomerFeedback.Columns[e.ColumnIndex].Name == "Rating" && e.Value != null)
             {
                 string ratingText = e.Value.ToString();
                 int ratingValue;
@@ -388,9 +381,9 @@ namespace BeautySalonApp
             }
         }
 
-        private void DataGridViewClient_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
+        private void DataGridViewCustomer_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
-            if (dataGridViewClients.Columns[e.ColumnIndex].Name == "Phone")
+            if (dataGridViewCustomers.Columns[e.ColumnIndex].Name == "Phone")
             {
                 formatPhoneNumber(e);
             }
@@ -404,7 +397,7 @@ namespace BeautySalonApp
             }
         }
 
-        private void OpenEmailClient(string email)
+        private void OpenEmailCustomer(string email)
         {
             try
             {
@@ -427,33 +420,33 @@ namespace BeautySalonApp
             }
         }
 
-        private void DataGridViewClient_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridViewCustomer_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
             if (e.RowIndex >= 0)
             {
-                DataGridViewRow row = dataGridViewClients.Rows[e.RowIndex];
-                int clientId = Convert.ToInt32(row.Cells["Id"].Value);
+                DataGridViewRow row = dataGridViewCustomers.Rows[e.RowIndex];
+                Guid CustomerId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
-                if (e.ColumnIndex == dataGridViewClients.Columns["Edit"].Index)
+                if (e.ColumnIndex == dataGridViewCustomers.Columns["Edit"].Index)
                 {
-                    EditClient(clientId);
+                    EditCustomer(CustomerId);
                 }
-                else if (e.ColumnIndex == dataGridViewClients.Columns["Delete"].Index)
+                else if (e.ColumnIndex == dataGridViewCustomers.Columns["Delete"].Index)
                 {
-                    DeleteClient(clientId);
+                    DeleteCustomer(CustomerId);
                 }
-                else if (e.ColumnIndex == dataGridViewClients.Columns["Email"].Index)
+                else if (e.ColumnIndex == dataGridViewCustomers.Columns["Email"].Index)
                 {
-                    OpenEmailClient(row.Cells[e.ColumnIndex].Value.ToString());
+                    OpenEmailCustomer(row.Cells[e.ColumnIndex].Value.ToString());
                 }
             }
         }
 
-        private void DataGridViewClientFeedback_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        private void DataGridViewCustomerFeedback_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
-            if (e.ColumnIndex == dataGridViewClientFeedback.Columns["ClientEmail"].Index && e.RowIndex >= 0)
+            if (e.ColumnIndex == dataGridViewCustomerFeedback.Columns["CustomerEmail"].Index && e.RowIndex >= 0)
             {
-                string email = dataGridViewClientFeedback.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
+                string email = dataGridViewCustomerFeedback.Rows[e.RowIndex].Cells[e.ColumnIndex].Value.ToString();
 
                 try
                 {
@@ -475,7 +468,7 @@ namespace BeautySalonApp
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
-                int employeeId = Convert.ToInt32(row.Cells["Id"].Value);
+                Guid employeeId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
                 if (e.ColumnIndex == dataGridViewEmployees.Columns["Edit"].Index)
                 {
@@ -498,7 +491,7 @@ namespace BeautySalonApp
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridViewManagers.Rows[e.RowIndex];
-                int managerId = Convert.ToInt32(row.Cells["Id"].Value);
+                Guid managerId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
                 if (e.ColumnIndex == dataGridViewManagers.Columns["Edit"].Index)
                 {
@@ -516,7 +509,7 @@ namespace BeautySalonApp
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridViewServices.Rows[e.RowIndex];
-                int serviceId = Convert.ToInt32(row.Cells["Id"].Value);
+                Guid serviceId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
                 if (e.ColumnIndex == dataGridViewServices.Columns["Edit"].Index)
                 {
@@ -529,12 +522,12 @@ namespace BeautySalonApp
             }
         }
 
-        private void addClientBtn_Click(object sender, EventArgs e)
+        private void addCustomerBtn_Click(object sender, EventArgs e)
         {
-            ClientForm clientForm = new ClientForm();
-            if (clientForm.ShowDialog() == DialogResult.OK)
+            CustomerForm CustomerForm = new CustomerForm();
+            if (CustomerForm.ShowDialog() == DialogResult.OK)
             {
-                LoadClientsData();
+                LoadCustomersData();
             }
         }
 
@@ -616,7 +609,7 @@ namespace BeautySalonApp
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
-                int employeeId = Convert.ToInt32(row.Cells["Id"].Value);
+                Guid employeeId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
                 EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _salonId);
                 employeeDetailsForm.ShowDialog();

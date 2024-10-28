@@ -7,14 +7,12 @@ namespace BeautySalonApp.Forms
     public partial class EmployeeDetailsForm : Form
     {
         private readonly EmployeeService _employeeService;
-        private readonly EmployeePerformanceService _employeePerformanceService;
-        private readonly int _employeeId;
+        private readonly Guid _employeeId;
         private readonly int _salonId;
 
-        public EmployeeDetailsForm(int employeeId, int salonId)
+        public EmployeeDetailsForm(Guid employeeId, int salonId)
         {
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
-            _employeePerformanceService = Program.ServiceProvider.GetRequiredService<EmployeePerformanceService>();
             _employeeId = employeeId;
             _salonId = salonId;
 
@@ -28,7 +26,6 @@ namespace BeautySalonApp.Forms
             var tabLoadActions = new Dictionary<TabPage, Action>
             {
                 { appointmentsTab, LoadAppointmentsData },
-                { performanceTab, LoadEmployeePerformanceData }
             };
 
             if (tabLoadActions.TryGetValue(employeeDetailsTabControl.SelectedTab, out var loadAction))
@@ -44,9 +41,9 @@ namespace BeautySalonApp.Forms
             var appointmentsData = appointments.Select(appointment => new
             {
                 appointment.Id,
-                ClientName = $"{appointment.Client.FirstName} {appointment.Client.LastName}",
-                appointment.Service.ServiceName,
-                appointment.AppointmentDate,
+                ClientName = $"{appointment.Customer.FirstName} {appointment.Customer.LastName}",
+                appointment.Service.Title,
+                appointment.Date,
                 appointment.StartTime,
                 appointment.EndTime,
                 appointment.Status,
@@ -97,20 +94,20 @@ namespace BeautySalonApp.Forms
             if (e.RowIndex >= 0)
             {
                 DataGridViewRow row = appointmentsDataGridView.Rows[e.RowIndex];
-                int appointmentId = Convert.ToInt32(row.Cells["Id"].Value);
+                Guid appointmentId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
                 if (e.ColumnIndex == appointmentsDataGridView.Columns["Close"].Index)
                 {
-                    UpdateAppointmentStatus(appointmentId, "завершено");
+                    UpdateAppointmentStatus(appointmentId, AppointmentStatus.Success);
                 }
                 else if (e.ColumnIndex == appointmentsDataGridView.Columns["Cancel"].Index)
                 {
-                    UpdateAppointmentStatus(appointmentId, "отменено");
+                    UpdateAppointmentStatus(appointmentId, AppointmentStatus.Cancelled);
                 }
             }
         }
 
-        private void UpdateAppointmentStatus(int appointmentId, string newStatus)
+        private void UpdateAppointmentStatus(Guid appointmentId, AppointmentStatus newStatus)
         {
             try
             {
@@ -130,33 +127,6 @@ namespace BeautySalonApp.Forms
             if (appointmentForm.ShowDialog() == DialogResult.OK)
             {
                 LoadAppointmentsData();
-            }
-        }
-
-        private void LoadEmployeePerformanceData()
-        {
-            try
-            {
-                List<EmployeePerformance> performances = _employeePerformanceService.GetEmployeePerformanceReports(_salonId, _employeeId);
-
-                dataGridViewEmPerformance.DataSource = performances.Select(ep => new
-                {
-                    SalonId = ep.SalonId,
-                    EvaluationDate = ep.EvaluationDate.ToShortDateString(),
-                    TotalAppointments = ep.TotalAppointments,
-                    TotalRevenue = ep.TotalRevenue
-                }).ToList();
-
-                dataGridViewEmPerformance.Columns["SalonId"].Visible = false;
-
-                dataGridViewEmPerformance.Columns["EvaluationDate"].HeaderText = "Дата проведения оценки";
-                dataGridViewEmPerformance.Columns["TotalAppointments"].HeaderText = "Всего оказано услуг";
-                dataGridViewEmPerformance.Columns["TotalRevenue"].HeaderText = "Всего выручки";
-
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show("Ошибка загрузки данных: " + ex.Message);
             }
         }
     }

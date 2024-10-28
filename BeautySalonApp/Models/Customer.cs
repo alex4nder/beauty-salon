@@ -30,7 +30,7 @@
             public string? Email { get; set; }
 
             [Column("birthday")]
-            public DateTime? Birthday { get; set; }
+            public DateTime Birthday { get; set; }
 
             // Navigation Property
             public virtual ICollection<Appointment> Appointments { get; set; } = new List<Appointment>();

@@ -10,17 +10,17 @@ namespace BeautySalonApp.Services
         private DatabaseService _databaseService;
         private readonly GlobalDbContext _globalContext;
         private LocalDbContext _context;
-        private readonly CurrentSalonContext _currentSalonContext;
+        private readonly CurrentBranchContext _CurrentBranchContext;
 
         private const int PopularityThreshold = 5;
 
         public OfferingsService()
         {
-            _currentSalonContext = Program.ServiceProvider.GetRequiredService<CurrentSalonContext>();
+            _CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
             _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
 
             _globalContext = _databaseService.GetGlobalDbContext();
-            _context = _databaseService.GetLocalDbContext(_currentSalonContext.SalonId);
+            _context = _databaseService.GetLocalDbContext(_CurrentBranchContext.BranchId);
         }
 
         public void ServiceAdd(Service service)
@@ -38,23 +38,23 @@ namespace BeautySalonApp.Services
                 .Select(service => new OfferingsServiceDto
                 {
                     Id = service.Id,
-                    ServiceName = service.ServiceName,
+                    ServiceName = service.Title,
                     Description = service.Description,
                     Price = service.Price,
-                    Duration = service.Duration,
-                    IsPopular = service.Appointments.Count(a => a.AppointmentDate >= oneMonthAgo) >= PopularityThreshold,
+                    Duration = (int)(service.Duration == null ? 0 : service.Duration),
+                    IsPopular = service.Appointments.Count(a => a.Date >= oneMonthAgo) >= PopularityThreshold,
                 })
                 .ToList();
 
             return services;
         }
 
-        public Service GetServiceById(int serviceId)
+        public Service GetServiceById(Guid serviceId)
         {
             return _context.Services.Find(serviceId);
         }
 
-        public void ServiceRemove(int serviceId)
+        public void ServiceRemove(Guid serviceId)
         {
             var service = _context.Services.Find(serviceId);
             if (service != null)
@@ -69,7 +69,7 @@ namespace BeautySalonApp.Services
             var existingService = _context.Services.Find(service.Id);
             if (existingService != null)
             {
-                existingService.ServiceName = service.ServiceName;
+                existingService.Title = service.Title;
                 existingService.Description = service.Description;
                 existingService.Price = service.Price;
                 existingService.Duration = service.Duration;

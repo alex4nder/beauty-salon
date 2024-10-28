@@ -4,7 +4,7 @@
     {
         private Func<T, Form> _createForm;
         private Action<T> _updateAction;
-        private Action<int> _removeAction;
+        private Action<Guid> _removeAction;
         private Action _loadData;
 
         public EntityOperationBuilder<T> WithFormCreator(Func<T, Form> createForm)
@@ -25,7 +25,7 @@
             return this;
         }
 
-        public EntityOperationBuilder<T> WithRemoveAction(Action<int> removeAction)
+        public EntityOperationBuilder<T> WithRemoveAction(Action<Guid> removeAction)
         {
             _removeAction = removeAction;
             return this;
@@ -50,7 +50,7 @@
             }
         }
 
-        public void ExecuteDelete(int entityId)
+        public void ExecuteDelete(Guid entityId)
         {
             if (MessageBox.Show("Вы действительно хотите удалить сущность?", "Подтверждение", MessageBoxButtons.YesNo, MessageBoxIcon.Warning) == DialogResult.Yes)
             {

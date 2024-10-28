@@ -31,7 +31,6 @@ namespace BeautySalonApp.Forms
                     LastName = "",
                     Phone = "",
                     Position = "",
-                    WorkBookNumber = "",
                 };
                 _isEditMode = false;
             }
@@ -43,7 +42,6 @@ namespace BeautySalonApp.Forms
             employeeLastNameTextBox.Text = _employee.LastName;
             employeePhoneTextBox.Text = _employee.Phone;
             employeePositionTextBox.Text = _employee.Position;
-            employeeWbnTextBox.Text = _employee.WorkBookNumber;
         }
 
         private void saveEmployeeBtn_Click(object sender, EventArgs e)
@@ -52,7 +50,6 @@ namespace BeautySalonApp.Forms
             _employee.LastName = employeeLastNameTextBox.Text;
             _employee.Phone = employeePhoneTextBox.Text;
             _employee.Position = employeePositionTextBox.Text;
-            _employee.WorkBookNumber = employeeWbnTextBox.Text;
 
             if (_isEditMode)
             {

@@ -34,7 +34,7 @@ namespace BeautySalonApp.Forms
                     LastName = "",
                     Phone = "",
                     Email = "",
-                    SalonId = _salonId,
+                    BranchId = _salonId,
                 };
                 _isEditMode = false;
             }
@@ -54,7 +54,7 @@ namespace BeautySalonApp.Forms
             _manager.LastName = managerLastNameTextBox.Text;
             _manager.Phone = managerPhoneTextBox.Text;
             _manager.Email = managerEmailTextBox.Text;
-            _manager.SalonId = _salonId;
+            _manager.BranchId = _salonId;
 
             if (_isEditMode)
             {

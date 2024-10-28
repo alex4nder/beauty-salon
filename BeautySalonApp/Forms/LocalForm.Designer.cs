@@ -44,11 +44,11 @@
             revenueReportDateTo = new DateTimePicker();
             generateRevenueReportBtn = new Button();
             dataGridViewRevenueReports = new DataGridView();
-            clientsTab = new TabPage();
+            CustomersTab = new TabPage();
             addClientBtn = new Button();
-            dataGridViewClients = new DataGridView();
-            clientFeedbackTab = new TabPage();
-            dataGridViewClientFeedback = new DataGridView();
+            dataGridViewCustomers = new DataGridView();
+            CustomerFeedbackTab = new TabPage();
+            dataGridViewCustomerFeedback = new DataGridView();
             addServiceBtn = new Button();
             employeesTab.SuspendLayout();
             servicesTab.SuspendLayout();
@@ -59,10 +59,10 @@
             ((System.ComponentModel.ISupportInitialize)dataGridViewManagers).BeginInit();
             reportsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).BeginInit();
-            clientsTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewClients).BeginInit();
-            clientFeedbackTab.SuspendLayout();
-            ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).BeginInit();
+            CustomersTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomers).BeginInit();
+            CustomerFeedbackTab.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomerFeedback).BeginInit();
             SuspendLayout();
             // 
             // employeesTab
@@ -71,8 +71,8 @@
             employeesTab.Controls.Add(employeeTab);
             employeesTab.Controls.Add(managersTab);
             employeesTab.Controls.Add(reportsTab);
-            employeesTab.Controls.Add(clientsTab);
-            employeesTab.Controls.Add(clientFeedbackTab);
+            employeesTab.Controls.Add(CustomersTab);
+            employeesTab.Controls.Add(CustomerFeedbackTab);
             employeesTab.Dock = DockStyle.Fill;
             employeesTab.Location = new Point(0, 0);
             employeesTab.Name = "employeesTab";
@@ -238,17 +238,17 @@
             dataGridViewRevenueReports.Size = new Size(952, 429);
             dataGridViewRevenueReports.TabIndex = 0;
             // 
-            // clientsTab
+            // CustomersTab
             // 
-            clientsTab.Controls.Add(addClientBtn);
-            clientsTab.Controls.Add(dataGridViewClients);
-            clientsTab.Location = new Point(4, 24);
-            clientsTab.Name = "clientsTab";
-            clientsTab.Padding = new Padding(3);
-            clientsTab.Size = new Size(968, 473);
-            clientsTab.TabIndex = 4;
-            clientsTab.Text = "Клиенты";
-            clientsTab.UseVisualStyleBackColor = true;
+            CustomersTab.Controls.Add(addClientBtn);
+            CustomersTab.Controls.Add(dataGridViewCustomers);
+            CustomersTab.Location = new Point(4, 24);
+            CustomersTab.Name = "CustomersTab";
+            CustomersTab.Padding = new Padding(3);
+            CustomersTab.Size = new Size(968, 473);
+            CustomersTab.TabIndex = 4;
+            CustomersTab.Text = "Клиенты";
+            CustomersTab.UseVisualStyleBackColor = true;
             // 
             // addClientBtn
             // 
@@ -258,38 +258,38 @@
             addClientBtn.TabIndex = 1;
             addClientBtn.Text = "Добавить нового клиента";
             addClientBtn.UseVisualStyleBackColor = true;
-            addClientBtn.Click += addClientBtn_Click;
+            addClientBtn.Click += addCustomerBtn_Click;
             // 
-            // dataGridViewClients
+            // dataGridViewCustomers
             // 
-            dataGridViewClients.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewClients.BackgroundColor = SystemColors.ButtonHighlight;
-            dataGridViewClients.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewClients.Location = new Point(8, 36);
-            dataGridViewClients.Name = "dataGridViewClients";
-            dataGridViewClients.Size = new Size(952, 429);
-            dataGridViewClients.TabIndex = 0;
+            dataGridViewCustomers.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCustomers.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewCustomers.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCustomers.Location = new Point(8, 36);
+            dataGridViewCustomers.Name = "dataGridViewCustomers";
+            dataGridViewCustomers.Size = new Size(952, 429);
+            dataGridViewCustomers.TabIndex = 0;
             // 
-            // clientFeedbackTab
+            // CustomerFeedbackTab
             // 
-            clientFeedbackTab.Controls.Add(dataGridViewClientFeedback);
-            clientFeedbackTab.Location = new Point(4, 24);
-            clientFeedbackTab.Name = "clientFeedbackTab";
-            clientFeedbackTab.Padding = new Padding(3);
-            clientFeedbackTab.Size = new Size(968, 473);
-            clientFeedbackTab.TabIndex = 5;
-            clientFeedbackTab.Text = "Отзывы";
-            clientFeedbackTab.UseVisualStyleBackColor = true;
+            CustomerFeedbackTab.Controls.Add(dataGridViewCustomerFeedback);
+            CustomerFeedbackTab.Location = new Point(4, 24);
+            CustomerFeedbackTab.Name = "CustomerFeedbackTab";
+            CustomerFeedbackTab.Padding = new Padding(3);
+            CustomerFeedbackTab.Size = new Size(968, 473);
+            CustomerFeedbackTab.TabIndex = 5;
+            CustomerFeedbackTab.Text = "Отзывы";
+            CustomerFeedbackTab.UseVisualStyleBackColor = true;
             // 
-            // dataGridViewClientFeedback
+            // dataGridViewCustomerFeedback
             // 
-            dataGridViewClientFeedback.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
-            dataGridViewClientFeedback.BackgroundColor = SystemColors.ButtonHighlight;
-            dataGridViewClientFeedback.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewClientFeedback.Location = new Point(5, 6);
-            dataGridViewClientFeedback.Name = "dataGridViewClientFeedback";
-            dataGridViewClientFeedback.Size = new Size(957, 460);
-            dataGridViewClientFeedback.TabIndex = 0;
+            dataGridViewCustomerFeedback.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
+            dataGridViewCustomerFeedback.BackgroundColor = SystemColors.ButtonHighlight;
+            dataGridViewCustomerFeedback.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            dataGridViewCustomerFeedback.Location = new Point(5, 6);
+            dataGridViewCustomerFeedback.Name = "dataGridViewCustomerFeedback";
+            dataGridViewCustomerFeedback.Size = new Size(957, 460);
+            dataGridViewCustomerFeedback.TabIndex = 0;
             // 
             // addServiceBtn
             // 
@@ -320,10 +320,10 @@
             reportsTab.ResumeLayout(false);
             reportsTab.PerformLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewRevenueReports).EndInit();
-            clientsTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewClients).EndInit();
-            clientFeedbackTab.ResumeLayout(false);
-            ((System.ComponentModel.ISupportInitialize)dataGridViewClientFeedback).EndInit();
+            CustomersTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomers).EndInit();
+            CustomerFeedbackTab.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)dataGridViewCustomerFeedback).EndInit();
             ResumeLayout(false);
         }
 
@@ -334,16 +334,16 @@
         private TabPage employeeTab;
         private TabPage managersTab;
         private TabPage reportsTab;
-        private TabPage clientsTab;
-        private TabPage clientFeedbackTab;
+        private TabPage CustomersTab;
+        private TabPage CustomerFeedbackTab;
         private DataGridView dataGridViewRevenueReports;
         private Button generateRevenueReportBtn;
         private DateTimePicker revenueReportDateTo;
         private Label label2;
         private Label label1;
         private DateTimePicker revenueReportDateFrom;
-        private DataGridView dataGridViewClientFeedback;
-        private DataGridView dataGridViewClients;
+        private DataGridView dataGridViewCustomerFeedback;
+        private DataGridView dataGridViewCustomers;
         private Button addClientBtn;
         private Button addEmployeeBtn;
         private DataGridView dataGridViewEmployees;

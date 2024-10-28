@@ -20,7 +20,7 @@ namespace BeautySalonApp.Models
         public string? Description { get; set; }
 
         [Column("price")]
-        public decimal? Price { get; set; }
+        public decimal Price { get; set; }
 
         [Column("duration")]
         public int? Duration { get; set; }

@@ -43,11 +43,11 @@ namespace BeautySalonApp.Models
 
         [Required]
         [Column("start_time")]
-        public TimeSpan StartTime { get; set; }
+        public DateTime StartTime { get; set; }
 
         [Required]
         [Column("end_time")]
-        public TimeSpan EndTime { get; set; }
+        public DateTime EndTime { get; set; }
 
         [Required]
         [Column("status")]

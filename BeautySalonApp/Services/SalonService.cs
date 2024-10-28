@@ -4,18 +4,18 @@ using Microsoft.EntityFrameworkCore;
 
 namespace BeautySalonApp.Services
 {
-    public class SalonService
+    public class BranchService
     {
         private readonly GlobalDbContext _globalContext;
 
-        public SalonService(GlobalDbContext globalContext)
+        public BranchService(GlobalDbContext globalContext)
         {
             _globalContext = globalContext;
         }
 
-        public List<Salon> GetSalons()
+        public List<Branch> GetBranches()
         {
-            return _globalContext.Salons.Include(s => s.Address).ToList();
+            return _globalContext.Branches.ToList();
         }
     }
 }

@@ -8,9 +8,9 @@ using Microsoft.Extensions.Hosting;
 
 namespace BeautySalonApp
 {
-    public class CurrentSalonContext
+    public class CurrentBranchContext
     {
-        public int SalonId { get; set; }
+        public int BranchId { get; set; }
     }
 
     internal static class Program
@@ -46,32 +46,20 @@ namespace BeautySalonApp
                         ServerVersion.AutoDetect(context.Configuration.GetConnectionString("BeautySalonGlobal"))));
 
                 services.AddSingleton<DatabaseService>();
-                services.AddSingleton<CurrentSalonContext>();
+                services.AddSingleton<CurrentBranchContext>();
 
-                services.AddScoped<SalonService>();
+                services.AddScoped<BranchService>();
                 services.AddScoped<RevenueReportService>();
-                services.AddScoped<ClientFeedbackService>();
-                services.AddScoped<ClientService>();
+                services.AddScoped<CustomerFeedbackService>();
+                services.AddScoped<CustomerService>();
                 services.AddScoped<EmployeeService>();
-                //services.AddScoped<EmployeeService>(provider =>
-                //{
-                //    var currentSalonContext = provider.GetRequiredService<CurrentSalonContext>();
-                //    var salonId = currentSalonContext.SalonId;
-                //    var databaseService = provider.GetRequiredService<DatabaseService>();
-                //    var globalContext = databaseService.GetGlobalDbContext();
-                //    var localContext = databaseService.GetLocalDbContext(salonId);
-                //    return new EmployeeService(globalContext, localContext);
 
-                //    //return new EmployeeService(dbService.GetGlobalDbContext(), context);
-
-                //});
                 services.AddScoped<ManagerService>();
                 services.AddScoped<OfferingsService>();
-                services.AddScoped<EmployeePerformanceService>();
 
                 services.AddTransient<MainForm>();
                 services.AddTransient<SalonForm>();
-                services.AddTransient<ClientForm>();
+                services.AddTransient<CustomerForm>();
                 services.AddTransient<EmployeeForm>();
                 services.AddTransient<ManagerForm>();
                 services.AddTransient<EmployeeDetailsForm>();

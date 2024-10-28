@@ -1,6 +1,6 @@
 ﻿namespace BeautySalonApp.Forms
 {
-    partial class ClientForm
+    partial class CustomerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -114,7 +114,7 @@
             label2.TabIndex = 8;
             label2.Text = "Дата рождения:";
             // 
-            // ClientForm
+            // CustomerForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
@@ -128,7 +128,7 @@
             Controls.Add(clientLastNameTextBox);
             Controls.Add(clientFirstNameTextBox);
             Controls.Add(saveClientBtn);
-            Name = "ClientForm";
+            Name = "CustomerForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Клиент";
             ResumeLayout(false);

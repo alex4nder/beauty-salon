@@ -8,7 +8,7 @@ namespace BeautySalonApp.Models
     {
         [Key]
         [Column("id")]
-        public Guid Id { get; set; }
+        public int Id { get; set; }
 
         [Column("location")]
         [MaxLength(255)]

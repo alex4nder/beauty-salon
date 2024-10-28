@@ -2,7 +2,7 @@
 {
     public class OfferingsServiceDto
     {
-        public int Id { get; set; }
+        public Guid Id { get; set; }
         public string ServiceName { get; set; }
         public string Description { get; set; }
         public decimal Price { get; set; }

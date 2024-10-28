@@ -1,36 +1,36 @@
 ﻿using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Client = BeautySalonApp.Models.Client;
+using BeautySalonApp.Models.BeautySalonApp.Models;
 
 namespace BeautySalonApp.Forms
 {
-    public partial class ClientForm : Form
+    public partial class CustomerForm : Form
     {
-        private readonly ClientService _clientService;
+        private readonly CustomerService _customerService;
 
-        private Client _client;
+        private Customer _customer;
         private bool _isEditMode;
 
-        public ClientForm(Client? client = null)
+        public CustomerForm(Customer? customer = null)
         {
             InitializeComponent();
 
-            _clientService = Program.ServiceProvider.GetRequiredService<ClientService>();
+            _customerService = Program.ServiceProvider.GetRequiredService<CustomerService>();
 
-            if (client != null)
+            if (customer != null)
             {
-                _client = client;
+                _customer = customer;
                 _isEditMode = true;
                 PreFillClientData();
             }
             else
             {
-                _client = new Client
+                _customer = new Customer
                 {
                     FirstName = "",
                     LastName = "",
                     Phone = "",
-                    DateOfBirth = DateTime.Now
+                    Birthday = DateTime.Now
                 };
                 _isEditMode = false;
             }
@@ -38,30 +38,28 @@ namespace BeautySalonApp.Forms
 
         private void PreFillClientData()
         {
-            clientFirstNameTextBox.Text = _client.FirstName;
-            clientLastNameTextBox.Text = _client.LastName;
-            clientPhoneTextBox.Text = _client.Phone;
-            clientEmailTextBox.Text = _client.Email;
-            clientDateOfBirthDateTimePicker.Value = _client.DateOfBirth;
-            clientNotesRichTextBox.Text = _client.Notes;
+            clientFirstNameTextBox.Text = _customer.FirstName;
+            clientLastNameTextBox.Text = _customer.LastName;
+            clientPhoneTextBox.Text = _customer.Phone;
+            clientEmailTextBox.Text = _customer.Email;
+            clientDateOfBirthDateTimePicker.Value = _customer.Birthday;
         }
 
         private void saveClientBtn_Click(object sender, EventArgs e)
         {
-            _client.FirstName = clientFirstNameTextBox.Text;
-            _client.LastName = clientLastNameTextBox.Text;
-            _client.Phone = clientPhoneTextBox.Text;
-            _client.Email = clientEmailTextBox.Text;
-            _client.DateOfBirth = clientDateOfBirthDateTimePicker.Value;
-            _client.Notes = clientNotesRichTextBox.Text;
+            _customer.FirstName = clientFirstNameTextBox.Text;
+            _customer.LastName = clientLastNameTextBox.Text;
+            _customer.Phone = clientPhoneTextBox.Text;
+            _customer.Email = clientEmailTextBox.Text;
+            _customer.Birthday = clientDateOfBirthDateTimePicker.Value;
 
             if (_isEditMode)
             {
-                _clientService.ClientEdit(_client);
+                _customerService.CustomerEdit(_customer);
             }
             else
             {
-                _clientService.ClientAdd(_client);
+                _customerService.CustomerAdd(_customer);
             }
 
             this.DialogResult = DialogResult.OK;

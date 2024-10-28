@@ -22,19 +22,19 @@ namespace BeautySalonApp.Services
             _globalContext.SaveChanges();
         }
 
-        public List<Manager> GetManagers(int salonId)
+        public List<Manager> GetManagers(int branchId)
         {
             return _globalContext.Managers
-            .Where(m => m.SalonId == salonId)
+            .Where(m => m.BranchId == branchId)
             .ToList();
         }
 
-        public Manager GetManagerById(int managerId)
+        public Manager GetManagerById(Guid managerId)
         {
             return _globalContext.Managers.Find(managerId);
         }
 
-        public void ManagerRemove(int managerId)
+        public void ManagerRemove(Guid managerId)
         {
             var manager = _globalContext.Managers.Find(managerId);
             if (manager != null)
