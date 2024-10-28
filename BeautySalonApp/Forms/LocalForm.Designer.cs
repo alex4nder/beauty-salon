@@ -30,6 +30,7 @@
         {
             employeesTab = new TabControl();
             servicesTab = new TabPage();
+            addServiceBtn = new Button();
             dataGridViewServices = new DataGridView();
             employeeTab = new TabPage();
             addEmployeeBtn = new Button();
@@ -49,7 +50,6 @@
             dataGridViewCustomers = new DataGridView();
             CustomerFeedbackTab = new TabPage();
             dataGridViewCustomerFeedback = new DataGridView();
-            addServiceBtn = new Button();
             employeesTab.SuspendLayout();
             servicesTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewServices).BeginInit();
@@ -92,6 +92,16 @@
             servicesTab.TabIndex = 0;
             servicesTab.Text = "Предоставляемые услуги";
             servicesTab.UseVisualStyleBackColor = true;
+            // 
+            // addServiceBtn
+            // 
+            addServiceBtn.Location = new Point(751, 11);
+            addServiceBtn.Name = "addServiceBtn";
+            addServiceBtn.Size = new Size(195, 23);
+            addServiceBtn.TabIndex = 2;
+            addServiceBtn.Text = "Добавить новую услугу";
+            addServiceBtn.UseVisualStyleBackColor = true;
+            addServiceBtn.Click += addServiceBtn_Click;
             // 
             // dataGridViewServices
             // 
@@ -290,16 +300,6 @@
             dataGridViewCustomerFeedback.Name = "dataGridViewCustomerFeedback";
             dataGridViewCustomerFeedback.Size = new Size(957, 460);
             dataGridViewCustomerFeedback.TabIndex = 0;
-            // 
-            // addServiceBtn
-            // 
-            addServiceBtn.Location = new Point(751, 11);
-            addServiceBtn.Name = "addServiceBtn";
-            addServiceBtn.Size = new Size(195, 23);
-            addServiceBtn.TabIndex = 2;
-            addServiceBtn.Text = "Добавить новую услугу";
-            addServiceBtn.UseVisualStyleBackColor = true;
-            addServiceBtn.Click += addServiceBtn_Click;
             // 
             // SalonForm
             // 

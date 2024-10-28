@@ -31,7 +31,6 @@
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             dataGridViewSalons = new DataGridView();
             label1 = new Label();
-            button1 = new Button();
             ((System.ComponentModel.ISupportInitialize)dataGridViewSalons).BeginInit();
             SuspendLayout();
             // 
@@ -55,23 +54,12 @@
             label1.TabIndex = 1;
             label1.Text = "Для продолжения работы с приложением выберите один из филиалов салона:";
             // 
-            // button1
-            // 
-            button1.Location = new Point(659, 364);
-            button1.Name = "button1";
-            button1.Size = new Size(93, 23);
-            button1.TabIndex = 2;
-            button1.Text = "Закрыть";
-            button1.UseVisualStyleBackColor = true;
-            button1.Click += button1_Click;
-            // 
             // MainForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
             BackColor = SystemColors.Control;
             ClientSize = new Size(764, 395);
-            Controls.Add(button1);
             Controls.Add(label1);
             Controls.Add(dataGridViewSalons);
             ForeColor = SystemColors.ControlText;
@@ -89,6 +77,5 @@
 
         private DataGridView dataGridViewSalons;
         private Label label1;
-        private Button button1;
     }
 }

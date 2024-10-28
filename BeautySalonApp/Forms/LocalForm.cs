@@ -12,7 +12,7 @@ namespace BeautySalonApp
 {
     public partial class SalonForm : Form
     {
-        private readonly RevenueReportService _revenueReportService;
+        private readonly GlobalReportService _globalReportService;
         private readonly CustomerFeedbackService _customerFeedbackService;
         private readonly CustomerService _customerService;
         private readonly EmployeeService _employeeService;
@@ -20,20 +20,20 @@ namespace BeautySalonApp
         private OfferingsService _offeringsService;
         private LocalDbContext _localDbContext;
 
-        private int _salonId;
+        private int _branchId;
 
         public SalonForm()
         {
             var CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
 
             _employeeService = new EmployeeService();
-            _revenueReportService = new RevenueReportService();
+            _globalReportService = new GlobalReportService();
             _customerFeedbackService = new CustomerFeedbackService();
             _customerService = new CustomerService();
             _managerService = new ManagerService();
             _offeringsService = new OfferingsService();
 
-            _salonId = CurrentBranchContext.BranchId;
+            _branchId = CurrentBranchContext.BranchId;
 
             InitializeComponent();
 
@@ -47,7 +47,7 @@ namespace BeautySalonApp
         {
             var tabLoadActions = new Dictionary<TabPage, Action>
             {
-                { reportsTab, LoadRevenueReportsData },
+                { reportsTab, LoadReportsData },
                 { CustomerFeedbackTab, LoadCustomerFeedbacksData },
                 { CustomersTab, LoadCustomersData },
                 { employeeTab, LoadEmployeesData },
@@ -72,7 +72,7 @@ namespace BeautySalonApp
                 service.Description,
                 service.Price,
                 service.Duration,
-                IsPopular = service.IsPopular ? "Горячий спрос" : "Не пользуется спросом"
+                IsPopular = service.IsPopular ? "Популярная услуга" : "Непопулярная услуга"
             }).ToList();
 
             dataGridViewServices.DataSource = serviceData;
@@ -115,11 +115,11 @@ namespace BeautySalonApp
                    .ExecuteDelete(serviceId);
         }
 
-        private void LoadRevenueReportsData()
+        private void LoadReportsData()
         {
-            var revenueReports = _revenueReportService.GetReportsWithDetails(_salonId);
+            var globalReports = _globalReportService.GetReportsWithDetails(_branchId);
 
-            var revenueReportData = revenueReports.Select(rr => new
+            var globalReportData = globalReports.Select(rr => new
             {
                 rr.ReportDate,
                 rr.StartDate,
@@ -128,7 +128,7 @@ namespace BeautySalonApp
                 NumberOfCustomers = rr.ClientsServed,
             }).ToList();
 
-            dataGridViewRevenueReports.DataSource = revenueReportData;
+            dataGridViewRevenueReports.DataSource = globalReportData;
 
             dataGridViewRevenueReports.Columns["ReportDate"].HeaderText = "Дата/время отчета";
             dataGridViewRevenueReports.Columns["StartDate"].HeaderText = "От";
@@ -143,11 +143,11 @@ namespace BeautySalonApp
 
             Dictionary<int, string> emojiRatings = new Dictionary<int, string>
             {
-               { 1, "⭐" },
-               { 2, "⭐⭐" },
-               { 3, "⭐⭐⭐" },
-               { 4, "⭐⭐⭐⭐" },
-               { 5, "⭐⭐⭐⭐⭐" }
+               { 1, "😖" },
+               { 2, "😒" },
+               { 3, "👌" },
+               { 4, "😊" },
+               { 5, "😍" }
             };
 
             var feedbackData = feedbacks.Select(feedback => new
@@ -181,9 +181,9 @@ namespace BeautySalonApp
 
         private void LoadCustomersData()
         {
-            var revenueReports = _customerService.GetCustomers();
+            var globalReports = _customerService.GetCustomers();
 
-            var revenueReportData = revenueReports.Select(Customer => new
+            var globalReportData = globalReports.Select(Customer => new
             {
                 Customer.Id,
                 Customer.FirstName,
@@ -193,7 +193,7 @@ namespace BeautySalonApp
                 Customer.Birthday,
             }).ToList();
 
-            dataGridViewCustomers.DataSource = revenueReportData;
+            dataGridViewCustomers.DataSource = globalReportData;
 
             dataGridViewCustomers.Columns["FirstName"].HeaderText = "Имя";
             dataGridViewCustomers.Columns["LastName"].HeaderText = "Фамилия";
@@ -292,7 +292,7 @@ namespace BeautySalonApp
 
         private void LoadManagersData()
         {
-            var managers = _managerService.GetManagers(_salonId);
+            var managers = _managerService.GetManagers(_branchId);
 
             var managersData = managers.Select(manager => new
             {
@@ -326,7 +326,7 @@ namespace BeautySalonApp
         {
             var manager = _managerService.GetManagerById(managerId);
             new EntityOperationBuilder<Manager>()
-                .WithFormCreator(m => new ManagerForm(_salonId, manager))
+                .WithFormCreator(m => new ManagerForm(_branchId, manager))
                 .WithUpdateAction(m => _managerService.ManagerEdit(m))
                 .WithLoadData(LoadManagersData)
                 .ExecuteEdit(manager);
@@ -345,9 +345,9 @@ namespace BeautySalonApp
             DateTime startDate = revenueReportDateFrom.Value;
             DateTime endDate = revenueReportDateTo.Value;
 
-            _revenueReportService.GenerateAndSaveRevenueReport(startDate, endDate, _salonId);
+            _globalReportService.UpdateGlobalReports(_branchId, startDate, endDate);
 
-            LoadRevenueReportsData();
+            LoadReportsData();
         }
 
         private void DataGridViewCustomerFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
@@ -480,8 +480,12 @@ namespace BeautySalonApp
                 }
                 else if (e.ColumnIndex == dataGridViewEmployees.Columns["Details"].Index)
                 {
-                    EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _salonId);
-                    employeeDetailsForm.ShowDialog();
+                    this.Hide();
+                    using (EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _branchId))
+                    {
+                        employeeDetailsForm.ShowDialog();
+                    }
+                    this.Show();
                 }
             }
         }
@@ -597,7 +601,7 @@ namespace BeautySalonApp
 
         private void addManagerBtn_Click(object sender, EventArgs e)
         {
-            ManagerForm managerForm = new ManagerForm(_salonId);
+            ManagerForm managerForm = new ManagerForm(_branchId);
             if (managerForm.ShowDialog() == DialogResult.OK)
             {
                 LoadManagersData();
@@ -611,7 +615,7 @@ namespace BeautySalonApp
                 DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
                 Guid employeeId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
-                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _salonId);
+                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _branchId);
                 employeeDetailsForm.ShowDialog();
 
             }

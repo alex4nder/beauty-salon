@@ -3,13 +3,24 @@ using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BeautySalonApp.Models
+
 {
-    public enum AppointmentStatus
+    public static class AppointmentStatusEnum
     {
-        Created,
-        Success,
-        Cancelled
+        public const string Created = "created";
+        public const string Success = "success";
+        public const string Cancelled = "cancelled";
     }
+    public static class AppointmentStatusDictionary
+    {
+        public static readonly Dictionary<string, string> Statuses = new Dictionary<string, string>
+    {
+        { AppointmentStatusEnum.Created, "Создан" },
+        { AppointmentStatusEnum.Success, "Выполнен" },
+        { AppointmentStatusEnum.Cancelled, "Отменен" }
+    };
+    }
+
 
     [Table("appointments")]
     public class Appointment
@@ -51,7 +62,7 @@ namespace BeautySalonApp.Models
 
         [Required]
         [Column("status")]
-        public AppointmentStatus Status { get; set; }
+        public string Status { get; set; }
 
         // Virtual Navigation Properties
         public virtual Customer Customer { get; set; }

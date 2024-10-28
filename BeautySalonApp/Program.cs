@@ -49,7 +49,7 @@ namespace BeautySalonApp
                 services.AddSingleton<CurrentBranchContext>();
 
                 services.AddScoped<BranchService>();
-                services.AddScoped<RevenueReportService>();
+                services.AddScoped<GlobalReportService>();
                 services.AddScoped<CustomerFeedbackService>();
                 services.AddScoped<CustomerService>();
                 services.AddScoped<EmployeeService>();
@@ -58,6 +58,7 @@ namespace BeautySalonApp
                 services.AddScoped<OfferingsService>();
 
                 services.AddTransient<MainForm>();
+                services.AddTransient<BranchForm>();
                 services.AddTransient<SalonForm>();
                 services.AddTransient<CustomerForm>();
                 services.AddTransient<EmployeeForm>();

@@ -1,3 +1,6 @@
+using BeautySalonApp.Forms;
+using BeautySalonApp.Forms.EntityActions;
+using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -5,13 +8,13 @@ namespace BeautySalonApp
 {
     public partial class MainForm : Form
     {
-        private readonly BranchService _salonService;
+        private readonly BranchService _branchService;
         private readonly DatabaseService _databaseService;
-        private int _salonId;
+        private int _branchId;
 
         public MainForm()
         {
-            _salonService = Program.ServiceProvider.GetRequiredService<BranchService>();
+            _branchService = Program.ServiceProvider.GetRequiredService<BranchService>();
             _databaseService = Program.ServiceProvider.GetRequiredService<DatabaseService>();
 
             InitializeComponent();
@@ -19,38 +22,43 @@ namespace BeautySalonApp
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            LoadSalonData();
+            LoadBranchesData();
         }
 
-        private void LoadSalonData()
+        private void LoadBranchesData()
         {
-            var salons = _salonService.GetBranches();
-            var salonData = salons.Select(s => new
+            var branches = _branchService.GetBranches();
+            var branchesData = branches.Select(s => new
             {
                 s.Id,
-                Name = s.Title,
+                Title = s.Title,
                 Address = s.Location,
                 PhoneNumber = s.Phone
             }).ToList();
 
-            dataGridViewSalons.DataSource = salonData;
+            dataGridViewSalons.DataSource = branchesData;
 
-            dataGridViewSalons.Columns["Name"].HeaderText = "�������� �������";
-            dataGridViewSalons.Columns["Address"].HeaderText = "�����";
-            dataGridViewSalons.Columns["PhoneNumber"].HeaderText = "����� ��������";
+            dataGridViewSalons.Columns["Title"].HeaderText = "Наименование салона";
+            dataGridViewSalons.Columns["Address"].HeaderText = "Местоположение";
+            dataGridViewSalons.Columns["PhoneNumber"].HeaderText = "Номер телефона";
 
             dataGridViewSalons.Columns["Id"].Visible = false;
 
+            const string actionButtonColumnName = "actionButtonColumn";
+
             DataGridViewButtonColumn buttonColumn = new DataGridViewButtonColumn
             {
-                HeaderText = "��������",
-                Text = "�������",
+                HeaderText = "Действие",
+                Text = "Редактировать",
                 UseColumnTextForButtonValue = true,
                 Width = 100,
-                Name = "actionButtonColumn"
+                Name = actionButtonColumnName
             };
 
-            dataGridViewSalons.Columns.Add(buttonColumn);
+            if (!dataGridViewSalons.Columns.Contains(actionButtonColumnName))
+            {
+                dataGridViewSalons.Columns.Add(buttonColumn);
+            }
 
             Controls.Add(dataGridViewSalons);
         }
@@ -60,28 +68,43 @@ namespace BeautySalonApp
             Application.Exit();
         }
 
-        public int GetSalonId()
+        private void EditBranch(int branchId)
         {
-            return _salonId;
+            new EntityOperationBuilder<Branch>()
+                .WithFormCreator(branch => new BranchForm(branch))
+                .WithUpdateAction(branch => _branchService.BranchEdit(branch))
+                .WithLoadData(LoadBranchesData)
+                .ExecuteEdit(_branchService.GetBranchById(branchId));
         }
 
         private void dataGridViewSalons_CellClick(object sender, DataGridViewCellEventArgs e)
         {
+            DataGridViewRow row = dataGridViewSalons.Rows[e.RowIndex];
+            int branchId = Convert.ToInt32(row.Cells["Id"].Value.ToString());
+
             if (e.RowIndex >= 0 && e.ColumnIndex == dataGridViewSalons.Columns["actionButtonColumn"].Index)
             {
-                var selectedRow = dataGridViewSalons.Rows[e.RowIndex];
-                _salonId = e.RowIndex + 1;
+                EditBranch(branchId);
+                return;
+            }
 
-                //_databaseService.GetLocalDbContext(salonId);
+            if (e.RowIndex >= 0)
+            {
                 var CurrentBranchContext = Program.ServiceProvider.GetRequiredService<CurrentBranchContext>();
-                CurrentBranchContext.BranchId = _salonId;
+                var selectedRow = dataGridViewSalons.Rows[e.RowIndex];
+                _branchId = e.RowIndex + 1;
 
-                SalonForm salonForm = new SalonForm();
-                //salonForm.SetSalonId(_salonId);
-                //salonForm.setDbContext();
-                salonForm.Text = $"����� - {selectedRow.Cells["name"].Value.ToString()}";
-                salonForm.ShowDialog();
+                CurrentBranchContext.BranchId = _branchId;
 
+                this.Hide();
+
+                using (SalonForm salonForm = new SalonForm())
+                {
+                    salonForm.Text = $"Филиал салона - {selectedRow.Cells["Title"].Value.ToString()}";
+                    salonForm.ShowDialog();
+                }
+
+                this.Show();
             }
         }
     }

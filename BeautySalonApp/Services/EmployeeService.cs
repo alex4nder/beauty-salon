@@ -67,10 +67,12 @@ namespace BeautySalonApp.Services
                 .Include(a => a.Service)
                 .ToList();
 
+
+
             return appointments.Any() ? appointments : null;
         }
 
-        public void UpdateAppointmentStatus(Guid appointmentId, AppointmentStatus newStatus)
+        public void UpdateAppointmentStatus(Guid appointmentId, string newStatus)
         {
             var appointment = _localContext.Appointments.Find(appointmentId);
             if (appointment != null)

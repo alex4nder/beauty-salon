@@ -46,14 +46,14 @@ namespace BeautySalonApp.Forms
                 appointment.Date,
                 appointment.StartTime,
                 appointment.EndTime,
-                appointment.Status,
+                Status = AppointmentStatusDictionary.Statuses[appointment.Status]
             }).ToList();
 
             appointmentsDataGridView.DataSource = appointmentsData;
 
             appointmentsDataGridView.Columns["ClientName"].HeaderText = "Клиент";
-            appointmentsDataGridView.Columns["ServiceName"].HeaderText = "Процедура";
-            appointmentsDataGridView.Columns["AppointmentDate"].HeaderText = "Дата записи";
+            appointmentsDataGridView.Columns["Title"].HeaderText = "Процедура";
+            appointmentsDataGridView.Columns["Date"].HeaderText = "Дата записи";
             appointmentsDataGridView.Columns["StartTime"].HeaderText = "Дата начала процедуры";
             appointmentsDataGridView.Columns["EndTime"].HeaderText = "Дата окончания процедуры";
             appointmentsDataGridView.Columns["Status"].HeaderText = "Статус";
@@ -98,16 +98,16 @@ namespace BeautySalonApp.Forms
 
                 if (e.ColumnIndex == appointmentsDataGridView.Columns["Close"].Index)
                 {
-                    UpdateAppointmentStatus(appointmentId, AppointmentStatus.Success);
+                    UpdateAppointmentStatus(appointmentId, AppointmentStatusEnum.Success);
                 }
                 else if (e.ColumnIndex == appointmentsDataGridView.Columns["Cancel"].Index)
                 {
-                    UpdateAppointmentStatus(appointmentId, AppointmentStatus.Cancelled);
+                    UpdateAppointmentStatus(appointmentId, AppointmentStatusEnum.Cancelled);
                 }
             }
         }
 
-        private void UpdateAppointmentStatus(Guid appointmentId, AppointmentStatus newStatus)
+        private void UpdateAppointmentStatus(Guid appointmentId, string newStatus)
         {
             try
             {

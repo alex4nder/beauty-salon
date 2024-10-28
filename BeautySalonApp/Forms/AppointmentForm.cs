@@ -56,7 +56,7 @@ namespace BeautySalonApp.Forms
                     Date = DateTime.Now,
                     StartTime = dateTimePickerStartDate.Value.Date + dateTimePickerStartTime.Value.TimeOfDay,
                     EndTime = dateTimePickerEndDate.Value.Date + dateTimePickerEndTime.Value.TimeOfDay,
-                    Status = AppointmentStatus.Created
+                    Status = AppointmentStatusEnum.Created
                 };
 
                 _employeeService.AddAppointment(appointment);
