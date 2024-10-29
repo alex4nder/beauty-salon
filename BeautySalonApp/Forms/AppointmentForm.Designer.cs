@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(AppointmentForm));
             comboBoxClient = new ComboBox();
             comboBoxService = new ComboBox();
             dateTimePickerStartDate = new DateTimePicker();
@@ -156,9 +157,10 @@
             Controls.Add(dateTimePickerStartDate);
             Controls.Add(comboBoxService);
             Controls.Add(comboBoxClient);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "AppointmentForm";
             StartPosition = FormStartPosition.CenterParent;
-            Text = "Новая запись";
+            Text = "Запись на процедуру";
             Load += AppointmentForm_Load;
             ResumeLayout(false);
             PerformLayout();

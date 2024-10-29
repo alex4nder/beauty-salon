@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ManagerForm));
             managerFirstNameTextBox = new TextBox();
             managerLastNameTextBox = new TextBox();
             managerPhoneTextBox = new TextBox();
@@ -69,9 +70,9 @@
             // 
             // saveManagerBtn
             // 
-            saveManagerBtn.Location = new Point(268, 256);
+            saveManagerBtn.Location = new Point(133, 114);
             saveManagerBtn.Name = "saveManagerBtn";
-            saveManagerBtn.Size = new Size(121, 23);
+            saveManagerBtn.Size = new Size(126, 29);
             saveManagerBtn.TabIndex = 4;
             saveManagerBtn.Text = "Сохранить";
             saveManagerBtn.UseVisualStyleBackColor = true;
@@ -81,12 +82,13 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 291);
+            ClientSize = new Size(401, 162);
             Controls.Add(saveManagerBtn);
             Controls.Add(managerEmailTextBox);
             Controls.Add(managerPhoneTextBox);
             Controls.Add(managerLastNameTextBox);
             Controls.Add(managerFirstNameTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ManagerForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Менеджер";

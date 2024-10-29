@@ -32,6 +32,7 @@ namespace BeautySalonApp.Forms
         /// </summary>
         private void InitializeComponent()
         {
+            ComponentResourceManager resources = new ComponentResourceManager(typeof(ServiceForm));
             serviceNameTextBox = new TextBox();
             descriptionTextBox = new TextBox();
             priceTextBox = new TextBox();
@@ -73,24 +74,25 @@ namespace BeautySalonApp.Forms
             // 
             // saveServiceBtn
             // 
-            saveServiceBtn.Location = new Point(339, 300);
+            saveServiceBtn.Location = new Point(171, 159);
             saveServiceBtn.Name = "saveServiceBtn";
-            saveServiceBtn.Size = new Size(113, 23);
+            saveServiceBtn.Size = new Size(121, 31);
             saveServiceBtn.TabIndex = 4;
             saveServiceBtn.Text = "Сохранить";
             saveServiceBtn.UseVisualStyleBackColor = true;
-            saveServiceBtn.Click += saveServiceBtn_Click; // Добавлено событие клика
+            saveServiceBtn.Click += saveServiceBtn_Click;
             // 
             // ServiceForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(464, 345);
+            ClientSize = new Size(464, 202);
             Controls.Add(saveServiceBtn);
             Controls.Add(durationTextBox);
             Controls.Add(priceTextBox);
             Controls.Add(descriptionTextBox);
             Controls.Add(serviceNameTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "ServiceForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Услуга";

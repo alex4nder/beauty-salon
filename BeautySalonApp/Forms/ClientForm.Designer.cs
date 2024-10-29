@@ -28,22 +28,21 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(CustomerForm));
             saveClientBtn = new Button();
             clientFirstNameTextBox = new TextBox();
             clientLastNameTextBox = new TextBox();
             clientPhoneTextBox = new TextBox();
             clientEmailTextBox = new TextBox();
-            clientNotesRichTextBox = new RichTextBox();
-            label1 = new Label();
             clientDateOfBirthDateTimePicker = new DateTimePicker();
             label2 = new Label();
             SuspendLayout();
             // 
             // saveClientBtn
             // 
-            saveClientBtn.Location = new Point(276, 260);
+            saveClientBtn.Location = new Point(139, 158);
             saveClientBtn.Name = "saveClientBtn";
-            saveClientBtn.Size = new Size(113, 23);
+            saveClientBtn.Size = new Size(123, 34);
             saveClientBtn.TabIndex = 0;
             saveClientBtn.Text = "Сохранить";
             saveClientBtn.UseVisualStyleBackColor = true;
@@ -81,23 +80,6 @@
             clientEmailTextBox.Size = new Size(183, 23);
             clientEmailTextBox.TabIndex = 4;
             // 
-            // clientNotesRichTextBox
-            // 
-            clientNotesRichTextBox.Location = new Point(12, 158);
-            clientNotesRichTextBox.Name = "clientNotesRichTextBox";
-            clientNotesRichTextBox.Size = new Size(377, 96);
-            clientNotesRichTextBox.TabIndex = 5;
-            clientNotesRichTextBox.Text = "";
-            // 
-            // label1
-            // 
-            label1.AutoSize = true;
-            label1.Location = new Point(12, 139);
-            label1.Name = "label1";
-            label1.Size = new Size(56, 15);
-            label1.TabIndex = 6;
-            label1.Text = "Заметки:";
-            // 
             // clientDateOfBirthDateTimePicker
             // 
             clientDateOfBirthDateTimePicker.Location = new Point(14, 105);
@@ -118,16 +100,15 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 291);
+            ClientSize = new Size(401, 204);
             Controls.Add(label2);
             Controls.Add(clientDateOfBirthDateTimePicker);
-            Controls.Add(label1);
-            Controls.Add(clientNotesRichTextBox);
             Controls.Add(clientEmailTextBox);
             Controls.Add(clientPhoneTextBox);
             Controls.Add(clientLastNameTextBox);
             Controls.Add(clientFirstNameTextBox);
             Controls.Add(saveClientBtn);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "CustomerForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Клиент";
@@ -142,8 +123,6 @@
         private TextBox clientLastNameTextBox;
         private TextBox clientPhoneTextBox;
         private TextBox clientEmailTextBox;
-        private RichTextBox clientNotesRichTextBox;
-        private Label label1;
         private DateTimePicker clientDateOfBirthDateTimePicker;
         private Label label2;
     }

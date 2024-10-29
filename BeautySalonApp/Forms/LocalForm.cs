@@ -1,5 +1,4 @@
-﻿using BeautySalonApp.Data;
-using BeautySalonApp.Forms;
+﻿using BeautySalonApp.Forms;
 using BeautySalonApp.Forms.EntityActions;
 using BeautySalonApp.Models;
 using BeautySalonApp.Models.BeautySalonApp.Models;
@@ -18,7 +17,6 @@ namespace BeautySalonApp
         private readonly EmployeeService _employeeService;
         private readonly ManagerService _managerService;
         private OfferingsService _offeringsService;
-        private LocalDbContext _localDbContext;
 
         private int _branchId;
 
@@ -100,7 +98,7 @@ namespace BeautySalonApp
 
         private void EditService(Guid serviceId)
         {
-            new EntityOperationBuilder<Service>()
+            new EntityActionConfigurator<Service>()
                 .WithFormCreator(s => new ServiceForm(s))
                 .WithUpdateAction(s => _offeringsService.ServiceEdit(s))
                 .WithLoadData(LoadServicesData)
@@ -109,7 +107,7 @@ namespace BeautySalonApp
 
         private void DeleteService(Guid serviceId)
         {
-            new EntityOperationBuilder<Service>()
+            new EntityActionConfigurator<Service>()
                    .WithRemoveAction(_offeringsService.ServiceRemove)
                    .WithLoadData(LoadServicesData)
                    .ExecuteDelete(serviceId);
@@ -217,7 +215,7 @@ namespace BeautySalonApp
 
         private void EditCustomer(Guid CustomerId)
         {
-            new EntityOperationBuilder<Customer>()
+            new EntityActionConfigurator<Customer>()
                    .WithFormCreator(c => new CustomerForm(c))
                    .WithUpdateAction(c => _customerService.CustomerEdit(c))
                    .WithLoadData(LoadCustomersData)
@@ -226,7 +224,7 @@ namespace BeautySalonApp
 
         private void DeleteCustomer(Guid CustomerId)
         {
-            new EntityOperationBuilder<Customer>()
+            new EntityActionConfigurator<Customer>()
                     .WithRemoveAction(_customerService.CustomerRemove)
                     .WithLoadData(LoadCustomersData)
                     .ExecuteDelete(CustomerId);
@@ -275,7 +273,7 @@ namespace BeautySalonApp
 
         private void EditEmployee(Guid employeeId)
         {
-            new EntityOperationBuilder<Employee>()
+            new EntityActionConfigurator<Employee>()
                 .WithFormCreator(e => new EmployeeForm(e))
                 .WithUpdateAction(e => _employeeService.EmployeeEdit(e))
                 .WithLoadData(LoadEmployeesData)
@@ -284,7 +282,7 @@ namespace BeautySalonApp
 
         private void DeleteEmployee(Guid employeeId)
         {
-            new EntityOperationBuilder<Employee>()
+            new EntityActionConfigurator<Employee>()
                   .WithRemoveAction(_employeeService.EmployeeRemove)
                   .WithLoadData(LoadEmployeesData)
                   .ExecuteDelete(employeeId);
@@ -325,7 +323,7 @@ namespace BeautySalonApp
         private void EditManager(Guid managerId)
         {
             var manager = _managerService.GetManagerById(managerId);
-            new EntityOperationBuilder<Manager>()
+            new EntityActionConfigurator<Manager>()
                 .WithFormCreator(m => new ManagerForm(_branchId, manager))
                 .WithUpdateAction(m => _managerService.ManagerEdit(m))
                 .WithLoadData(LoadManagersData)
@@ -334,7 +332,7 @@ namespace BeautySalonApp
 
         private void DeleteManager(Guid managerId)
         {
-            new EntityOperationBuilder<Manager>()
+            new EntityActionConfigurator<Manager>()
                   .WithRemoveAction(_managerService.ManagerRemove)
                   .WithLoadData(LoadManagersData)
                   .ExecuteDelete(managerId);

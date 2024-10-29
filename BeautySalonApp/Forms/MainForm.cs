@@ -70,7 +70,7 @@ namespace BeautySalonApp
 
         private void EditBranch(int branchId)
         {
-            new EntityOperationBuilder<Branch>()
+            new EntityActionConfigurator<Branch>()
                 .WithFormCreator(branch => new BranchForm(branch))
                 .WithUpdateAction(branch => _branchService.BranchEdit(branch))
                 .WithLoadData(LoadBranchesData)

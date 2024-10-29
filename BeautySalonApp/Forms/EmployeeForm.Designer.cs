@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(EmployeeForm));
             employeeFirstNameTextBox = new TextBox();
             employeeLastNameTextBox = new TextBox();
             employeePhoneTextBox = new TextBox();
@@ -78,9 +79,9 @@
             // 
             // saveEmployeeBtn
             // 
-            saveEmployeeBtn.Location = new Point(276, 256);
+            saveEmployeeBtn.Location = new Point(136, 152);
             saveEmployeeBtn.Name = "saveEmployeeBtn";
-            saveEmployeeBtn.Size = new Size(113, 23);
+            saveEmployeeBtn.Size = new Size(123, 31);
             saveEmployeeBtn.TabIndex = 5;
             saveEmployeeBtn.Text = "Сохранить";
             saveEmployeeBtn.UseVisualStyleBackColor = true;
@@ -90,13 +91,14 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 291);
+            ClientSize = new Size(401, 212);
             Controls.Add(saveEmployeeBtn);
             Controls.Add(employeeWbnTextBox);
             Controls.Add(employeePositionTextBox);
             Controls.Add(employeePhoneTextBox);
             Controls.Add(employeeLastNameTextBox);
             Controls.Add(employeeFirstNameTextBox);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "EmployeeForm";
             StartPosition = FormStartPosition.CenterParent;
             Text = "Сотрудник";

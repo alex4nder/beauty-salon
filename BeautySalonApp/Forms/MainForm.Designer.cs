@@ -39,34 +39,36 @@
             dataGridViewSalons.AutoSizeColumnsMode = DataGridViewAutoSizeColumnsMode.Fill;
             dataGridViewSalons.BackgroundColor = SystemColors.ButtonHighlight;
             dataGridViewSalons.ColumnHeadersHeightSizeMode = DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            dataGridViewSalons.Location = new Point(12, 30);
+            dataGridViewSalons.Location = new Point(12, 34);
             dataGridViewSalons.Name = "dataGridViewSalons";
-            dataGridViewSalons.Size = new Size(740, 328);
+            dataGridViewSalons.Size = new Size(740, 372);
             dataGridViewSalons.TabIndex = 0;
             dataGridViewSalons.CellClick += dataGridViewSalons_CellClick;
             // 
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(12, 7);
+            label1.Location = new Point(12, 8);
             label1.Name = "label1";
-            label1.Size = new Size(447, 15);
+            label1.Size = new Size(503, 17);
             label1.TabIndex = 1;
             label1.Text = "Для продолжения работы с приложением выберите один из филиалов салона:";
             // 
             // MainForm
             // 
-            AutoScaleDimensions = new SizeF(7F, 15F);
+            AutoScaleDimensions = new SizeF(7F, 17F);
             AutoScaleMode = AutoScaleMode.Font;
-            BackColor = SystemColors.Control;
-            ClientSize = new Size(764, 395);
+            BackColor = SystemColors.ButtonFace;
+            ClientSize = new Size(764, 448);
             Controls.Add(label1);
             Controls.Add(dataGridViewSalons);
+            Font = new Font("Yu Gothic UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point, 204);
             ForeColor = SystemColors.ControlText;
             Icon = (Icon)resources.GetObject("$this.Icon");
+            MaximizeBox = false;
             Name = "MainForm";
             StartPosition = FormStartPosition.CenterScreen;
-            Text = "Салон красоты - Главная";
+            Text = "Салон красоты";
             Load += MainForm_Load;
             ((System.ComponentModel.ISupportInitialize)dataGridViewSalons).EndInit();
             ResumeLayout(false);

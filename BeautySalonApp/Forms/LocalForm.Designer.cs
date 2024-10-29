@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(SalonForm));
             employeesTab = new TabControl();
             servicesTab = new TabPage();
             addServiceBtn = new Button();
@@ -190,13 +191,13 @@
             reportsTab.Padding = new Padding(3);
             reportsTab.Size = new Size(968, 473);
             reportsTab.TabIndex = 3;
-            reportsTab.Text = "Отчеты о доходах";
+            reportsTab.Text = "Отчеты ";
             reportsTab.UseVisualStyleBackColor = true;
             // 
             // label2
             // 
             label2.AutoSize = true;
-            label2.Location = new Point(565, 12);
+            label2.Location = new Point(408, 11);
             label2.Name = "label2";
             label2.Size = new Size(22, 15);
             label2.TabIndex = 5;
@@ -205,7 +206,7 @@
             // label1
             // 
             label1.AutoSize = true;
-            label1.Location = new Point(332, 12);
+            label1.Location = new Point(175, 11);
             label1.Name = "label1";
             label1.Size = new Size(21, 15);
             label1.TabIndex = 4;
@@ -214,7 +215,7 @@
             // revenueReportDateFrom
             // 
             revenueReportDateFrom.Format = DateTimePickerFormat.Short;
-            revenueReportDateFrom.Location = new Point(359, 8);
+            revenueReportDateFrom.Location = new Point(202, 7);
             revenueReportDateFrom.Name = "revenueReportDateFrom";
             revenueReportDateFrom.Size = new Size(200, 23);
             revenueReportDateFrom.TabIndex = 3;
@@ -222,7 +223,7 @@
             // revenueReportDateTo
             // 
             revenueReportDateTo.Format = DateTimePickerFormat.Short;
-            revenueReportDateTo.Location = new Point(593, 8);
+            revenueReportDateTo.Location = new Point(436, 7);
             revenueReportDateTo.Name = "revenueReportDateTo";
             revenueReportDateTo.Size = new Size(200, 23);
             revenueReportDateTo.TabIndex = 2;
@@ -230,7 +231,7 @@
             // 
             // generateRevenueReportBtn
             // 
-            generateRevenueReportBtn.Location = new Point(799, 7);
+            generateRevenueReportBtn.Location = new Point(642, 6);
             generateRevenueReportBtn.Name = "generateRevenueReportBtn";
             generateRevenueReportBtn.Size = new Size(161, 23);
             generateRevenueReportBtn.TabIndex = 1;
@@ -307,6 +308,7 @@
             AutoScaleMode = AutoScaleMode.Font;
             ClientSize = new Size(976, 501);
             Controls.Add(employeesTab);
+            Icon = (Icon)resources.GetObject("$this.Icon");
             Name = "SalonForm";
             StartPosition = FormStartPosition.CenterScreen;
             Text = "Салон";
