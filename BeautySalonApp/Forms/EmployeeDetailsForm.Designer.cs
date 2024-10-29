@@ -35,6 +35,7 @@
             appointmentsDataGridView = new DataGridView();
             scheduleTab = new TabPage();
             dataGridViewEmSchedule = new DataGridView();
+            addScheduleBtn = new Button();
             employeeDetailsTabControl.SuspendLayout();
             appointmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
@@ -87,6 +88,7 @@
             // 
             // scheduleTab
             // 
+            scheduleTab.Controls.Add(addScheduleBtn);
             scheduleTab.Controls.Add(dataGridViewEmSchedule);
             scheduleTab.Location = new Point(4, 24);
             scheduleTab.Name = "scheduleTab";
@@ -105,6 +107,16 @@
             dataGridViewEmSchedule.Name = "dataGridViewEmSchedule";
             dataGridViewEmSchedule.Size = new Size(961, 431);
             dataGridViewEmSchedule.TabIndex = 1;
+            // 
+            // addScheduleBtn
+            // 
+            addScheduleBtn.Location = new Point(787, 6);
+            addScheduleBtn.Name = "addScheduleBtn";
+            addScheduleBtn.Size = new Size(172, 23);
+            addScheduleBtn.TabIndex = 2;
+            addScheduleBtn.Text = "Добавить";
+            addScheduleBtn.UseVisualStyleBackColor = true;
+            addScheduleBtn.Click += addScheduleBtn_Click;
             // 
             // EmployeeDetailsForm
             // 
@@ -132,5 +144,6 @@
         private DataGridView appointmentsDataGridView;
         private Button addAppointmentBtn;
         private DataGridView dataGridViewEmSchedule;
+        private Button addScheduleBtn;
     }
 }

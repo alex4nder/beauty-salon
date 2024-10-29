@@ -93,7 +93,7 @@ namespace BeautySalonApp
                 }
             };
 
-            addActionColumns(dataGridViewServices, (sender, e) => DataGridViewServices_CellContentClick(sender, e));
+            ActionColumnBuilder.addActionColumns(dataGridViewServices, (sender, e) => DataGridViewServices_CellContentClick(sender, e));
         }
 
         private void EditService(Guid serviceId)
@@ -210,7 +210,7 @@ namespace BeautySalonApp
 
             dataGridViewCustomers.CellFormatting += DataGridViewCustomer_CellFormatting;
 
-            addActionColumns(dataGridViewCustomers, (sender, e) => DataGridViewCustomer_CellContentClick(sender, e));
+            ActionColumnBuilder.addActionColumns(dataGridViewCustomers, (sender, e) => DataGridViewCustomer_CellContentClick(sender, e));
         }
 
         private void EditCustomer(Guid CustomerId)
@@ -266,7 +266,7 @@ namespace BeautySalonApp
                 dataGridViewEmployees.Columns.Add(editButtonColumn);
             }
 
-            addActionColumns(dataGridViewEmployees, (sender, e) => DataGridViewEmployee_CellContentClick(sender, e));
+            ActionColumnBuilder.addActionColumns(dataGridViewEmployees, (sender, e) => DataGridViewEmployee_CellContentClick(sender, e));
 
             dataGridViewEmployees.Columns["Details"].Width = 100;
         }
@@ -317,7 +317,7 @@ namespace BeautySalonApp
             dataGridViewManagers.Columns.Remove("Email");
             dataGridViewManagers.Columns.Insert(3, emailColumn);
 
-            addActionColumns(dataGridViewManagers, (sender, e) => DataGridViewManager_CellContentClick(sender, e));
+            ActionColumnBuilder.addActionColumns(dataGridViewManagers, (sender, e) => DataGridViewManager_CellContentClick(sender, e));
         }
 
         private void EditManager(Guid managerId)
@@ -544,47 +544,6 @@ namespace BeautySalonApp
                     string formattedPhoneNumber = $"+7 ({rawPhoneNumber.Substring(1, 3)}) {rawPhoneNumber.Substring(4, 3)}-{rawPhoneNumber.Substring(7, 2)}-{rawPhoneNumber.Substring(9, 2)}";
                     e.Value = formattedPhoneNumber;
                 }
-            }
-        }
-
-        private void addActionColumns(DataGridView dataGridView, Action<object, DataGridViewCellEventArgs> cellClickHandler)
-        {
-            if (!dataGridView.Columns.Contains("Edit") && !dataGridView.Columns.Contains("Delete"))
-            {
-                dataGridView.CellContentClick -= DataGridView_CellContentClickWrapper;
-                dataGridView.CellContentClick += DataGridView_CellContentClickWrapper;
-            }
-
-            if (!dataGridView.Columns.Contains("Edit"))
-            {
-                DataGridViewButtonColumn editButtonColumn = new DataGridViewButtonColumn
-                {
-                    Name = "Edit",
-                    HeaderText = "",
-                    Text = "Редактировать",
-                    UseColumnTextForButtonValue = true
-                };
-                dataGridView.Columns.Add(editButtonColumn);
-            }
-
-            if (!dataGridView.Columns.Contains("Delete"))
-            {
-                DataGridViewButtonColumn deleteButtonColumn = new DataGridViewButtonColumn
-                {
-                    Name = "Delete",
-                    HeaderText = "",
-                    Text = "Удалить",
-                    UseColumnTextForButtonValue = true
-                };
-                dataGridView.Columns.Add(deleteButtonColumn);
-            }
-
-            dataGridView.Columns["Edit"].Width = 100;
-            dataGridView.Columns["Delete"].Width = 100;
-
-            void DataGridView_CellContentClickWrapper(object sender, DataGridViewCellEventArgs e)
-            {
-                cellClickHandler?.Invoke(sender, e);
             }
         }
 

@@ -1,7 +1,8 @@
-using System.Globalization;
+using BeautySalonApp.Forms.EntityActions;
 using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
+using System.Globalization;
 
 namespace BeautySalonApp.Forms
 {
@@ -111,8 +112,39 @@ namespace BeautySalonApp.Forms
             dataGridViewEmSchedule.Columns["StartTime"].HeaderText = "Время начала";
             dataGridViewEmSchedule.Columns["EndTime"].HeaderText = "Время окончания";
             dataGridViewEmSchedule.Columns["Id"].Visible = false;
-        }
 
+            ActionColumnBuilder.addActionColumns(dataGridViewEmSchedule, (sender, e) => dataGridViewEmSchedule_CellContentClick(sender, e));
+        }
+        private void dataGridViewEmSchedule_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+            if (e.RowIndex >= 0)
+            {
+                DataGridViewRow row = dataGridViewEmSchedule.Rows[e.RowIndex];
+                Guid scheduleId = Guid.Parse(row.Cells["Id"].Value.ToString());
+
+                if (e.ColumnIndex == dataGridViewEmSchedule.Columns["Edit"].Index)
+                {
+                    this.Hide();
+                    new EntityActionConfigurator<Schedule>()
+                        .WithFormCreator(schedule => new ScheduleForm(schedule.EmployeeId, schedule))
+                        .WithUpdateAction(schedule => _scheduleService.UpdateSchedule(schedule))
+                        .WithLoadData(LoadScheduleData)
+                        .ExecuteEdit(_scheduleService.GetScheduleById(scheduleId));
+                    this.Show();
+
+                    return;
+                }
+
+                if (e.ColumnIndex == dataGridViewEmSchedule.Columns["Delete"].Index)
+                {
+                    new EntityActionConfigurator<Employee>()
+                        .WithRemoveAction(_scheduleService.RemoveSchedule)
+                        .WithLoadData(LoadScheduleData)
+                        .ExecuteDelete(scheduleId);
+                    return;
+                }
+            }
+        }
 
         private void DataGridViewAppoinments_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
@@ -152,6 +184,15 @@ namespace BeautySalonApp.Forms
             if (appointmentForm.ShowDialog() == DialogResult.OK)
             {
                 LoadAppointmentsData();
+            }
+        }
+
+        private void addScheduleBtn_Click(object sender, EventArgs e)
+        {
+            ScheduleForm form = new ScheduleForm(_employeeId);
+            if (form.ShowDialog() == DialogResult.OK)
+            {
+                LoadScheduleData();
             }
         }
     }
