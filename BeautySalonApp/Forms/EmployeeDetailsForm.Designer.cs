@@ -33,19 +33,19 @@
             appointmentsTab = new TabPage();
             addAppointmentBtn = new Button();
             appointmentsDataGridView = new DataGridView();
-            performanceTab = new TabPage();
+            scheduleTab = new TabPage();
             dataGridViewEmSchedule = new DataGridView();
             employeeDetailsTabControl.SuspendLayout();
             appointmentsTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).BeginInit();
-            performanceTab.SuspendLayout();
+            scheduleTab.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmSchedule).BeginInit();
             SuspendLayout();
             // 
             // employeeDetailsTabControl
             // 
             employeeDetailsTabControl.Controls.Add(appointmentsTab);
-            employeeDetailsTabControl.Controls.Add(performanceTab);
+            employeeDetailsTabControl.Controls.Add(scheduleTab);
             employeeDetailsTabControl.Location = new Point(1, 2);
             employeeDetailsTabControl.Name = "employeeDetailsTabControl";
             employeeDetailsTabControl.SelectedIndex = 0;
@@ -85,16 +85,16 @@
             appointmentsDataGridView.Size = new Size(961, 431);
             appointmentsDataGridView.TabIndex = 0;
             // 
-            // performanceTab
+            // scheduleTab
             // 
-            performanceTab.Controls.Add(dataGridViewEmSchedule);
-            performanceTab.Location = new Point(4, 24);
-            performanceTab.Name = "performanceTab";
-            performanceTab.Padding = new Padding(3);
-            performanceTab.Size = new Size(967, 470);
-            performanceTab.TabIndex = 1;
-            performanceTab.Text = "Рабочий график";
-            performanceTab.UseVisualStyleBackColor = true;
+            scheduleTab.Controls.Add(dataGridViewEmSchedule);
+            scheduleTab.Location = new Point(4, 24);
+            scheduleTab.Name = "scheduleTab";
+            scheduleTab.Padding = new Padding(3);
+            scheduleTab.Size = new Size(967, 470);
+            scheduleTab.TabIndex = 1;
+            scheduleTab.Text = "Рабочий график";
+            scheduleTab.UseVisualStyleBackColor = true;
             // 
             // dataGridViewEmSchedule
             // 
@@ -119,7 +119,7 @@
             employeeDetailsTabControl.ResumeLayout(false);
             appointmentsTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)appointmentsDataGridView).EndInit();
-            performanceTab.ResumeLayout(false);
+            scheduleTab.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)dataGridViewEmSchedule).EndInit();
             ResumeLayout(false);
         }
@@ -128,7 +128,7 @@
 
         private TabControl employeeDetailsTabControl;
         private TabPage appointmentsTab;
-        private TabPage performanceTab;
+        private TabPage scheduleTab;
         private DataGridView appointmentsDataGridView;
         private Button addAppointmentBtn;
         private DataGridView dataGridViewEmSchedule;

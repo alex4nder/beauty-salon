@@ -37,11 +37,4 @@ namespace BeautySalonApp.Models
         // Navigation Property
         public virtual Branch Branch { get; set; }
     }
-
-    public enum ReportType
-    {
-        IncomeReport,
-        CustomerReport,
-        ServiceReport
-    }
 }

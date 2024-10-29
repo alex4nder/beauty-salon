@@ -53,7 +53,7 @@ CREATE TABLE appointments (
 CREATE TABLE schedule (
     id CHAR(36) PRIMARY KEY DEFAULT (UUID()),
     employee_id CHAR(36) NOT NULL,
-    week_day VARCHAR(10) NOT NULL CHECK (week_day IN ('Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday')),
+    date DATE NOT NULL,
     start_time TIME NOT NULL,
     end_time TIME NOT NULL,
     FOREIGN KEY (employee_id) REFERENCES employees(id) ON DELETE CASCADE
@@ -115,17 +115,17 @@ INSERT INTO appointments (customer_id, service_id, employee_id, description, dat
 ((SELECT id FROM customers WHERE email = 'lily.wilson@example.com'), (SELECT id FROM services WHERE title = 'Bridal Makeup'), (SELECT id FROM employees WHERE email = 'frank.martinez@example.com'), 'Bridal makeup consultation', '2024-10-25', '2024-10-25 09:30:00', '2024-10-25 10:30:00', 'created'),
 ((SELECT id FROM customers WHERE email = 'mia.thompson@example.com'), (SELECT id FROM services WHERE title = 'Keratin Treatment'), (SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Smoothing treatment for hair', '2024-10-26', '2024-10-26 14:00:00', '2024-10-26 16:00:00', 'created');
 
-INSERT INTO schedule (employee_id, week_day, start_time, end_time) VALUES
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Monday', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Tuesday', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Wednesday', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Thursday', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Friday', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), 'Monday', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), 'Tuesday', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), 'Wednesday', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), 'Thursday', '08:30:00', '16:30:00'),
-((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), 'Friday', '08:30:00', '16:30:00'),
-((SELECT id FROM employees WHERE email = 'david.brown@example.com'), 'Saturday', '09:00:00', '15:00:00'),
-((SELECT id FROM employees WHERE email = 'ella.wilson@example.com'), 'Sunday', '10:00:00', '16:00:00');
+INSERT INTO schedule (employee_id, date, start_time, end_time) VALUES
+((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-18', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-19', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-20', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-21', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-22', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-12', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-19', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-11', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), '2024-10-20', '08:30:00', '16:30:00'),
+((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), '2024-10-22', '08:30:00', '16:30:00'),
+((SELECT id FROM employees WHERE email = 'david.brown@example.com'), '2024-10-23', '09:00:00', '15:00:00'),
+((SELECT id FROM employees WHERE email = 'ella.wilson@example.com'), '2024-10-23', '10:00:00', '16:00:00');
 

@@ -479,7 +479,7 @@ namespace BeautySalonApp
                 else if (e.ColumnIndex == dataGridViewEmployees.Columns["Details"].Index)
                 {
                     this.Hide();
-                    using (EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _branchId))
+                    using (EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId))
                     {
                         employeeDetailsForm.ShowDialog();
                     }
@@ -613,7 +613,7 @@ namespace BeautySalonApp
                 DataGridViewRow row = dataGridViewEmployees.Rows[e.RowIndex];
                 Guid employeeId = Guid.Parse(row.Cells["Id"].Value.ToString());
 
-                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId, _branchId);
+                EmployeeDetailsForm employeeDetailsForm = new EmployeeDetailsForm(employeeId);
                 employeeDetailsForm.ShowDialog();
 
             }

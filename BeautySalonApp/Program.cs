@@ -1,5 +1,6 @@
 using BeautySalonApp.Data;
 using BeautySalonApp.Forms;
+using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
@@ -56,6 +57,7 @@ namespace BeautySalonApp
 
                 services.AddScoped<ManagerService>();
                 services.AddScoped<OfferingsService>();
+                services.AddScoped<ScheduleService>();
 
                 services.AddTransient<MainForm>();
                 services.AddTransient<BranchForm>();

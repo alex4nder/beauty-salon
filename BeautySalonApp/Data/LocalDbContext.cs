@@ -12,6 +12,8 @@ namespace BeautySalonApp.Data
         public DbSet<Customer> Customers { get; set; }
         public DbSet<Employee> Employees { get; set; }
         public DbSet<Appointment> Appointments { get; set; }
+        public DbSet<Schedule> Schedules { get; set; }
+
         public DbSet<Service> Services { get; set; }
         public DbSet<Schedule> WorkHours { get; set; }
 

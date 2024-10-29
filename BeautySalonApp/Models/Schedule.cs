@@ -3,16 +3,6 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace BeautySalonApp.Models
 {
-    public enum WeekdayEnum
-    {
-        Monday,
-        Tuesday,
-        Wednesday,
-        Thursday,
-        Friday,
-        Saturday,
-        Sunday
-    }
 
     [Table("schedule")]
     public class Schedule
@@ -27,8 +17,8 @@ namespace BeautySalonApp.Models
         public Guid EmployeeId { get; set; }
 
         [Required]
-        [Column("week_day")]
-        public WeekdayEnum WeekDay { get; set; }
+        [Column("date")]
+        public DateTime Date { get; set; }
 
         [Required]
         [Column("start_time")]

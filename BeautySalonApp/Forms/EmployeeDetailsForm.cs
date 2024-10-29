@@ -1,3 +1,4 @@
+using System.Globalization;
 using BeautySalonApp.Models;
 using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -7,14 +8,14 @@ namespace BeautySalonApp.Forms
     public partial class EmployeeDetailsForm : Form
     {
         private readonly EmployeeService _employeeService;
+        private readonly ScheduleService _scheduleService;
         private readonly Guid _employeeId;
-        private readonly int _salonId;
 
-        public EmployeeDetailsForm(Guid employeeId, int salonId)
+        public EmployeeDetailsForm(Guid employeeId)
         {
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
+            _scheduleService = Program.ServiceProvider.GetRequiredService<ScheduleService>();
             _employeeId = employeeId;
-            _salonId = salonId;
 
             InitializeComponent();
 
@@ -26,6 +27,7 @@ namespace BeautySalonApp.Forms
             var tabLoadActions = new Dictionary<TabPage, Action>
             {
                 { appointmentsTab, LoadAppointmentsData },
+                { scheduleTab, LoadScheduleData }
             };
 
             if (tabLoadActions.TryGetValue(employeeDetailsTabControl.SelectedTab, out var loadAction))
@@ -88,6 +90,29 @@ namespace BeautySalonApp.Forms
                 appointmentsDataGridView.Columns.Add(cancelAppointmentButtonColumn);
             }
         }
+
+        private void LoadScheduleData()
+        {
+            var scheduleData = _scheduleService.GetEmployeeSchedule(_employeeId)
+                .Select(s => new
+                {
+                    s.Id,
+                    Date = s.Date.ToString("dd.MM.yyyy"),
+                    Day = CultureInfo.CurrentCulture.TextInfo.ToTitleCase(s.Date.ToString("dddd", new CultureInfo("ru-RU"))),
+                    StartTime = s.StartTime.ToString(@"hh\:mm"),
+                    EndTime = s.EndTime.ToString(@"hh\:mm")
+                })
+                .ToList();
+
+            dataGridViewEmSchedule.DataSource = scheduleData;
+
+            dataGridViewEmSchedule.Columns["Date"].HeaderText = "Дата";
+            dataGridViewEmSchedule.Columns["Day"].HeaderText = "День недели";
+            dataGridViewEmSchedule.Columns["StartTime"].HeaderText = "Время начала";
+            dataGridViewEmSchedule.Columns["EndTime"].HeaderText = "Время окончания";
+            dataGridViewEmSchedule.Columns["Id"].Visible = false;
+        }
+
 
         private void DataGridViewAppoinments_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
