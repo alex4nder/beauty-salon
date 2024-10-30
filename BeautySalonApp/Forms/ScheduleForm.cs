@@ -91,7 +91,6 @@ namespace BeautySalonApp.Forms
             catch (Exception ex)
             {
                 MessageBox.Show("Произошла непредвиденная ошибка. Пожалуйста, попробуйте снова.", "Ошибка", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                // Optionally log the exception message or stack trace for debugging
                 Console.WriteLine(ex.Message);
             }
 

@@ -382,14 +382,11 @@ namespace BeautySalonApp
             {
                 string commentText = e.Value.ToString();
 
-                // Выравнивание текста по верхнему краю ячейки
                 e.CellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
 
-                // Форматирование текста
                 e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
                 e.CellStyle.WrapMode = DataGridViewTriState.True; // Включить перенос текста
 
-                // Добавляем границы и фон для ячейки комментария
                 e.CellStyle.BackColor = Color.White; // Белый фон для комментариев
                 e.CellStyle.SelectionBackColor = Color.LightGray; // Цвет фона при выделении
             }

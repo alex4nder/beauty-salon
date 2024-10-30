@@ -2,20 +2,16 @@ namespace BeautySalonApp.Exceptions
 {
     public class ScheduleException : Exception
     {
-        private const string DEFAULT_ERROR_MESSAGE = "Произошла ошибка. Пожалуйста, повторите операцию снова.";
-        // Default constructor
+        private const string DEFAULT_ERROR_MESSAGE = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ. пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ, пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅ.";
         public ScheduleException() : base(DEFAULT_ERROR_MESSAGE) { }
-        // Constructor that accepts a custom message
         public ScheduleException(string message) : base(message) { }
-
-        // Constructor that accepts a custom message and an inner exception
         public ScheduleException(string message, Exception innerException)
             : base(message, innerException) { }
     }
 
     public class ScheduleDateConflictException : ScheduleException
     {
-        private const string CREATE_OR_UPDATE_ERROR_DUE_TO_DATE = "Рабочий график для данного сотрудника на этот день уже определен.";
+        private const string CREATE_OR_UPDATE_ERROR_DUE_TO_DATE = "пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ пїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅпїЅ пїЅпїЅпїЅ пїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅпїЅ.";
         public ScheduleDateConflictException() : base(CREATE_OR_UPDATE_ERROR_DUE_TO_DATE) { }
 
     }
