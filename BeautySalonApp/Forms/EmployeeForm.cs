@@ -34,8 +34,21 @@ namespace BeautySalonApp.Forms
                 };
                 _isEditMode = false;
             }
+            SetFormTitle();
+        }
+        private void SetFormTitle()
+        {
+            this.Text = _isEditMode ? GetEditModeTitle() : GetCreateModeTitle();
+        }
+        private string GetEditModeTitle()
+        {
+            return $"Сотрудник: {_employee.FirstName} {_employee.LastName}";
         }
 
+        private string GetCreateModeTitle()
+        {
+            return "Добавление сотрудника";
+        }
         private void PreFillEmployeeData()
         {
             employeeFirstNameTextBox.Text = _employee.FirstName;

@@ -12,7 +12,7 @@ namespace BeautySalonApp.Services
         private LocalDbContext _context;
         private readonly CurrentBranchContext _CurrentBranchContext;
 
-        private const int PopularityThreshold = 5;
+        private const int PopularityThreshold = 2;
 
         public OfferingsService()
         {

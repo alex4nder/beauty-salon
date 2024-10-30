@@ -38,6 +38,20 @@ namespace BeautySalonApp.Forms
                 };
                 _isEditMode = false;
             }
+            SetFormTitle();
+        }
+        private void SetFormTitle()
+        {
+            this.Text = _isEditMode ? GetEditModeTitle() : GetCreateModeTitle();
+        }
+        private string GetEditModeTitle()
+        {
+            return $"Менеджер: {_manager.FirstName} {_manager.LastName}";
+        }
+
+        private string GetCreateModeTitle()
+        {
+            return "Добавление менеджера";
         }
 
         private void PreFillManagerData()

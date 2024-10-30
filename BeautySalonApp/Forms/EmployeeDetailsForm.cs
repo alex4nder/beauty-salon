@@ -19,8 +19,15 @@ namespace BeautySalonApp.Forms
             _employeeId = employeeId;
 
             InitializeComponent();
+            SetFormTitle();
 
             employeeDetailsTabControl_SelectedIndexChanged(employeeDetailsTabControl, EventArgs.Empty);
+        }
+
+        private void SetFormTitle()
+        {
+            var employee = _employeeService.GetEmployeeById(_employeeId);
+            this.Text = $"Сотрудник: {employee.FirstName} {employee.LastName}";
         }
 
         private void employeeDetailsTabControl_SelectedIndexChanged(object sender, EventArgs e)
@@ -124,13 +131,11 @@ namespace BeautySalonApp.Forms
 
                 if (e.ColumnIndex == dataGridViewEmSchedule.Columns["Edit"].Index)
                 {
-                    this.Hide();
                     new EntityActionConfigurator<Schedule>()
                         .WithFormCreator(schedule => new ScheduleForm(schedule.EmployeeId, schedule))
                         .WithUpdateAction(schedule => _scheduleService.UpdateSchedule(schedule))
                         .WithLoadData(LoadScheduleData)
                         .ExecuteEdit(_scheduleService.GetScheduleById(scheduleId));
-                    this.Show();
 
                     return;
                 }

@@ -34,6 +34,9 @@ namespace BeautySalonApp.Forms
                 };
                 _isEditMode = false;
             }
+
+            SetFormTitle();
+
         }
 
         private void PreFillServiceData()
@@ -42,6 +45,20 @@ namespace BeautySalonApp.Forms
             descriptionTextBox.Text = _service.Description;
             priceTextBox.Text = _service.Price.ToString("F2");
             durationTextBox.Text = _service.Duration.ToString();
+        }
+        private void SetFormTitle()
+        {
+            this.Text = _isEditMode ? GetEditModeTitle() : GetCreateModeTitle();
+        }
+
+        private string GetEditModeTitle()
+        {
+            return $"Услуга: {_service.Title}";
+        }
+
+        private string GetCreateModeTitle()
+        {
+            return "Новая услуга";
         }
 
         private void saveServiceBtn_Click(object sender, EventArgs e)

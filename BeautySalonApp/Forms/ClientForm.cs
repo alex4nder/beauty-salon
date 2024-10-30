@@ -1,6 +1,6 @@
-﻿using BeautySalonApp.Services;
+﻿using BeautySalonApp.Models.BeautySalonApp.Models;
+using BeautySalonApp.Services;
 using Microsoft.Extensions.DependencyInjection;
-using BeautySalonApp.Models.BeautySalonApp.Models;
 
 namespace BeautySalonApp.Forms
 {
@@ -34,8 +34,23 @@ namespace BeautySalonApp.Forms
                 };
                 _isEditMode = false;
             }
+            SetFormTitle();
         }
 
+        private void SetFormTitle()
+        {
+            this.Text = _isEditMode ? GetEditModeTitle() : GetCreateModeTitle();
+        }
+
+        private string GetEditModeTitle()
+        {
+            return $"Клиент: {_customer.FirstName} {_customer.LastName}";
+        }
+
+        private string GetCreateModeTitle()
+        {
+            return "Добавление клиента";
+        }
         private void PreFillClientData()
         {
             clientFirstNameTextBox.Text = _customer.FirstName;

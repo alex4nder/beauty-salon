@@ -20,13 +20,12 @@ namespace BeautySalonApp.Forms
 
             _scheduleService = Program.ServiceProvider.GetRequiredService<ScheduleService>();
             _employeeService = Program.ServiceProvider.GetRequiredService<EmployeeService>();
+            _employee = _employeeService.GetEmployeeById(employeeId);
 
             if (schedule != null)
             {
                 _schedule = schedule;
-                _employee = _employeeService.GetEmployeeById(_schedule.EmployeeId);
                 _isEditMode = true;
-                SetFormTitle();
                 PreFillScheduleData();
             }
             else
@@ -40,6 +39,8 @@ namespace BeautySalonApp.Forms
                 };
                 _isEditMode = false;
             }
+
+            SetFormTitle();
         }
 
         private void PreFillScheduleData()
@@ -49,13 +50,19 @@ namespace BeautySalonApp.Forms
             endTimePicker.Value = DateTime.Today.Add(_schedule.EndTime);
         }
 
+
         private void SetFormTitle()
         {
-            if (_isEditMode)
-            {
-                this.Text = $"Рабочий график сотрудника: {_employee.FirstName} {_employee.LastName}";
+            this.Text = _isEditMode ? GetEditModeTitle() : GetCreateModeTitle();
+        }
+        private string GetEditModeTitle()
+        {
+            return $"Рабочий график сотрудника: {_employee.FirstName} {_employee.LastName}";
+        }
 
-            }
+        private string GetCreateModeTitle()
+        {
+            return $"Рабочий график сотрудника: {_employee.FirstName} {_employee.LastName}";
         }
 
         private void scheduleSaveBtn_Click(object sender, EventArgs e)

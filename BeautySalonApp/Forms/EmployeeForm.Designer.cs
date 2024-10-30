@@ -33,7 +33,6 @@
             employeeLastNameTextBox = new TextBox();
             employeePhoneTextBox = new TextBox();
             employeePositionTextBox = new TextBox();
-            employeeWbnTextBox = new TextBox();
             saveEmployeeBtn = new Button();
             SuspendLayout();
             // 
@@ -69,17 +68,9 @@
             employeePositionTextBox.Size = new Size(179, 23);
             employeePositionTextBox.TabIndex = 3;
             // 
-            // employeeWbnTextBox
-            // 
-            employeeWbnTextBox.Location = new Point(12, 99);
-            employeeWbnTextBox.Name = "employeeWbnTextBox";
-            employeeWbnTextBox.PlaceholderText = "Номер трудовой книдки";
-            employeeWbnTextBox.Size = new Size(377, 23);
-            employeeWbnTextBox.TabIndex = 4;
-            // 
             // saveEmployeeBtn
             // 
-            saveEmployeeBtn.Location = new Point(136, 152);
+            saveEmployeeBtn.Location = new Point(134, 126);
             saveEmployeeBtn.Name = "saveEmployeeBtn";
             saveEmployeeBtn.Size = new Size(123, 31);
             saveEmployeeBtn.TabIndex = 5;
@@ -91,9 +82,8 @@
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
             AutoScaleMode = AutoScaleMode.Font;
-            ClientSize = new Size(401, 212);
+            ClientSize = new Size(401, 172);
             Controls.Add(saveEmployeeBtn);
-            Controls.Add(employeeWbnTextBox);
             Controls.Add(employeePositionTextBox);
             Controls.Add(employeePhoneTextBox);
             Controls.Add(employeeLastNameTextBox);
@@ -112,7 +102,6 @@
         private TextBox employeeLastNameTextBox;
         private TextBox employeePhoneTextBox;
         private TextBox employeePositionTextBox;
-        private TextBox employeeWbnTextBox;
         private Button saveEmployeeBtn;
     }
 }

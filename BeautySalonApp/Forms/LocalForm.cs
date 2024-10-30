@@ -260,15 +260,15 @@ namespace BeautySalonApp
                 {
                     Name = "Details",
                     HeaderText = "",
-                    Text = "Детали",
+                    Text = "Записи и график",
                     UseColumnTextForButtonValue = true
                 };
                 dataGridViewEmployees.Columns.Add(editButtonColumn);
+                dataGridViewEmployees.Columns["Details"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
+
             }
 
             ActionColumnBuilder.addActionColumns(dataGridViewEmployees, (sender, e) => DataGridViewEmployee_CellContentClick(sender, e));
-
-            dataGridViewEmployees.Columns["Details"].Width = 100;
         }
 
         private void EditEmployee(Guid employeeId)
@@ -350,6 +350,7 @@ namespace BeautySalonApp
 
         private void DataGridViewCustomerFeedback_CellFormatting(object sender, DataGridViewCellFormattingEventArgs e)
         {
+            dataGridViewCustomerFeedback.Columns["Comment"].AutoSizeMode = DataGridViewAutoSizeColumnMode.AllCells;
             if (dataGridViewCustomerFeedback.Columns[e.ColumnIndex].Name == "Rating" && e.Value != null)
             {
                 string ratingText = e.Value.ToString();
@@ -376,6 +377,21 @@ namespace BeautySalonApp
                             break;
                     }
                 }
+            }
+            if (dataGridViewCustomerFeedback.Columns[e.ColumnIndex].Name == "Comment" && e.Value != null)
+            {
+                string commentText = e.Value.ToString();
+
+                // Выравнивание текста по верхнему краю ячейки
+                e.CellStyle.Alignment = DataGridViewContentAlignment.TopLeft;
+
+                // Форматирование текста
+                e.CellStyle.Font = new Font("Segoe UI", 10, FontStyle.Regular);
+                e.CellStyle.WrapMode = DataGridViewTriState.True; // Включить перенос текста
+
+                // Добавляем границы и фон для ячейки комментария
+                e.CellStyle.BackColor = Color.White; // Белый фон для комментариев
+                e.CellStyle.SelectionBackColor = Color.LightGray; // Цвет фона при выделении
             }
         }
 

@@ -1,6 +1,4 @@
 create database beautysalonlocaldb1;
-create database beautysalonlocaldb2;
-create database beautysalonlocaldb3;
 
 USE beautysalonlocaldb1;
 
@@ -60,72 +58,75 @@ CREATE TABLE schedule (
 );
 
 INSERT INTO employees (first_name, last_name, email, phone, position) VALUES
-('Alice', 'Smith', 'alice.smith@example.com', '555-123-4567', 'Stylist'),
-('Bob', 'Johnson', 'bob.johnson@example.com', '555-234-5678', 'Colorist'),
-('Cathy', 'Davis', 'cathy.davis@example.com', '555-345-6789', 'Nail Technician'),
-('David', 'Brown', 'david.brown@example.com', '555-456-7890', 'Esthetician'),
-('Ella', 'Wilson', 'ella.wilson@example.com', '555-567-8901', 'Stylist'),
-('Frank', 'Martinez', 'frank.martinez@example.com', '555-678-9012', 'Nail Technician'),
-('Grace', 'Garcia', 'grace.garcia@example.com', '555-789-0123', 'Manager'),
-('Henry', 'Lopez', 'henry.lopez@example.com', '555-890-1234', 'Manager');
-
+('Алиса', 'Смирнова', 'alisa.smirnova@example.com', '+7 (495) 123-4567', 'Стилист'),
+('Иван', 'Иванов', 'ivan.ivanov@example.com', '+7 (495) 234-5678', 'Колорист'),
+('Екатерина', 'Давыдова', 'ekaterina.davydova@example.com', '+7 (495) 345-6789', 'Мастер маникюра'),
+('Давид', 'Бровкин', 'david.brovkin@example.com', '+7 (495) 456-7890', 'Косметолог'),
+('Елена', 'Васильева', 'elena.vasileva@example.com', '+7 (495) 567-8901', 'Стилист'),
+('Фёдор', 'Мартынов', 'fedor.martynov@example.com', '+7 (495) 678-9012', 'Мастер маникюра'),
+('Галина', 'Григорьева', 'galina.grigorieva@example.com', '+7 (495) 789-0123', 'Менеджер'),
+('Геннадий', 'Лобанов', 'gennady.lobanov@example.com', '+7 (495) 890-1234', 'Менеджер');
 
 INSERT INTO customers (first_name, last_name, phone, email, birthday) VALUES
-('Alice', 'Johnson', '123-456-7891', 'alice.johnson@example.com', '1990-01-01'),
-('Bob', 'Smith', '123-456-7892', 'bob.smith@example.com', '1991-02-02'),
-('Cathy', 'Brown', '123-456-7893', 'cathy.brown@example.com', '1992-03-03'),
-('David', 'Wilson', '123-456-7894', 'david.wilson@example.com', '1993-04-04'),
-('Ella', 'Davis', '123-456-7895', 'ella.davis@example.com', '1994-05-05'),
-('Frank', 'Garcia', '123-456-7896', 'frank.garcia@example.com', '1995-06-06'),
-('Grace', 'Martinez', '123-456-7897', 'grace.martinez@example.com', '1996-07-07'),
-('Henry', 'Lopez', '123-456-7898', 'henry.lopez@example.com', '1997-08-08'),
-('Ivy', 'Hernandez', '123-456-7899', 'ivy.hernandez@example.com', '1998-09-09'),
-('Jack', 'Gonzalez', '123-456-7800', 'jack.gonzalez@example.com', '1999-10-10'),
-('Lily', 'Wilson', '123-456-7801', 'lily.wilson@example.com', '2000-11-11'),
-('Mia', 'Thompson', '123-456-7802', 'mia.thompson@example.com', '2001-12-12'),
-('Nina', 'Garcia', '123-456-7803', 'nina.garcia@example.com', '1995-07-15'),
-('Oliver', 'Martinez', '123-456-7804', 'oliver.martinez@example.com', '1998-08-18'),
-('Paula', 'Lopez', '123-456-7805', 'paula.lopez@example.com', '2000-09-19');
+('Анна', 'Иванова', '+7 (495) 123-4567', 'anna.ivanova@example.com', '1990-01-01'),
+('Борис', 'Петров', '+7 (495) 234-5678', 'boris.petrov@example.com', '1991-02-02'),
+('Вера', 'Сидорова', '+7 (495) 345-6789', 'vera.sidorova@example.com', '1992-03-03'),
+('Денис', 'Михайлов', '+7 (495) 456-7890', 'denis.mikhailov@example.com', '1993-04-04'),
+('Екатерина', 'Кузнецова', '+7 (495) 567-8901', 'ekaterina.kuznetsova@example.com', '1994-05-05'),
+('Филипп', 'Козлов', '+7 (495) 678-9012', 'filipp.kozlov@example.com', '1995-06-06'),
+('Галина', 'Попова', '+7 (495) 789-0123', 'galina.popova@example.com', '1996-07-07'),
+('Георгий', 'Соколов', '+7 (495) 890-1234', 'georgiy.sokolov@example.com', '1997-08-08'),
+('Ирина', 'Семенова', '+7 (495) 901-2345', 'irina.semenova@example.com', '1998-09-09'),
+('Илья', 'Крылов', '+7 (495) 912-3456', 'ilya.krylov@example.com', '1999-10-10'),
+('Лариса', 'Волкова', '+7 (495) 923-4567', 'larisa.volkova@example.com', '2000-11-11'),
+('Мария', 'Зайцева', '+7 (495) 934-5678', 'maria.zaitseva@example.com', '2001-12-12'),
+('Наталья', 'Лебедева', '+7 (495) 945-6789', 'natalya.lebedeva@example.com', '1995-07-15'),
+('Олег', 'Ершов', '+7 (495) 956-7890', 'oleg.ershov@example.com', '1998-08-18'),
+('Полина', 'Жукова', '+7 (495) 967-8901', 'polina.zhukova@example.com', '2000-09-19');
 
 INSERT INTO services (title, description, price, duration) VALUES
-('Haircut', 'Standard haircut for men and women.', 20.00, 30),
-('Hair Color', 'Full hair coloring service.', 75.00, 90),
-('Hair Treatment', 'Deep conditioning and repair treatment.', 50.00, 45),
-('Styling', 'Blowout and styling service.', 30.00, 60),
-('Manicure', 'Nail trimming and polishing.', 15.00, 45),
-('Pedicure', 'Foot care and nail polishing.', 25.00, 60),
-('Facial', 'Deep cleansing facial treatment.', 50.00, 60),
-('Massage', 'Relaxing full body massage.', 80.00, 60),
-('Waxing', 'Hair removal service for legs and arms.', 35.00, 30),
-('Eyebrow Shaping', 'Shaping and grooming of eyebrows.', 20.00, 15),
-('Makeup Application', 'Professional makeup application.', 50.00, 30),
-('Bridal Makeup', 'Specialized makeup for brides.', 100.00, 120),
-('Keratin Treatment', 'Smoothing treatment for frizzy hair.', 150.00, 120);
+('Стрижка', 'Обычная стрижка для мужчин и женщин.', 2000.00, 30),
+('Окрашивание', 'Полное окрашивание волос.', 7500.00, 90),
+('Лечение волос', 'Глубокое кондиционирование и восстановление волос.', 5000.00, 45),
+('Укладка', 'Укладка феном и стайлинг.', 3000.00, 60),
+('Маникюр', 'Подстригание и полировка ногтей.', 1500.00, 45),
+('Педикюр', 'Уход за ногами и полировка ногтей.', 2500.00, 60),
+('Чистка лица', 'Глубокая очистка лица.', 5000.00, 60),
+('Массаж', 'Расслабляющий массаж всего тела.', 8000.00, 60),
+('Депиляция', 'Удаление волос на ногах и руках.', 3500.00, 30),
+('Формирование бровей', 'Коррекция и формирование бровей.', 2000.00, 15),
+('Макияж', 'Профессиональное нанесение макияжа.', 5000.00, 30),
+('Свадебный макияж', 'Специализированный макияж для невест.', 10000.00, 120),
+('Кератиновое выпрямление', 'Разглаживающая процедура для непослушных волос.', 15000.00, 120);
 
 INSERT INTO appointments (customer_id, service_id, employee_id, description, date, start_time, end_time, status) VALUES
-((SELECT id FROM customers WHERE email = 'bob.smith@example.com'), (SELECT id FROM services WHERE title = 'Hair Color'), (SELECT id FROM employees WHERE email = 'grace.garcia@example.com'), 'Coloring appointment', '2024-10-16', '2024-10-16 11:00:00', '2024-10-16 12:30:00', 'created'),
-((SELECT id FROM customers WHERE email = 'cathy.brown@example.com'), (SELECT id FROM services WHERE title = 'Facial'), (SELECT id FROM employees WHERE email = 'david.brown@example.com'), 'Facial treatment', '2024-10-17', '2024-10-17 14:00:00', '2024-10-17 15:00:00', 'created'),
-((SELECT id FROM customers WHERE email = 'david.wilson@example.com'), (SELECT id FROM services WHERE title = 'Massage'), (SELECT id FROM employees WHERE email = 'ella.wilson@example.com'), 'Relaxing massage', '2024-10-18', '2024-10-18 16:00:00', '2024-10-18 17:00:00', 'created'),
-((SELECT id FROM customers WHERE email = 'ella.davis@example.com'), (SELECT id FROM services WHERE title = 'Pedicure'), (SELECT id FROM employees WHERE email = 'frank.martinez@example.com'), 'Nail care appointment', '2024-10-19', '2024-10-19 09:00:00', '2024-10-19 09:45:00', 'created'),
-((SELECT id FROM customers WHERE email = 'frank.garcia@example.com'), (SELECT id FROM services WHERE title = 'Hair Treatment'), (SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), 'Hair repair treatment', '2024-10-20', '2024-10-20 10:30:00', '2024-10-20 11:15:00', 'created'),
-((SELECT id FROM customers WHERE email = 'grace.martinez@example.com'), (SELECT id FROM services WHERE title = 'Manicure'), (SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Nail trimming and polishing', '2024-10-21', '2024-10-21 13:00:00', '2024-10-21 13:45:00', 'created'),
-((SELECT id FROM customers WHERE email = 'henry.lopez@example.com'), (SELECT id FROM services WHERE title = 'Waxing'), (SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), 'Leg waxing appointment', '2024-10-22', '2024-10-22 15:00:00', '2024-10-22 15:30:00', 'created'),
-((SELECT id FROM customers WHERE email = 'ivy.hernandez@example.com'), (SELECT id FROM services WHERE title = 'Styling'), (SELECT id FROM employees WHERE email = 'david.brown@example.com'), 'Styling appointment', '2024-10-23', '2024-10-23 10:00:00', '2024-10-23 11:00:00', 'created'),
-((SELECT id FROM customers WHERE email = 'jack.gonzalez@example.com'), (SELECT id FROM services WHERE title = 'Makeup Application'), (SELECT id FROM employees WHERE email = 'grace.garcia@example.com'), 'Makeup for event', '2024-10-24', '2024-10-24 12:00:00', '2024-10-24 12:30:00', 'created'),
-((SELECT id FROM customers WHERE email = 'lily.wilson@example.com'), (SELECT id FROM services WHERE title = 'Bridal Makeup'), (SELECT id FROM employees WHERE email = 'frank.martinez@example.com'), 'Bridal makeup consultation', '2024-10-25', '2024-10-25 09:30:00', '2024-10-25 10:30:00', 'created'),
-((SELECT id FROM customers WHERE email = 'mia.thompson@example.com'), (SELECT id FROM services WHERE title = 'Keratin Treatment'), (SELECT id FROM employees WHERE email = 'alice.smith@example.com'), 'Smoothing treatment for hair', '2024-10-26', '2024-10-26 14:00:00', '2024-10-26 16:00:00', 'created');
+((SELECT id FROM customers WHERE email = 'anna.ivanova@example.com'), (SELECT id FROM services WHERE title = 'Окрашивание'), (SELECT id FROM employees WHERE email = 'galina.grigorieva@example.com'), 'Запись на окрашивание', '2024-10-16', '2024-10-16 11:00:00', '2024-10-16 12:30:00', 'created'),
+((SELECT id FROM customers WHERE email = 'anna.ivanova@example.com'), (SELECT id FROM services WHERE title = 'Чистка лица'), (SELECT id FROM employees WHERE email = 'david.brovkin@example.com'), 'Запись на чистку лица', '2024-10-17', '2024-10-17 14:00:00', '2024-10-17 15:00:00', 'created'),
+((SELECT id FROM customers WHERE email = 'anna.ivanova@example.com'), (SELECT id FROM services WHERE title = 'Массаж'), (SELECT id FROM employees WHERE email = 'elena.vasileva@example.com'), 'Запись на массаж', '2024-10-18', '2024-10-18 16:00:00', '2024-10-18 17:00:00', 'success'),
+((SELECT id FROM customers WHERE email = 'boris.petrov@example.com'), (SELECT id FROM services WHERE title = 'Педикюр'), (SELECT id FROM employees WHERE email = 'fedor.martynov@example.com'), 'Запись на педикюр', '2024-10-19', '2024-10-19 09:00:00', '2024-10-19 09:45:00', 'success'),
+((SELECT id FROM customers WHERE email = 'boris.petrov@example.com'), (SELECT id FROM services WHERE title = 'Лечение волос'), (SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com'), 'Запись на восстановление волос', '2024-10-20', '2024-10-20 10:30:00', '2024-10-20 11:15:00', 'cancelled'),
+((SELECT id FROM customers WHERE email = 'boris.petrov@example.com'), (SELECT id FROM services WHERE title = 'Маникюр'), (SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com'), 'Запись на маникюр', '2024-10-21', '2024-10-21 13:00:00', '2024-10-21 13:45:00', 'cancelled'),
+((SELECT id FROM customers WHERE email = 'irina.semenova@example.com'), (SELECT id FROM services WHERE title = 'Депиляция'), (SELECT id FROM employees WHERE email = 'ekaterina.davydova@example.com'), 'Запись на депиляцию ног', '2024-10-22', '2024-10-22 15:00:00', '2024-10-22 15:30:00', 'created'),
+((SELECT id FROM customers WHERE email = 'irina.semenova@example.com'), (SELECT id FROM services WHERE title = 'Укладка'), (SELECT id FROM employees WHERE email = 'david.brovkin@example.com'), 'Запись на укладку', '2024-10-23', '2024-10-23 14:30:00', '2024-10-23 15:30:00', 'created'),
+((SELECT id FROM customers WHERE email = 'boris.petrov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'david.brovkin@example.com'), 'Запись на стрижку', '2024-10-23', '2024-10-23 14:30:00', '2024-10-23 15:30:00', 'success'),
+((SELECT id FROM customers WHERE email = 'oleg.ershov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com'), 'Запись на стрижку', '2024-10-24', '2024-10-24 14:30:00', '2024-10-24 15:30:00', 'success'),
+((SELECT id FROM customers WHERE email = 'ilya.krylov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'david.brovkin@example.com'), 'Запись на стрижку', '2024-10-25', '2024-10-25 14:30:00', '2024-10-25 15:30:00', 'cancelled'),
+((SELECT id FROM customers WHERE email = 'boris.petrov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com'), 'Запись на стрижку', '2024-10-26', '2024-10-26 14:30:00', '2024-10-26 15:30:00', 'success'),
+((SELECT id FROM customers WHERE email = 'georgiy.sokolov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'david.brovkin@example.com'), 'Запись на стрижку', '2024-10-23', '2024-10-23 14:30:00', '2024-10-23 15:30:00', 'success'),
+((SELECT id FROM customers WHERE email = 'filipp.kozlov@example.com'), (SELECT id FROM services WHERE title = 'Стрижка'), (SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com'), 'Запись на стрижку', '2024-10-26', '2024-10-26 18:30:00', '2024-10-26 19:00:00', 'success');
+
+
 
 INSERT INTO schedule (employee_id, date, start_time, end_time) VALUES
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-18', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-19', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-20', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-21', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'alice.smith@example.com'), '2024-10-22', '09:00:00', '17:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-12', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-19', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'bob.johnson@example.com'), '2024-10-11', '10:00:00', '18:00:00'),
-((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), '2024-10-20', '08:30:00', '16:30:00'),
-((SELECT id FROM employees WHERE email = 'cathy.davis@example.com'), '2024-10-22', '08:30:00', '16:30:00'),
-((SELECT id FROM employees WHERE email = 'david.brown@example.com'), '2024-10-23', '09:00:00', '15:00:00'),
-((SELECT id FROM employees WHERE email = 'ella.wilson@example.com'), '2024-10-23', '10:00:00', '16:00:00');
-
+((SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com' LIMIT 1), '2024-10-18', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com' LIMIT 1), '2024-10-19', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com' LIMIT 1), '2024-10-20', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com' LIMIT 1), '2024-10-21', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'fedor.martynov@example.com' LIMIT 1), '2024-10-22', '09:00:00', '17:00:00'),
+((SELECT id FROM employees WHERE email = 'alisa.smirnova@example.com' LIMIT 1), '2024-10-12', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com' LIMIT 1), '2024-10-19', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com' LIMIT 1), '2024-10-11', '10:00:00', '18:00:00'),
+((SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com' LIMIT 1), '2024-10-20', '08:30:00', '16:30:00'),
+((SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com' LIMIT 1), '2024-10-22', '08:30:00', '16:30:00'),
+((SELECT id FROM employees WHERE email = 'ivan.ivanov@example.com' LIMIT 1), '2024-10-23', '09:00:00', '15:00:00'),
+((SELECT id FROM employees WHERE email = 'elena.vasileva@example.com' LIMIT 1), '2024-10-23', '10:00:00', '16:00:00');

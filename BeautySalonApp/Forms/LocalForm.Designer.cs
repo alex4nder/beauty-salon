@@ -68,12 +68,12 @@
             // 
             // employeesTab
             // 
-            employeesTab.Controls.Add(servicesTab);
             employeesTab.Controls.Add(employeeTab);
             employeesTab.Controls.Add(managersTab);
-            employeesTab.Controls.Add(reportsTab);
+            employeesTab.Controls.Add(servicesTab);
             employeesTab.Controls.Add(CustomersTab);
             employeesTab.Controls.Add(CustomerFeedbackTab);
+            employeesTab.Controls.Add(reportsTab);
             employeesTab.Dock = DockStyle.Fill;
             employeesTab.Location = new Point(0, 0);
             employeesTab.Name = "employeesTab";
@@ -91,7 +91,7 @@
             servicesTab.Padding = new Padding(3);
             servicesTab.Size = new Size(968, 473);
             servicesTab.TabIndex = 0;
-            servicesTab.Text = "Предоставляемые услуги";
+            servicesTab.Text = "Услуги";
             servicesTab.UseVisualStyleBackColor = true;
             // 
             // addServiceBtn
